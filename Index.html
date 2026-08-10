@@ -1,0 +1,999 @@
+﻿<!DOCTYPE html>
+<html lang="pt-PT" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitarreiro - Hub Musical</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+
+
+    <!-- Tone.js (Áudio) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+
+    <!-- html2pdf.js (Exportar PDF) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        dark: { 900: '#0a0a0a', 800: '#141414', 700: '#1f1f1f', 600: '#2a2a2a' },
+                        brand: { 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb' }
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <style>
+        body { background-color: #0a0a0a; color: #e5e5e5; -webkit-font-smoothing: antialiased; }
+        
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Remove arrows from number inputs */
+        .hide-arrows::-webkit-inner-spin-button, .hide-arrows::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .hide-arrows { -moz-appearance: textfield; }
+
+
+        .glass-card {
+            background: linear-gradient(145deg, #161616, #111111);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.5), -10px -10px 30px rgba(255,255,255,0.02);
+        }
+        
+        .inner-well {
+            background: #0d0d0d;
+            border-radius: 1rem;
+            box-shadow: inset 4px 4px 15px rgba(0,0,0,0.8), inset -4px -4px 15px rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-primary:active { transform: translateY(0); }
+
+
+        .custom-select {
+            appearance: none; background-color: #1a1a1a;
+            border: 1px solid #333; color: white;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2360a5fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat; background-size: 1em 1em;
+        }
+        .custom-select:focus { outline: none; border-color: #3b82f6; }
+
+
+        .tab-btn { color: #6b7280; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+        .tab-animate { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+
+        /* Fretboard */
+        .fretboard-row { position: relative; height: 35px; display: flex; align-items: center; }
+        .string-line { position: absolute; left: 0; right: 0; background: linear-gradient(to bottom, #71717a, #3f3f46); z-index: 0; }
+        .fret-cell { flex: 1; height: 100%; border-right: 2px solid #3f3f46; position: relative; display: flex; align-items: center; justify-content: center; }
+        .fret-cell.nut { border-right: 6px solid #d4d4d8; background: #18181b; }
+        .note-dot {
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; z-index: 10; box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+        }
+        .note-dot.root { background-color: #ef4444; color: white; border: 2px solid #7f1d1d; }
+        .note-dot.scale { background-color: #3b82f6; color: white; border: 2px solid #1e3a8a; }
+        .note-dot.faded { opacity: 0.3; }
+
+
+        /* Piano Modernizado */
+        .piano-container { display: flex; position: relative; height: 160px; border-radius: 8px; overflow: hidden; background: #111; }
+        .key-white {
+            flex: 1; background: #fdfdfd; border: 1px solid #ccc; border-radius: 0 0 4px 4px;
+            position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+            padding-bottom: 8px; color: #52525b; font-size: 0.75rem; font-weight: bold;
+            cursor: pointer; transition: all 0.1s; min-width: 45px;
+        }
+        .key-black {
+            position: absolute; background: #18181b; width: 30px; height: 65%;
+            z-index: 2; border-radius: 0 0 4px 4px; border: 1px solid #000;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 8px;
+            color: #a1a1aa; font-size: 0.65rem; transform: translateX(-50%); cursor: pointer; transition: all 0.1s;
+        }
+        .key-white:active { background: #e4e4e7; }
+        .key-black:active { background: #27272a; }
+        
+        /* Indicadores de Escala no Piano (Pontos discretos) */
+        .key-indicator {
+            width: 8px; height: 8px; border-radius: 50%; opacity: 0; transition: opacity 0.2s; margin-top: 4px;
+        }
+        .in-scale .key-indicator { opacity: 1; background-color: #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.6); }
+        .root .key-indicator { opacity: 1; background-color: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.6); }
+        
+        /* Destaque de Acorde Específico no Piano */
+        .key-white.highlight-chord { background: #a7f3d0; border-color: #059669; }
+        .key-black.highlight-chord { background: #065f46; border-color: #064e3b; color: #a7f3d0; }
+
+
+        /* Drag & Drop Compositor */
+        .draggable { cursor: grab; }
+        .draggable:active { cursor: grabbing; }
+        .dropzone { border: 2px dashed #3f3f46; border-radius: 0.5rem; transition: background 0.2s; min-height: 40px; }
+        .dropzone.dragover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
+        
+        /* Compositor Compacto */
+        .composer-section { 
+            background: #1a1a1a; border-left: 3px solid #3b82f6; border-radius: 0.5rem; 
+            display: flex; flex-direction: row; align-items: stretch; margin-bottom: 0.5rem;
+        }
+        .composer-section-header {
+            width: 120px; padding: 0.5rem; border-right: 1px solid #2a2a2a; 
+            display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+        }
+        .chord-dropzone {
+            flex-grow: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem; border: none;
+        }
+        .chord-dropzone.dragover { background: rgba(59, 130, 246, 0.05); }
+        .composer-chord { 
+            display: inline-flex; align-items: center; justify-content: center; 
+            background: #2a2a2a; border: 1px solid #3f3f46; border-radius: 0.375rem; 
+            padding: 0.25rem 0.75rem; min-width: 45px; height: 32px; position: relative;
+        }
+        
+        @media print {
+            body { background: white; color: black; }
+            .no-print { display: none !important; }
+            #composer-timeline { background: white !important; }
+            .composer-section { background: #f3f4f6 !important; border-color: #000 !important; page-break-inside: avoid; }
+            .composer-chord { background: white !important; border-color: #ccc !important; color: black !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 font-sans relative">
+
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-2 z-50 pointer-events-none"></div>
+
+
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header com Ferramentas -->
+        <header class="flex flex-col xl:flex-row justify-between items-center mb-8 gap-6 no-print border-b border-dark-700 pb-6">
+            
+            <!-- Logo Section -->
+            <div class="relative group cursor-pointer flex-shrink-0" onclick="document.getElementById('logo-upload').click()" title="Clica para alterar o logo">
+                <input type="file" id="logo-upload" class="hidden" accept="image/*">
+                
+                <div id="default-logo" class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
+                        <i data-lucide="music" class="text-white w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-display font-black tracking-wide text-white">GUITAR<span class="text-brand-500">REIRO</span></h1>
+                        <p class="text-xs text-gray-400 font-medium tracking-widest uppercase">O teu Hub Musical</p>
+                    </div>
+                </div>
+                <img id="custom-logo-img" class="hidden h-14 object-contain" alt="Logo Personalizado" />
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-xl transition duration-200">
+                    <span class="text-xs font-bold text-white flex items-center gap-1"><i data-lucide="upload" class="w-3 h-3"></i> Alterar</span>
+                </div>
+                <button id="reset-logo-btn" onclick="resetLogo(event)" class="hidden absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg z-10">
+                    <i data-lucide="x" class="w-3 h-3"></i>
+                </button>
+            </div>
+
+
+            <!-- Navegação Tabs -->
+            <nav class="flex bg-dark-800 p-1.5 rounded-xl border border-dark-600 w-full xl:w-auto overflow-x-auto hide-scroll justify-center">
+                <button onclick="switchTab('tab-study')" class="tab-btn active px-6 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="graduation-cap" class="w-4 h-4"></i> Estudo & Ferramentas
+                </button>
+                <button onclick="switchTab('tab-composer')" class="tab-btn px-6 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2 whitespace-nowrap">
+                    <i data-lucide="layout-template" class="w-4 h-4"></i> Compositor
+                </button>
+            </nav>
+
+
+            <!-- Mini Tools (Metrónomo & Afinador) -->
+            <div class="flex gap-4 w-full xl:w-auto justify-center">
+                
+                <!-- Afinador Quadrado -->
+                <div class="glass-card w-28 h-24 p-2.5 flex flex-col items-center justify-between">
+                    <div class="w-full flex justify-between items-start">
+                        <button id="btn-tuner" class="w-8 h-8 rounded-lg bg-dark-700 hover:bg-dark-600 flex items-center justify-center text-brand-400 transition-colors shadow-inner" title="Ligar Afinador">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                        </button>
+                        <span id="tuner-status" class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1">OFF</span>
+                    </div>
+                    <div class="flex flex-col items-center w-full mt-[-5px]">
+                        <span id="tuner-note" class="text-3xl font-display font-black text-white leading-none">--</span>
+                        <div class="w-full px-2 mt-2 relative h-1 bg-dark-800 rounded-full">
+                            <div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-green-500/50 -translate-x-1/2 z-0"></div>
+                            <div id="tuner-needle" class="w-2.5 h-2.5 bg-brand-500 rounded-full absolute top-1/2 -translate-y-1/2 transition-all duration-75 shadow-[0_0_5px_#3b82f6]" style="left: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Metrónomo Quadrado -->
+                <div class="glass-card w-28 h-24 p-2.5 flex flex-col items-center justify-between">
+                    <div class="w-full flex justify-between items-start">
+                        <button id="btn-metro" class="w-8 h-8 rounded-lg bg-dark-700 hover:bg-dark-600 flex items-center justify-center text-brand-400 transition-colors shadow-inner" title="Ligar Metrónomo">
+                            <i data-lucide="play" class="w-4 h-4 ml-0.5"></i>
+                        </button>
+                        <div class="w-2.5 h-2.5 rounded-full bg-dark-700 mt-1 transition-colors duration-75" id="beat-light"></div>
+                    </div>
+                    <div class="flex flex-col items-center w-full mt-[-5px]">
+                        <div class="flex items-baseline gap-0.5">
+                            <input type="number" id="bpm-input" value="120" min="40" max="240" class="hide-arrows bg-transparent text-3xl font-display font-black text-white w-14 text-center outline-none p-0 leading-none">
+                        </div>
+                        <select id="metro-sig" class="bg-dark-800 border border-dark-600 text-[10px] font-bold text-gray-300 rounded px-1 outline-none mt-1.5 w-16 text-center cursor-pointer">
+                            <option value="4">4/4</option><option value="3">3/4</option><option value="2">2/4</option><option value="6">6/8</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <main>
+            <!-- ================= ABA: ESTUDO E FERRAMENTAS ================= -->
+            <div id="tab-study" class="tab-animate flex flex-col gap-6">
+                
+                <!-- Controlos de Estudo -->
+                <div class="glass-card p-5 md:p-8 flex flex-col lg:flex-row gap-6 items-center justify-between">
+                    <div class="flex flex-col sm:flex-row gap-5 w-full lg:w-auto">
+                        <div class="flex flex-col">
+                            <label class="text-xs text-gray-400 mb-1 uppercase font-bold tracking-wide">Tónica</label>
+                            <select id="study-root" class="custom-select rounded-xl p-3 text-lg font-bold w-full sm:w-32"></select>
+                        </div>
+                        <div class="flex flex-col flex-grow">
+                            <label class="text-xs text-gray-400 mb-1 uppercase font-bold tracking-wide">Escala</label>
+                            <select id="study-scale" class="custom-select rounded-xl p-3 font-semibold w-full sm:w-64"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="flex flex-col w-full lg:w-auto">
+                        <label class="text-xs text-gray-400 mb-1 uppercase font-bold tracking-wide">Instrumento</label>
+                        <div class="flex bg-dark-800 rounded-xl p-1.5 border border-dark-600">
+                            <button onclick="setInstrument('guitar')" id="inst-btn-guitar" class="flex-1 lg:flex-none px-5 py-2.5 text-sm font-bold rounded-lg bg-brand-500 text-white shadow transition">Guitarra</button>
+                            <button onclick="setInstrument('bass')" id="inst-btn-bass" class="flex-1 lg:flex-none px-5 py-2.5 text-sm font-bold rounded-lg text-gray-400 hover:text-white transition">Baixo</button>
+                            <button onclick="setInstrument('piano')" id="inst-btn-piano" class="flex-1 lg:flex-none px-5 py-2.5 text-sm font-bold rounded-lg text-gray-400 hover:text-white transition">Piano</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="inner-well p-5 text-sm text-gray-300 border-l-4 border-brand-500 flex items-start gap-4">
+                    <i data-lucide="info" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                    <div>
+                        <span id="study-desc-title" class="font-bold text-white block mb-1 text-lg">...</span>
+                        <span id="study-desc-text" class="text-gray-400 leading-relaxed">...</span>
+                    </div>
+                </div>
+
+
+                <!-- View: Cordas (Braço) -->
+                <div id="view-string-instrument" class="glass-card p-5 md:p-8 flex flex-col">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <i data-lucide="git-commit-horizontal" class="w-5 h-5 text-brand-400"></i> Desenhos da Escala (Box)
+                        </h2>
+                        <div class="flex items-center gap-3 bg-dark-800 p-1.5 rounded-xl border border-dark-600">
+                            <button onclick="changePosition(-1)" class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center hover:bg-dark-600 transition text-white">
+                                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                            </button>
+                            <div class="text-center w-20">
+                                <span class="text-[10px] text-gray-400 block leading-none uppercase">Posição</span>
+                                <span id="pos-label" class="font-bold text-white text-sm">1</span>
+                            </div>
+                            <button onclick="changePosition(1)" class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center hover:bg-brand-500 transition text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]">
+                                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="inner-well p-4 md:p-6 overflow-x-auto hide-scroll w-full flex justify-start">
+                        <div id="fretboard" class="min-w-max flex flex-col relative pb-6 w-full max-w-[1000px] mx-auto"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 text-center mt-6">Notas ofuscadas pertencem à escala mas estão fora do desenho atual. Foca-te nas notas destacadas.</p>
+                </div>
+
+
+                <!-- View: Piano -->
+                <div id="view-piano-instrument" class="glass-card p-5 md:p-8 flex flex-col hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <i data-lucide="piano" class="w-5 h-5 text-brand-400"></i> Teclado Interativo
+                        </h2>
+                        
+                        <!-- Novo: Seletor de Acordes do Piano -->
+                        <div id="piano-chords-panel" class="bg-dark-800 border border-dark-600 rounded-xl p-2 flex flex-wrap gap-1 items-center w-full md:w-auto">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mx-2">Estudar Acorde:</span>
+                            <div id="piano-chord-buttons" class="flex flex-wrap gap-1"></div>
+                            <button onclick="clearPianoChord()" class="ml-2 text-[10px] bg-dark-700 hover:bg-red-900/50 text-red-400 px-2 py-1.5 rounded transition">Limpar</button>
+                        </div>
+                    </div>
+
+
+                    <div id="piano-wrapper" class="piano-container inner-well p-2 border-none shadow-2xl overflow-x-auto hide-scroll justify-start md:justify-center"></div>
+                    
+                    <div class="flex justify-center gap-6 mt-6">
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><span class="text-xs text-gray-400">Tónica</span></div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-blue-500"></div><span class="text-xs text-gray-400">Nota da Escala</span></div>
+                    </div>
+                </div>
+
+
+                <!-- Bloco de Notas -->
+                <div class="glass-card p-5 flex gap-4 mt-2">
+                    <div class="flex flex-col items-center justify-center shrink-0 w-12 h-12 rounded-full bg-dark-800 border border-dark-600 text-brand-400 shadow-inner">
+                        <i data-lucide="edit-3" class="w-5 h-5"></i>
+                    </div>
+                    <textarea id="notepad" class="w-full h-12 bg-transparent text-sm text-gray-300 resize-none outline-none placeholder-gray-600 hide-scroll mt-1.5 leading-relaxed" placeholder="Anota ideias, riffs, setups..."></textarea>
+                </div>
+            </div>
+
+
+            <!-- ================= ABA: COMPOSITOR ================= -->
+            <div id="tab-composer" class="tab-animate flex flex-col gap-6 hidden">
+                
+                <div class="glass-card p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold flex items-center gap-2 mb-2">
+                            <i data-lucide="music-4" class="w-6 h-6 text-brand-400"></i> O Teu Compositor
+                        </h2>
+                        <p class="text-sm text-gray-400 max-w-2xl">Constrói a estrutura arrastando as secções. Depois, analisa as funções dos acordes (Tónica, Dominante...) e arrasta-os para dentro das secções.</p>
+                    </div>
+                    <div class="flex gap-4 p-4 inner-well rounded-xl">
+                        <div>
+                            <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wide">Tom da Música</label>
+                            <select id="comp-root" class="custom-select rounded-lg p-2 text-sm font-bold w-full mt-1"></select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wide">Escala Base</label>
+                            <select id="comp-type" class="custom-select rounded-lg p-2 text-sm font-bold w-full mt-1">
+                                <option value="major">Maior (Alegre/Épico)</option>
+                                <option value="minor">Menor (Triste/Tensa)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+                    <!-- Paletas -->
+                    <div class="xl:col-span-1 flex flex-col gap-4">
+                        <div class="inner-well p-4">
+                            <h3 class="text-sm font-bold text-gray-200 mb-3 border-b border-gray-700 pb-2 flex items-center gap-2">
+                                <span class="bg-dark-700 w-5 h-5 flex items-center justify-center rounded text-[10px]">1</span> Estrutura
+                            </h3>
+                            <div class="flex flex-wrap gap-2" id="palette-sections"></div>
+                        </div>
+                        
+                        <div class="inner-well p-4 flex-grow overflow-y-auto max-h-[500px] hide-scroll">
+                            <h3 class="text-sm font-bold text-gray-200 mb-3 border-b border-gray-700 pb-2 flex items-center gap-2">
+                                <span class="bg-dark-700 w-5 h-5 flex items-center justify-center rounded text-[10px]">2</span> C. Harmónico
+                            </h3>
+                            <div class="flex flex-col gap-2" id="palette-chords"></div>
+                        </div>
+                    </div>
+
+
+                    <!-- Folha de Composição (Layout Fino/Compacto) -->
+                    <div class="xl:col-span-3 glass-card p-4 md:p-6 flex flex-col min-h-[500px]">
+                        <div class="flex justify-between items-center mb-4 no-print border-b border-dark-700 pb-3">
+                            <h3 class="text-lg font-bold flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-5 h-5 text-gray-400"></i> Folha de Composição
+                            </h3>
+                            <div class="flex gap-2">
+                                <button onclick="clearComposition()" class="text-xs text-red-400 hover:text-red-300 hover:bg-red-400/10 px-3 py-1.5 rounded-md transition font-bold">Limpar Tudo</button>
+                                <button onclick="exportPDF()" class="btn-primary px-3 py-1.5 text-xs rounded-lg flex items-center gap-2 font-bold">
+                                    <i data-lucide="download" class="w-4 h-4"></i> Exportar PDF
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div id="composer-timeline" class="flex-grow flex flex-col gap-1 w-full overflow-y-auto pb-10" ondragover="allowDrop(event)" ondrop="dropToTimeline(event)">
+                            <div id="empty-state-composer" class="text-center text-gray-500 mt-16 no-print border-2 border-dashed border-dark-600 rounded-xl p-10">
+                                <i data-lucide="layout-grid" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+                                <p class="text-base">Arrasta blocos de <strong class="text-gray-300">Estrutura</strong> para aqui.</p>
+                                <p class="text-xs mt-1">Dica: No telemóvel, basta clicar nos botões.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <script>
+        lucide.createIcons();
+
+
+        // --- Toasts ---
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-2 rounded-lg shadow-lg text-sm font-bold text-white transform transition-all duration-300 translate-y-10 opacity-0 flex items-center gap-2 pointer-events-auto ${type === 'success' ? 'bg-brand-600' : 'bg-red-600'}`;
+            toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-4 h-4"></i> ${msg}`;
+            document.getElementById('toast-container').appendChild(toast);
+            lucide.createIcons();
+            
+            requestAnimationFrame(() => toast.classList.remove('translate-y-10', 'opacity-0'));
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+
+        // --- Teoria Musical Fixa ---
+        const ROOTS = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const SHARPS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const FLATS = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        
+        function getPitch(noteStr) {
+            let idx = SHARPS.indexOf(noteStr);
+            if (idx === -1) idx = FLATS.indexOf(noteStr);
+            return idx;
+        }
+
+
+        const ROMANS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+        
+        const SCALES = {
+            'major': { 
+                name: 'Maior (Jónica)', intervals: [0, 2, 4, 5, 7, 9, 11], desc: 'A base de tudo. Som resolvido e alegre. Ótima para Pop e Rock.', 
+                harmonic: { qualities: ['M', 'm', 'm', 'M', 'M', 'm', 'dim'], funcs: ['Tónica', 'Subdom.', 'Tónica', 'Subdom.', 'Dominante', 'Tónica', 'Dominante'], funcColors: ['text-green-400', 'text-blue-400', 'text-green-400', 'text-blue-400', 'text-red-400', 'text-green-400', 'text-red-400'] } 
+            },
+            'minor': { 
+                name: 'Menor Natural (Eólica)', intervals: [0, 2, 3, 5, 7, 8, 10], desc: 'Som triste ou melancólico. Muito usada no Rock pesado e baladas.', 
+                harmonic: { qualities: ['m', 'dim', 'M', 'm', 'm', 'M', 'M'], funcs: ['Tónica', 'Subdom.', 'Tónica', 'Subdom.', 'Dominante', 'Subdom.', 'Dominante'], funcColors: ['text-green-400', 'text-blue-400', 'text-green-400', 'text-blue-400', 'text-red-400', 'text-blue-400', 'text-red-400'] } 
+            },
+            'pentatonic_major': { name: 'Pentatónica Maior', intervals: [0, 2, 4, 7, 9], desc: 'Som versátil e aberto. Perfeita para Country e solos Pop.' },
+            'pentatonic_minor': { name: 'Pentatónica Menor', intervals: [0, 3, 5, 7, 10], desc: 'A rainha do Rock e Blues. Excelente para improvisação inicial.' },
+            'blues': { name: 'Escala Blues', intervals: [0, 3, 5, 6, 7, 10], desc: 'Adiciona a "Blue Note" para aquele som sujo e característico do Blues.' }
+        };
+
+
+        const INSTRUMENTS = {
+            'guitar': { strings: ['E', 'B', 'G', 'D', 'A', 'E'], frets: 22 },
+            'bass': { strings: ['G', 'D', 'A', 'E'], frets: 22 }
+        };
+
+
+        const state = {
+            study: { root: 'C', scale: 'major', instrument: 'guitar', positionIndex: 0, activeNotes: [], anchorFrets: [], activeNotesArray: SHARPS, highlightedChordNotes: [] },
+            composer: { root: 'C', type: 'major', generatedChords: [] }
+        };
+
+
+        function switchTab(tabId) {
+            document.getElementById('tab-study').classList.add('hidden');
+            document.getElementById('tab-composer').classList.add('hidden');
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+            if(tabId === 'tab-study' && state.study.instrument === 'piano') renderPiano();
+        }
+
+
+        // --- Logo ---
+        const logoUpload = document.getElementById('logo-upload'), customLogoImg = document.getElementById('custom-logo-img'), defaultLogo = document.getElementById('default-logo'), resetLogoBtn = document.getElementById('reset-logo-btn');
+        function applyCustomLogo(src) { defaultLogo.classList.add('hidden'); customLogoImg.src = src; customLogoImg.classList.remove('hidden'); resetLogoBtn.classList.remove('hidden'); }
+        function resetLogo(e) { e.stopPropagation(); localStorage.removeItem('guitarreiro_custom_logo'); customLogoImg.classList.add('hidden'); customLogoImg.src = ''; defaultLogo.classList.remove('hidden'); resetLogoBtn.classList.add('hidden'); showToast('Logo restaurado!'); }
+        logoUpload.addEventListener('change', function(e) { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = function(event) { const base64Src = event.target.result; localStorage.setItem('guitarreiro_custom_logo', base64Src); applyCustomLogo(base64Src); showToast('Logo atualizado!'); }; reader.readAsDataURL(file); } });
+        if (localStorage.getItem('guitarreiro_custom_logo')) applyCustomLogo(localStorage.getItem('guitarreiro_custom_logo'));
+
+
+        // Popula Selects
+        ['study-root', 'comp-root'].forEach(id => { const el = document.getElementById(id); ROOTS.forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; el.appendChild(o); }); });
+        Object.entries(SCALES).forEach(([k, v]) => { const o = document.createElement('option'); o.value = k; o.textContent = v.name; document.getElementById('study-scale').appendChild(o); });
+
+
+        // --- Lógica Estudo Principal ---
+        function updateStudy() {
+            state.study.root = document.getElementById('study-root').value;
+            state.study.scale = document.getElementById('study-scale').value;
+            
+            // Lógica de Enarmonia: Usar Bemóis se a Tónica tiver 'b' ou for 'F'
+            const isFlatKey = state.study.root.includes('b') || state.study.root === 'F';
+            state.study.activeNotesArray = isFlatKey ? FLATS : SHARPS;
+            
+            const rootPitch = getPitch(state.study.root);
+            state.study.activeNotes = SCALES[state.study.scale].intervals.map(i => state.study.activeNotesArray[(rootPitch + i) % 12]);
+
+
+            document.getElementById('study-desc-title').textContent = `${SCALES[state.study.scale].name} em ${state.study.root}`;
+            document.getElementById('study-desc-text').textContent = SCALES[state.study.scale].desc;
+
+
+            // Limpa o destaque de acorde quando muda de tom
+            clearPianoChord();
+            generatePianoChordsUI();
+
+
+            if (state.study.instrument === 'piano') renderPiano();
+            else { calculatePositions(); renderFretboard(); }
+        }
+
+
+        function setInstrument(inst) {
+            state.study.instrument = inst;
+            ['guitar', 'bass', 'piano'].forEach(i => {
+                const btn = document.getElementById(`inst-btn-${i}`);
+                if (i === inst) { btn.classList.replace('text-gray-400', 'text-white'); btn.classList.add('bg-brand-500', 'shadow'); btn.classList.remove('hover:text-white'); }
+                else { btn.classList.replace('text-white', 'text-gray-400'); btn.classList.remove('bg-brand-500', 'shadow'); btn.classList.add('hover:text-white'); }
+            });
+
+
+            if (inst === 'piano') {
+                document.getElementById('view-string-instrument').classList.add('hidden');
+                document.getElementById('view-piano-instrument').classList.remove('hidden');
+                renderPiano();
+            } else {
+                document.getElementById('view-piano-instrument').classList.add('hidden');
+                document.getElementById('view-string-instrument').classList.remove('hidden');
+                calculatePositions(); renderFretboard();
+            }
+        }
+
+
+        function calculatePositions() {
+            const rootPitch = getPitch(state.study.root);
+            
+            // Afinacao Padrão (Pitches): E=4, A=9, D=2
+            const root6 = (rootPitch - 4 + 12) % 12; // Traste da Tónica na corda E
+            const root5 = (rootPitch - 9 + 12) % 12; // Traste da Tónica na corda A
+            const root4 = (rootPitch - 2 + 12) % 12; // Traste da Tónica na corda D
+
+
+            // Sistema CAGED - Calculando o traste inicial exato (dedo 1) de cada um dos 5 formatos
+            let forms = [
+                root6 - 1, // Formato de E (Posição E)
+                root4 - 1, // Formato de D (Posição D)
+                root5 - 3, // Formato de C (Posição C)
+                root5 - 1, // Formato de A (Posição A)
+                root6 - 3  // Formato de G (Posição G)
+            ];
+
+
+            let distinctMins = [];
+            forms.forEach(minF => {
+                let normalized = minF;
+                while(normalized < 0) normalized += 12; // Normaliza para dentro do braço
+                normalized = normalized % 12;
+                if(!distinctMins.includes(normalized)) distinctMins.push(normalized);
+            });
+            
+            // Ordena as posições e espelha-as para a oitava superior
+            let baseAnchors = distinctMins.sort((a, b) => a - b);
+            let extendedAnchors = [...baseAnchors];
+            baseAnchors.forEach(a => extendedAnchors.push(a + 12)); // Repete acima do 12 traste
+            
+            state.study.anchorFrets = extendedAnchors;
+            if(state.study.positionIndex >= state.study.anchorFrets.length) state.study.positionIndex = 0;
+            
+            // Mostra o Label 1 a 5 apenas (Mesmo que navegue nas oitavas)
+            document.getElementById('pos-label').textContent = `${(state.study.positionIndex % 5) + 1} / 5`;
+        }
+
+
+        function changePosition(dir) {
+            let totalPos = state.study.anchorFrets.length;
+            // Impede de navegar para posições cujo box saia fora dos 22 trastes
+            let nextIndex = state.study.positionIndex + dir;
+            if (nextIndex < 0) nextIndex = totalPos - 1;
+            if (nextIndex >= totalPos) nextIndex = 0;
+            
+            state.study.positionIndex = nextIndex;
+            document.getElementById('pos-label').textContent = `${(state.study.positionIndex % 5) + 1} / 5`;
+            renderFretboard();
+        }
+
+
+        function renderFretboard() {
+            const board = document.getElementById('fretboard'); board.innerHTML = '';
+            const tuning = INSTRUMENTS[state.study.instrument].strings, frets = INSTRUMENTS[state.study.instrument].frets;
+            
+            const anchor = state.study.anchorFrets[state.study.positionIndex];
+            const minFret = Math.max(0, anchor);
+            const maxFret = Math.min(frets, minFret + 4); // Janela realística de 5 trastes
+
+
+            tuning.forEach((openNote, stringIdx) => {
+                const row = document.createElement('div'); row.className = 'fretboard-row';
+                const line = document.createElement('div'); line.className = 'string-line';
+                const thickness = state.study.instrument === 'bass' ? (tuning.length - stringIdx)*1.5 : (tuning.length - stringIdx)*0.5 + 0.5;
+                line.style.height = `${thickness}px`; line.style.top = `calc(50% - ${thickness/2}px)`;
+                row.appendChild(line);
+
+
+                const openNotePitch = getPitch(openNote);
+                for(let fret = 0; fret <= frets; fret++) {
+                    const cell = document.createElement('div'); cell.className = `fret-cell ${fret === 0 ? 'nut' : ''}`; cell.style.minWidth = fret === 0 ? '30px' : '55px';
+                    
+                    const notePitch = (openNotePitch + fret) % 12;
+                    const noteStr = state.study.activeNotesArray[notePitch];
+                    
+                    if (state.study.activeNotes.includes(noteStr)) {
+                        const inWindow = (fret === 0 || (fret >= minFret && fret <= maxFret));
+                        const dot = document.createElement('div');
+                        dot.className = `note-dot ${noteStr === state.study.root ? 'root' : 'scale'} ${!inWindow ? 'faded' : ''}`;
+                        dot.textContent = noteStr;
+                        if (fret === 0) { dot.style.position = 'absolute'; dot.style.left = '-15px'; }
+                        cell.appendChild(dot);
+                    }
+                    row.appendChild(cell);
+                }
+                board.appendChild(row);
+            });
+
+
+            // Fret Markers até a casa 21
+            const mkRow = document.createElement('div'); mkRow.className = 'flex mt-1 ml-[30px]';
+            for(let fret = 1; fret <= frets; fret++) {
+                const mk = document.createElement('div'); mk.className = 'flex-1 flex flex-col items-center justify-start'; mk.style.minWidth = '55px';
+                if ([3, 5, 7, 9, 12, 15, 17, 19, 21].includes(fret)) { mk.innerHTML = `<div class="w-2 h-2 rounded-full bg-dark-600 mb-0.5 ${fret === 12 ? 'w-5' : ''}"></div><span class="text-[9px] text-gray-500 font-bold">${fret}</span>`; }
+                mkRow.appendChild(mk);
+            }
+            board.appendChild(mkRow);
+        }
+
+
+        let pianoSynth;
+        async function playPianoNote(noteStr, octave) {
+            if (Tone.context.state !== 'running') await Tone.start();
+            if (!pianoSynth) {
+                pianoSynth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: 'triangle' }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.3, release: 1 } }).toDestination();
+                pianoSynth.volume.value = -5;
+            }
+            
+            // Tone.js usa internamente representações de sustenidos na maior parte. Para evitar erros na web audio api:
+            let playNote = noteStr;
+            const flatIdx = FLATS.indexOf(noteStr);
+            if(flatIdx !== -1) playNote = SHARPS[flatIdx];
+            
+            pianoSynth.triggerAttackRelease(`${playNote}${octave}`, "8n");
+        }
+
+
+        // Gera os botões dos acordes da escala atual para acendê-los no piano
+        function generatePianoChordsUI() {
+            const container = document.getElementById('piano-chord-buttons');
+            container.innerHTML = '';
+            
+            const scaleData = SCALES[state.study.scale];
+            if (!scaleData.harmonic) return; // Escalas como pentatonicas não tem C.Harmonico gerado para piano agora.
+            
+            const rootPitch = getPitch(state.study.root);
+            
+            scaleData.intervals.forEach((inter, i) => {
+                const rootNoteStr = state.study.activeNotesArray[(rootPitch + inter) % 12];
+                const quality = scaleData.harmonic.qualities[i];
+                let cName = rootNoteStr; if (quality === 'm') cName += 'm'; if (quality === 'dim') cName += '°';
+                
+                // Determina as 3 notas do acorde (1ª, 3ª, 5ª do acorde que derivam da escala maior/menor)
+                const n1 = rootNoteStr;
+                let thirdInterval = quality === 'm' || quality === 'dim' ? 3 : 4;
+                let fifthInterval = quality === 'dim' ? 6 : 7;
+                
+                const basePitch = (rootPitch + inter) % 12;
+                const n3 = state.study.activeNotesArray[(basePitch + thirdInterval) % 12];
+                const n5 = state.study.activeNotesArray[(basePitch + fifthInterval) % 12];
+
+
+                const btn = document.createElement('button');
+                btn.className = 'text-[10px] font-bold px-2 py-1.5 rounded transition bg-dark-700 hover:bg-brand-600 text-gray-300 hover:text-white';
+                btn.textContent = cName;
+                btn.onclick = () => {
+                    document.querySelectorAll('#piano-chord-buttons button').forEach(b => b.classList.replace('bg-brand-600', 'bg-dark-700'));
+                    btn.classList.replace('bg-dark-700', 'bg-brand-600');
+                    state.study.highlightedChordNotes = [n1, n3, n5];
+                    renderPiano();
+                };
+                container.appendChild(btn);
+            });
+        }
+        function clearPianoChord() {
+            state.study.highlightedChordNotes = [];
+            document.querySelectorAll('#piano-chord-buttons button').forEach(b => {
+                b.classList.add('bg-dark-700'); b.classList.remove('bg-brand-600');
+            });
+            if(state.study.instrument === 'piano') renderPiano();
+        }
+
+
+        function renderPiano() {
+            const wrapper = document.getElementById('piano-wrapper'); wrapper.innerHTML = '';
+            
+            // Base visual do piano usando Pitch Class (0=C, 1=C#, etc.)
+            const keysInfo = [
+                { p: 0, t: 'w' }, { p: 1, t: 'b' }, { p: 2, t: 'w' }, { p: 3, t: 'b' }, { p: 4, t: 'w' },
+                { p: 5, t: 'w' }, { p: 6, t: 'b' }, { p: 7, t: 'w' }, { p: 8, t: 'b' }, { p: 9, t: 'w' }, { p: 10, t: 'b' }, { p: 11, t: 'w' }
+            ];
+
+
+            const renderOctave = (octNum) => {
+                let wCount = 0;
+                keysInfo.forEach(k => {
+                    const el = document.createElement('div'); el.className = k.t === 'w' ? 'key-white' : 'key-black';
+                    
+                    const noteStr = state.study.activeNotesArray[k.p];
+                    
+                    // Indicador de Ponto Se a nota está na Escala Base
+                    if (state.study.activeNotes.includes(noteStr)) { 
+                        el.classList.add('in-scale');
+                        if (noteStr === state.study.root) el.classList.add('root'); 
+                        
+                        // Cria o ponto visual (Dot)
+                        const dot = document.createElement('div'); dot.className = 'key-indicator';
+                        el.appendChild(dot);
+                    }
+                    
+                    // Destaque Forte caso o aluno queira aprender o acorde
+                    if(state.study.highlightedChordNotes.includes(noteStr)) {
+                        el.classList.add('highlight-chord');
+                    }
+                    
+                    if (k.t === 'b') el.style.left = `calc((100% / 14) * ${wCount + (octNum * 7)})`;
+                    else { wCount++; if (k.p === 0) el.innerHTML += `<span class="mt-auto">${noteStr}${octNum + 3}</span>`; }
+                    
+                    const play = () => { playPianoNote(noteStr, octNum + 3); el.style.filter = 'brightness(0.7)'; setTimeout(() => el.style.filter = '', 150); };
+                    el.addEventListener('mousedown', play); el.addEventListener('touchstart', (e) => { e.preventDefault(); play(); });
+                    wrapper.appendChild(el);
+                });
+            };
+            renderOctave(0); renderOctave(1);
+        }
+
+
+        // --- Afinador Lógica ---
+        let tunerActive = false, mic, analyser, animId;
+        const tunerNote = document.getElementById('tuner-note'), tunerNeedle = document.getElementById('tuner-needle'), tunerStatus = document.getElementById('tuner-status'), btnTuner = document.getElementById('btn-tuner');
+        
+        function autoCorrelate(buf, sampleRate) {
+            let SIZE = buf.length, rms = 0;
+            for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+            rms = Math.sqrt(rms / SIZE); if (rms < 0.01) return -1;
+            let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+            for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+            buf = buf.slice(r1, r2); SIZE = buf.length;
+            let c = new Array(SIZE).fill(0);
+            for (let i = 0; i < SIZE; i++) for (let j = 0; j < SIZE - i; j++) c[i] = c[i] + buf[j] * buf[j + i];
+            let d = 0; while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < SIZE; i++) if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+            let T0 = maxpos, x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1]; let a = (x1 + x3 - 2 * x2) / 2, b = (x3 - x1) / 2; if (a) T0 = T0 - b / (2 * a);
+            return sampleRate / T0;
+        }
+
+
+        function updateTuner() {
+            if (!tunerActive) return;
+            const pitch = autoCorrelate(analyser.getValue(), Tone.context.sampleRate);
+            if (pitch !== -1) {
+                const noteNum = 12 * (Math.log(pitch / 440) / Math.log(2));
+                const noteIndex = Math.round(noteNum) + 69;
+                const cents = Math.floor((noteNum - Math.round(noteNum)) * 100);
+                
+                // Mostra notas corretas dependendo do tom selecionado no Estudo (Apenas UX extra)
+                tunerNote.textContent = state.study.activeNotesArray[noteIndex % 12];
+                let pos = Math.max(5, Math.min(95, 50 + cents));
+                tunerNeedle.style.left = `${pos}%`;
+
+
+                if (Math.abs(cents) < 5) { tunerNeedle.style.backgroundColor = '#22c55e'; tunerNote.classList.add('text-green-400'); tunerStatus.textContent = "Afinado!"; }
+                else { tunerNeedle.style.backgroundColor = '#3b82f6'; tunerNote.classList.remove('text-green-400'); tunerStatus.textContent = cents > 0 ? "Alto" : "Baixo"; }
+            }
+            animId = requestAnimationFrame(updateTuner);
+        }
+
+
+        document.getElementById('btn-tuner').addEventListener('click', async function() {
+            if (tunerActive) {
+                tunerActive = false; cancelAnimationFrame(animId);
+                if(mic) { mic.close(); mic.dispose(); analyser.dispose(); }
+                this.innerHTML = '<i data-lucide="mic" class="w-4 h-4"></i>'; this.classList.remove('bg-red-500', 'text-white', 'hover:bg-red-600');
+                tunerNote.textContent = '--'; tunerNeedle.style.left = '50%'; tunerNeedle.style.backgroundColor = '#3b82f6';
+                tunerNote.classList.remove('text-green-400'); tunerStatus.textContent = "OFF";
+            } else {
+                if (Tone.context.state !== 'running') await Tone.start();
+                try {
+                    mic = new Tone.UserMedia(); analyser = new Tone.Analyser("waveform", 1024);
+                    await mic.open(); mic.connect(analyser); tunerActive = true;
+                    this.innerHTML = '<i data-lucide="square" class="w-4 h-4"></i>'; this.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600');
+                    tunerStatus.textContent = "A ouvir"; updateTuner();
+                } catch (e) { tunerStatus.textContent = "Erro Mic"; showToast("Permite o microfone!", "error"); }
+            }
+            lucide.createIcons();
+        });
+
+
+        // --- Metrónomo Lógica ---
+        let isMetroPlaying = false; const clickSynth = new Tone.MembraneSynth().toDestination(), bpmInput = document.getElementById('bpm-input'), btnMetro = document.getElementById('btn-metro');
+        bpmInput.addEventListener('change', e => { let val = Math.min(240, Math.max(40, e.target.value)); e.target.value = val; Tone.Transport.bpm.value = val; });
+
+
+        btnMetro.addEventListener('click', async function() {
+            if (Tone.context.state !== 'running') await Tone.start();
+            if (isMetroPlaying) {
+                Tone.Transport.stop(); Tone.Transport.cancel(); isMetroPlaying = false;
+                this.innerHTML = '<i data-lucide="play" class="w-4 h-4 ml-0.5"></i>'; this.classList.remove('bg-red-500', 'text-white', 'hover:bg-red-600');
+            } else {
+                Tone.Transport.bpm.value = bpmInput.value; const beats = parseInt(document.getElementById('metro-sig').value); let currentBeat = 0;
+                Tone.Transport.scheduleRepeat((time) => {
+                    const isFirst = (currentBeat % beats === 0);
+                    clickSynth.triggerAttackRelease(isFirst ? "C3" : "G2", "8n", time, isFirst ? 1 : 0.5);
+                    Tone.Draw.schedule(() => { const light = document.getElementById('beat-light'); light.style.backgroundColor = isFirst ? '#3b82f6' : '#22c55e'; setTimeout(() => light.style.backgroundColor = '#1f1f1f', 100); }, time);
+                    currentBeat++;
+                }, "4n");
+                Tone.Transport.start(); isMetroPlaying = true;
+                this.innerHTML = '<i data-lucide="square" class="w-4 h-4"></i>'; this.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600');
+            }
+            lucide.createIcons();
+        });
+
+
+        const notepad = document.getElementById('notepad'); notepad.value = localStorage.getItem('guitarreiro_notas') || ''; notepad.addEventListener('input', e => localStorage.setItem('guitarreiro_notas', e.target.value));
+
+
+        // --- Compositor Lógica (Compacto e Relativas) ---
+        const SECTIONS = ['Intro', 'Estrofe (Verso)', 'Pré-Refrão', 'Refrão (Chorus)', 'Ponte', 'Solo', 'Final'];
+
+
+        function initComposer() {
+            const palSec = document.getElementById('palette-sections'); palSec.innerHTML = '';
+            SECTIONS.forEach(sec => {
+                const el = document.createElement('div');
+                el.className = 'draggable bg-dark-700 hover:bg-dark-600 border border-dark-600 px-2 py-1 rounded text-[10px] font-bold text-gray-300 transition shadow cursor-grab active:cursor-grabbing';
+                el.draggable = true; el.textContent = sec; el.dataset.type = 'section'; el.dataset.value = sec;
+                el.addEventListener('dragstart', handleDragStart); el.addEventListener('click', () => addSectionToTimeline(sec)); // Mobile
+                palSec.appendChild(el);
+            });
+            updateComposerChords();
+        }
+
+
+        function updateComposerChords() {
+            state.composer.root = document.getElementById('comp-root').value;
+            state.composer.type = document.getElementById('comp-type').value;
+            
+            // Usa bemóis/sustenidos corretamente no compositor
+            const isFlatKey = state.composer.root.includes('b') || state.composer.root === 'F';
+            const compNotesArray = isFlatKey ? FLATS : SHARPS;
+            
+            const palChords = document.getElementById('palette-chords'); palChords.innerHTML = '';
+            const scaleData = SCALES[state.composer.type], rootPitch = getPitch(state.composer.root);
+            
+            const isMinor = state.composer.type === 'minor';
+            const relativeIdx = isMinor ? 2 : 5; // Grau III (3) para menores, Grau VI (6) para maiores.
+
+
+            state.composer.generatedChords = scaleData.intervals.map((inter, i) => {
+                const note = compNotesArray[(rootPitch + inter) % 12];
+                const quality = scaleData.harmonic.qualities[i];
+                let cName = note; if (quality === 'm') cName += 'm'; if (quality === 'dim') cName += '°';
+                let badge = i === relativeIdx ? `<span class="bg-brand-500 text-white px-1.5 py-0.5 rounded text-[8px] ml-2 font-black shadow-lg">RELATIVA</span>` : '';
+                return { name: cName, roman: ROMANS[i], func: scaleData.harmonic.funcs[i], color: scaleData.harmonic.funcColors[i], badge: badge };
+            });
+
+
+            state.composer.generatedChords.forEach(chord => {
+                const el = document.createElement('div');
+                el.className = 'draggable flex items-center justify-between bg-dark-800 border border-dark-600 p-2.5 rounded hover:border-brand-500 transition cursor-grab';
+                el.draggable = true; el.dataset.type = 'chord'; el.dataset.value = chord.name;
+                el.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="text-[10px] font-bold text-gray-500 w-6">${chord.roman}</span>
+                        <span class="text-base font-display font-black text-white">${chord.name}</span>
+                        ${chord.badge}
+                    </div>
+                    <span class="text-[9px] uppercase font-bold tracking-wider ${chord.color}">${chord.func}</span>
+                `;
+                el.addEventListener('dragstart', handleDragStart);
+                el.addEventListener('click', () => {
+                    const sections = document.querySelectorAll('#composer-timeline .composer-section');
+                    if(sections.length > 0) addChordToSection(chord.name, sections[sections.length - 1].querySelector('.chord-dropzone'));
+                    else showToast("Adiciona primeiro uma Secção à folha!", "error");
+                });
+                palChords.appendChild(el);
+            });
+        }
+
+
+        document.getElementById('comp-root').addEventListener('change', updateComposerChords);
+        document.getElementById('comp-type').addEventListener('change', updateComposerChords);
+
+
+        function handleDragStart(e) { e.dataTransfer.setData('application/json', JSON.stringify({ type: e.target.dataset.type, value: e.target.dataset.value })); e.dataTransfer.effectAllowed = 'copy'; }
+        function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); }
+        function removeDragOver(e) { e.currentTarget.classList.remove('dragover'); }
+        
+        function dropToTimeline(e) {
+            e.preventDefault(); removeDragOver(e); if (e.target.closest('.chord-dropzone')) return;
+            try { const data = JSON.parse(e.dataTransfer.getData('application/json')); if (data.type === 'section') addSectionToTimeline(data.value); } catch (err) {}
+        }
+
+
+        function addSectionToTimeline(name) {
+            document.getElementById('empty-state-composer')?.remove();
+            const timeline = document.getElementById('composer-timeline');
+            const secDiv = document.createElement('div');
+            secDiv.className = 'composer-section group';
+            secDiv.innerHTML = `
+                <div class="composer-section-header">
+                    <h4 class="font-bold text-[10px] text-brand-400 uppercase tracking-widest break-words w-full pr-1">${name}</h4>
+                    <button onclick="this.parentElement.parentElement.remove(); checkEmptyTimeline()" class="text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition no-print flex-shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                </div>
+                <div class="chord-dropzone dropzone" ondragover="allowDrop(event)" ondragleave="removeDragOver(event)" ondrop="dropToSection(event, this)">
+                </div>
+            `;
+            timeline.appendChild(secDiv); lucide.createIcons();
+            showToast(`Secção adicionada`);
+        }
+
+
+        function dropToSection(e, dropzoneEl) {
+            e.preventDefault(); e.stopPropagation(); removeDragOver({currentTarget: dropzoneEl});
+            try { const data = JSON.parse(e.dataTransfer.getData('application/json')); if (data.type === 'chord') addChordToSection(data.value, dropzoneEl); } catch (err) {}
+        }
+
+
+        function addChordToSection(chordName, dropzoneEl) {
+            const cDiv = document.createElement('div');
+            cDiv.className = 'composer-chord group';
+            cDiv.innerHTML = `<span class="font-display font-black text-sm text-white">${chordName}</span><button onclick="this.parentElement.remove()" class="absolute -top-1.5 -right-1.5 bg-red-500 rounded-full text-white w-4 h-4 flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-lg no-print"><i data-lucide="x" class="w-2.5 h-2.5"></i></button>`;
+            dropzoneEl.appendChild(cDiv); lucide.createIcons();
+        }
+
+
+        function checkEmptyTimeline() {
+            const timeline = document.getElementById('composer-timeline');
+            if (timeline.querySelectorAll('.composer-section').length === 0) {
+                timeline.innerHTML = `<div id="empty-state-composer" class="text-center text-gray-500 mt-16 no-print border-2 border-dashed border-dark-600 rounded-xl p-10"><i data-lucide="layout-grid" class="w-12 h-12 mx-auto mb-3 opacity-30"></i><p class="text-base">Arrasta blocos de <strong class="text-gray-300">Estrutura</strong> para aqui.</p><p class="text-xs mt-1">Dica: No telemóvel, basta clicar nos botões.</p></div>`;
+                lucide.createIcons();
+            }
+        }
+        function clearComposition() { document.getElementById('composer-timeline').innerHTML = ''; checkEmptyTimeline(); showToast('Composição limpa!'); }
+
+
+        function exportPDF() {
+            const element = document.getElementById('composer-timeline');
+            if(element.querySelectorAll('.composer-section').length === 0) { showToast("A composição está vazia!", "error"); return; }
+            const opt = { margin: 15, filename: `composicao_${state.composer.root}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            document.body.classList.remove('dark');
+            html2pdf().set(opt).from(element).save().then(() => { document.body.classList.add('dark'); showToast("PDF Gerado!"); });
+        }
+
+
+        window.onload = () => { updateStudy(); initComposer(); };
+    </script>
+</body>
+</html>
