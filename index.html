@@ -40,8 +40,12 @@
         .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: all 0.2s; }
         .btn-primary:active { transform: scale(0.95); }
 
-        /* Dropdown corrigido: adicionado padding-right para não sobrepor a seta */
-        .custom-select { appearance: none; background-color: #1a1a1a; border: 1px solid #333; color: white; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2360a5fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 0.75rem center; background-repeat: no-repeat; background-size: 1em 1em; padding-right: 2.5rem; }
+        /* Dropdown corrigido */
+        .custom-select { 
+            appearance: none; background-color: #1a1a1a; border: 1px solid #333; color: white; 
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2360a5fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); 
+            background-position: right 0.75rem center; background-repeat: no-repeat; background-size: 1em 1em; 
+        }
         .custom-select:focus { outline: none; border-color: #3b82f6; }
 
         .tab-btn { color: #6b7280; border-bottom: 2px solid transparent; transition: all 0.2s; }
@@ -59,15 +63,12 @@
         .note-root { background: #ef4444; color: white; border: 2px solid #7f1d1d; }
         .note-scale { background: #3b82f6; color: white; border: 2px solid #1e3a8a; }
 
-        /* Piano - Z-Index Corrigido para as teclas pretas não afundarem */
+        /* Piano */
         .piano-wrapper { display: flex; overflow-x: auto; padding: 12px; background: #000; border-radius: 12px; border: 1px solid #222; position: relative; }
         .piano-keys { display: flex; position: relative; width: max-content; }
-        /* key-w agora sem z-index forçado para não prender as teclas pretas */
-        .key-w { width: 50px; height: 160px; background: #f4f4f5; border: 1px solid #ccc; border-radius: 0 0 6px 6px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 12px; cursor: pointer; flex-shrink: 0; position: relative; }
-        /* key-b forçada com z-index alto absoluto */
-        .key-b { position: absolute; width: 32px; height: 100px; background: linear-gradient(180deg, #2a2a2a, #000); border-radius: 0 0 6px 6px; border: 1px solid #000; top: 0; right: -16px; z-index: 10; cursor: pointer; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; }
-        .key-w:active, .key-b:active { filter: brightness(0.85); }
-        .piano-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        .key-w { width: 50px; height: 160px; background: #f4f4f5; border: 1px solid #ccc; border-radius: 0 0 6px 6px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 12px; cursor: pointer; flex-shrink: 0; position: relative; transition: background-color 0.1s; }
+        .key-b { position: absolute; width: 32px; height: 100px; background: linear-gradient(180deg, #2a2a2a, #000); border-radius: 0 0 6px 6px; border: 1px solid #000; top: 0; right: -16px; z-index: 10; cursor: pointer; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; transition: transform 0.1s; }
+        .piano-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.6); pointer-events: none; }
         .dot-root { background: #ef4444; } .dot-scale { background: #3b82f6; }
 
         /* Círculo de Quintas Dedicado */
@@ -86,6 +87,14 @@
         .dropzone.dragover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
         .composer-section { display: flex; align-items: center; background: #1a1a1a; border-left: 3px solid #3b82f6; border-radius: 0.5rem; padding: 0.5rem; margin-bottom: 0.75rem; }
         .composer-chord { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: #262626; border: 1px solid #3f3f46; border-radius: 0.4rem; padding: 0.4rem 0.8rem; margin: 0.2rem; min-width: 65px; }
+
+        /* Estilos Forçados para PDF Claro e Legível */
+        .pdf-mode { background-color: #ffffff !important; }
+        .pdf-mode .composer-section { background-color: #f3f4f6 !important; border-color: #d1d5db !important; border-left-color: #3b82f6 !important; }
+        .pdf-mode .composer-chord { background-color: #ffffff !important; border-color: #9ca3af !important; box-shadow: none !important; }
+        .pdf-mode .composer-chord span { color: #000000 !important; }
+        .pdf-mode button { display: none !important; }
+        .pdf-mode .dropzone { border-color: transparent !important; }
 
         @media print {
             body { background: white; color: black; }
@@ -122,40 +131,47 @@
                 </button>
             </nav>
 
-            <!-- Ferramentas Topo Rígidas - Agora Maiores (w-32 h-32) e com melhor respiro interno -->
+            <!-- Ferramentas Topo Redesenhadas (Layout Horizontal) -->
             <div class="flex flex-wrap justify-center gap-4 w-full xl:w-auto shrink-0">
                 
-                <!-- Afinador -->
-                <div class="glass-card w-32 h-32 p-3 flex flex-col items-center justify-between relative shadow-xl shrink-0">
-                    <button id="btn-tuner" class="absolute top-2 left-2 w-8 h-8 rounded-lg bg-dark-700 hover:bg-dark-600 flex items-center justify-center text-brand-400 transition-colors shadow z-10" title="Ligar Afinador">
-                        <i data-lucide="mic" class="w-4 h-4"></i>
-                    </button>
-                    <div class="flex-grow flex items-center justify-center mt-3">
-                        <span id="tuner-note" class="text-4xl font-display font-black text-white leading-none">--</span>
+                <!-- Afinador Reformulado -->
+                <div class="glass-card w-full sm:w-48 p-4 flex flex-col justify-between shadow-xl shrink-0 gap-3">
+                    <div class="flex justify-between items-center w-full">
+                        <button id="btn-tuner" class="w-10 h-10 rounded-lg bg-dark-700 hover:bg-dark-600 flex items-center justify-center text-brand-400 transition-colors shadow" title="Ligar Afinador">
+                            <i data-lucide="mic" class="w-5 h-5"></i>
+                        </button>
+                        <span id="tuner-status" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest text-right">OFF</span>
                     </div>
-                    <div class="w-full px-2 mb-1">
-                        <div class="w-full h-1.5 bg-dark-800 rounded-full relative overflow-hidden">
-                            <div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-green-500/50 -translate-x-1/2 z-0"></div>
-                            <div id="tuner-needle" class="w-2.5 h-2.5 bg-brand-500 rounded-full absolute top-1/2 -translate-y-1/2 transition-all duration-75 shadow-lg" style="left: 50%;"></div>
+                    <div class="flex-grow flex items-center justify-center">
+                        <span id="tuner-note" class="text-5xl font-display font-black text-white leading-none">--</span>
+                    </div>
+                    <div class="w-full mt-1">
+                        <div class="w-full h-2 bg-dark-800 rounded-full relative overflow-hidden">
+                            <div class="absolute left-1/2 top-0 bottom-0 w-[2px] bg-green-500/50 -translate-x-1/2 z-0"></div>
+                            <div id="tuner-needle" class="w-3 h-3 bg-brand-500 rounded-full absolute top-1/2 -translate-y-1/2 transition-all duration-75 shadow-lg" style="left: 50%;"></div>
                         </div>
                     </div>
-                    <span id="tuner-status" class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">OFF</span>
                 </div>
 
-                <!-- Metrónomo -->
-                <div class="glass-card w-32 h-32 p-3 flex flex-col items-center justify-between relative shadow-xl shrink-0">
-                    <button id="btn-metro" class="absolute top-2 left-2 w-8 h-8 rounded-lg bg-dark-700 hover:bg-dark-600 flex items-center justify-center text-brand-400 transition-colors shadow z-10" title="Ligar Metrónomo">
-                        <i data-lucide="play" class="w-4 h-4 ml-0.5"></i>
-                    </button>
-                    <div class="w-2.5 h-2.5 rounded-full bg-dark-700 absolute top-3 right-3 shadow-inner transition-colors duration-75" id="beat-light"></div>
-                    
-                    <div class="flex-grow flex flex-col items-center justify-center mt-3 w-full">
-                        <input type="number" id="bpm-input" value="120" min="40" max="240" class="hide-arrows bg-transparent text-3xl font-display font-black text-white w-full text-center outline-none p-0 leading-none">
-                        <span class="text-[8px] font-bold text-gray-500 uppercase tracking-widest mt-1">BPM</span>
+                <!-- Metrónomo Reformulado -->
+                <div class="glass-card w-full sm:w-48 p-4 flex flex-col justify-between shadow-xl shrink-0 gap-3">
+                    <div class="flex justify-between items-center w-full">
+                        <button id="btn-metro" class="w-10 h-10 rounded-lg bg-dark-700 hover:bg-dark-600 flex items-center justify-center text-brand-400 transition-colors shadow" title="Ligar Metrónomo">
+                            <i data-lucide="play" class="w-5 h-5 ml-0.5"></i>
+                        </button>
+                        <div class="flex flex-col items-end gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-dark-700 shadow-inner transition-colors duration-75" id="beat-light"></div>
+                            <select id="metro-sig" class="bg-dark-800 border border-dark-600 text-[10px] font-bold text-gray-300 rounded px-1.5 py-0.5 outline-none text-center shadow-inner cursor-pointer focus:border-brand-500">
+                                <option value="4">4/4</option><option value="3">3/4</option><option value="2">2/4</option><option value="6">6/8</option>
+                            </select>
+                        </div>
                     </div>
-                    <select id="metro-sig" class="bg-dark-800 border border-dark-600 text-[10px] font-bold text-gray-300 rounded px-1 py-0.5 outline-none w-16 text-center shadow-inner cursor-pointer mb-1 focus:border-brand-500">
-                        <option value="4">4/4</option><option value="3">3/4</option><option value="2">2/4</option><option value="6">6/8</option>
-                    </select>
+                    <div class="flex-grow flex flex-col items-center justify-center w-full">
+                        <div class="flex items-baseline justify-center gap-1">
+                            <input type="number" id="bpm-input" value="120" min="40" max="240" class="hide-arrows bg-transparent text-4xl font-display font-black text-white w-20 text-center outline-none p-0 leading-none">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">BPM</span>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -168,11 +184,11 @@
                     <div class="flex flex-col sm:flex-row gap-5 w-full lg:w-auto">
                         <div class="flex flex-col">
                             <label class="text-xs text-gray-400 mb-1 uppercase font-bold tracking-wide">Tónica</label>
-                            <select id="study-root" class="custom-select rounded-xl p-3 text-lg font-bold w-full sm:w-32 cursor-pointer"></select>
+                            <select id="study-root" class="custom-select rounded-xl py-3 pl-4 pr-10 text-lg font-bold w-full sm:w-32 cursor-pointer"></select>
                         </div>
                         <div class="flex flex-col flex-grow">
                             <label class="text-xs text-gray-400 mb-1 uppercase font-bold tracking-wide">Escala</label>
-                            <select id="study-scale" class="custom-select rounded-xl p-3 font-semibold w-full sm:w-64 cursor-pointer"></select>
+                            <select id="study-scale" class="custom-select rounded-xl py-3 pl-4 pr-10 font-semibold w-full sm:w-64 cursor-pointer"></select>
                         </div>
                     </div>
 
@@ -242,11 +258,11 @@
                     <div class="flex gap-4 p-4 inner-well rounded-xl">
                         <div>
                             <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wide block mb-1">Tom</label>
-                            <select id="comp-root" class="custom-select rounded-lg p-2 text-sm font-bold cursor-pointer"></select>
+                            <select id="comp-root" class="custom-select rounded-lg py-2 pl-3 pr-10 text-sm font-bold cursor-pointer"></select>
                         </div>
                         <div>
                             <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wide block mb-1">Escala</label>
-                            <select id="comp-type" class="custom-select rounded-lg p-2 text-sm font-bold cursor-pointer">
+                            <select id="comp-type" class="custom-select rounded-lg py-2 pl-3 pr-10 text-sm font-bold cursor-pointer">
                                 <option value="major">Maior</option>
                                 <option value="minor">Menor</option>
                             </select>
@@ -466,7 +482,6 @@
                     const cell = document.createElement('div'); cell.className = `fret ${f === 0 ? 'nut' : ''}`;
                     const noteStr = state.study.notesSet[(openNoteIdx + f) % 12];
                     
-                    // REGRADE OURO CAGED: Não desenhar notas na corda solta (f>0)
                     if (f > 0 && f >= window.min && f <= window.max && state.study.activeNotes.includes(noteStr)) {
                         cell.innerHTML = `<div class="note-marker ${noteStr === state.study.root ? 'note-root' : 'note-scale'}">${noteStr}</div>`;
                     }
@@ -486,7 +501,7 @@
             board.appendChild(mkRow);
         }
 
-        // Piano Rígido
+        // Piano com feedback visual ao toque totalmente corrigido para evitar bugs de z-index
         function renderPiano() {
             const wrap = document.getElementById('piano-wrapper'); wrap.innerHTML = '';
             const keysInfo = [ {n:'C', hasB:true}, {n:'D', hasB:true}, {n:'E', hasB:false}, {n:'F', hasB:true}, {n:'G', hasB:true}, {n:'A', hasB:true}, {n:'B', hasB:false} ];
@@ -496,15 +511,43 @@
                 keysInfo.forEach(wKey => {
                     const wEl = document.createElement('div'); wEl.className = 'key-w';
                     if(state.study.activeNotes.includes(wKey.n)) wEl.innerHTML = `<div class="piano-dot ${wKey.n===state.study.root?'dot-root':'dot-scale'} absolute bottom-3"></div>`;
-                    if(wKey.n==='C') wEl.innerHTML += `<span class="absolute bottom-1 text-[8px] text-gray-400 font-bold">C${oct}</span>`;
-                    wEl.onmousedown = () => playChordTones([`${wKey.n}${oct}`]);
+                    if(wKey.n==='C') wEl.innerHTML += `<span class="absolute bottom-1 text-[8px] text-gray-400 font-bold pointer-events-none">C${oct}</span>`;
+                    
+                    // Comportamento interativo via pointerdown para telemóveis e desktop
+                    // Usamos apenas cores para não quebrar o z-index com animações de escala/opacidade
+                    const pushVisual = (el) => { 
+                        if(el.classList.contains('key-w')) el.style.backgroundColor = '#d4d4d8';
+                        else el.style.background = '#000';
+                    };
+                    const releaseVisual = (el) => { 
+                        el.style.backgroundColor = '';
+                        el.style.background = '';
+                    };
+                    
+                    wEl.onpointerdown = (e) => {
+                        // Previne o firing duplo de toques parentais se bater numa tecla preta (o que é evitado abaixo com e.stopPropagation)
+                        pushVisual(wEl);
+                        playChordTones([`${wKey.n}${oct}`]);
+                    };
+                    wEl.onpointerup = () => releaseVisual(wEl);
+                    wEl.onpointerleave = () => releaseVisual(wEl);
+                    wEl.onpointercancel = () => releaseVisual(wEl);
 
                     if(wKey.hasB) {
                         let flatN = baseW[(baseW.indexOf(wKey.n)+1)%7] + 'b';
                         let dispB = state.study.notesSet.includes(flatN) ? flatN : wKey.n + '#';
                         const bEl = document.createElement('div'); bEl.className = 'key-b';
                         if(state.study.activeNotes.includes(dispB)) bEl.innerHTML = `<div class="piano-dot ${dispB===state.study.root?'dot-root':'dot-scale'} absolute bottom-3"></div>`;
-                        bEl.onmousedown = (e) => { e.stopPropagation(); playChordTones([`${dispB}${oct}`]); };
+                        
+                        bEl.onpointerdown = (e) => { 
+                            e.stopPropagation(); // Previne que a branca por trás seja premida
+                            pushVisual(bEl);
+                            playChordTones([`${dispB}${oct}`]); 
+                        };
+                        bEl.onpointerup = (e) => { e.stopPropagation(); releaseVisual(bEl); };
+                        bEl.onpointerleave = (e) => { e.stopPropagation(); releaseVisual(bEl); };
+                        bEl.onpointercancel = (e) => { e.stopPropagation(); releaseVisual(bEl); };
+                        
                         wEl.appendChild(bEl);
                     }
                     wrap.appendChild(wEl);
@@ -516,6 +559,7 @@
         function renderStudyHarmonicField() {
             const panel = document.getElementById('study-harmonic-panel');
             const cont = document.getElementById('study-chords-container');
+            if (!panel || !cont) return;
             cont.innerHTML = '';
 
             if(!['major', 'minor'].includes(state.study.scale)) { panel.classList.add('hidden'); panel.classList.remove('flex'); return; }
@@ -552,6 +596,7 @@
                 };
                 cont.appendChild(btn);
             });
+            lucide.createIcons();
         }
 
         document.getElementById('study-root').addEventListener('change', updateStudy);
@@ -565,7 +610,7 @@
             if(Tone.context.state !== 'running') await Tone.start();
             if(isMetro) {
                 Tone.Transport.stop(); Tone.Transport.cancel(); isMetro = false;
-                this.innerHTML = '<i data-lucide="play" class="w-4 h-4 ml-0.5"></i>'; this.classList.remove('bg-brand-600', 'text-white');
+                this.innerHTML = '<i data-lucide="play" class="w-5 h-5 ml-0.5"></i>'; this.classList.remove('bg-brand-600', 'text-white');
             } else {
                 Tone.Transport.bpm.value = bpmInput.value; const beats = parseInt(document.getElementById('metro-sig').value); let cur = 0;
                 Tone.Transport.scheduleRepeat((time) => {
@@ -616,7 +661,7 @@
         document.getElementById('btn-tuner').addEventListener('click', async function() {
             if(tunerActive) {
                 tunerActive = false; cancelAnimationFrame(animId); if(mic){ mic.close(); mic.dispose(); analyser.dispose(); }
-                this.innerHTML = '<i data-lucide="mic" class="w-4 h-4"></i>'; this.classList.remove('bg-brand-600', 'text-white');
+                this.innerHTML = '<i data-lucide="mic" class="w-5 h-5"></i>'; this.classList.remove('bg-brand-600', 'text-white');
                 tNote.textContent = '--'; tNeedle.style.left = '50%'; tNeedle.style.backgroundColor = '#3b82f6'; tNote.classList.remove('text-green-400'); tStatus.textContent = "OFF";
             } else {
                 if(Tone.context.state !== 'running') await Tone.start();
@@ -638,14 +683,12 @@
             COF_KEYS.forEach((k, i) => {
                 const ang = (i * 30 - 90) * (Math.PI / 180);
                 
-                // Maior (Anel Exterior)
                 const nM = document.createElement('div'); nM.className = `cof-node cof-maj`;
                 nM.style.left = `${50 + 38 * Math.cos(ang)}%`; nM.style.top = `${50 + 38 * Math.sin(ang)}%`;
                 nM.dataset.ring = 'M'; nM.dataset.idx = i;
                 nM.onclick = () => { document.getElementById('comp-root').value = k.M; document.getElementById('comp-type').value = 'major'; updateCompChords(); };
                 wrap.appendChild(nM);
 
-                // Menor (Anel Interior)
                 const nm = document.createElement('div'); nm.className = `cof-node cof-min`;
                 nm.style.left = `${50 + 22 * Math.cos(ang)}%`; nm.style.top = `${50 + 22 * Math.sin(ang)}%`;
                 nm.dataset.ring = 'm'; nm.dataset.idx = i;
@@ -749,7 +792,6 @@
             e.preventDefault(); 
             e.currentTarget.classList.remove('dragover'); 
             
-            // Impede que este evento trate do drop se a zona alvo for a caixa de acordes interior
             if(e.target.closest('.dropzone') && e.currentTarget !== e.target) return; 
             
             try { 
@@ -757,7 +799,6 @@
                 if(d.t==='s') {
                     addSec(d.v); 
                 } else if(d.t === 'move_sec') {
-                    // Reordenação de Linhas (Secções)
                     const draggedEl = document.getElementById(d.id);
                     if(!draggedEl) return;
                     
@@ -789,7 +830,6 @@
             const tl = document.getElementById('composer-timeline');
             const row = document.createElement('div');
             
-            // Adicionado suporte a Drag para reordenação
             row.id = 'sec-' + Date.now() + '-' + Math.floor(Math.random()*1000);
             row.className = 'composer-section relative group shadow draggable-section';
             row.draggable = true;
@@ -825,7 +865,7 @@
                 if(!dataStr) return;
                 const d = JSON.parse(dataStr); 
                 if(d.t==='c') {
-                    e.stopPropagation(); // Só pára a propagação se o drop for de um acorde
+                    e.stopPropagation(); 
                     addChord(d.v, zone); 
                 }
             } catch(err){} 
@@ -842,10 +882,34 @@
         function clearComposition() { document.getElementById('composer-timeline').innerHTML = ''; checkEmpty(); showToast('Limpo!'); }
         
         function exportPDF() {
-            const el = document.getElementById('composer-timeline');
-            if(el.querySelectorAll('.composer-section').length===0) { showToast("Folha vazia!", "error"); return; }
-            document.body.classList.remove('dark');
-            html2pdf().set({ margin: 15, filename: `musica_${state.composer.root}.pdf`, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(el).save().then(() => document.body.classList.add('dark'));
+            const originalEl = document.getElementById('composer-timeline');
+            if(originalEl.querySelectorAll('.composer-section').length===0) { showToast("Folha vazia!", "error"); return; }
+            
+            // 1. Clonar o elemento: O html2pdf modifica a árvore DOM para criar quebras de página.
+            // Fazer isso no elemento original "destrói" o layout e as áreas de arrastar (Drag & Drop).
+            const clone = originalEl.cloneNode(true);
+            clone.classList.add('pdf-mode');
+            clone.style.overflow = 'visible';
+            clone.style.height = 'max-content';
+            
+            // 2. Criar um contentor invisível (fora do ecrã) para o html2canvas processar o clone
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            tempContainer.style.width = originalEl.offsetWidth + 'px';
+            tempContainer.appendChild(clone);
+            document.body.appendChild(tempContainer);
+            
+            html2pdf().set({ 
+                margin: 15, 
+                filename: `musica_${state.composer.root}.pdf`, 
+                html2canvas: { scale: 2, backgroundColor: '#ffffff', scrollY: 0 }, 
+                jsPDF: { format: 'a4', orientation: 'portrait' } 
+            }).from(clone).save().then(() => {
+                // 3. Após gerar o PDF, eliminamos o clone. A tua folha original nunca foi tocada!
+                document.body.removeChild(tempContainer); 
+            });
         }
 
         const np = document.getElementById('notepad');
