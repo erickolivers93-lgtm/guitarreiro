@@ -2107,7 +2107,6 @@
                     scaleSelect.value = 'pentatonic_minor';
                 }
                 playNotes(item.minChords, "4n");
-                showNotification(`Tom ${item.min} (Relativo de ${item.maj}) ativado!`);
             } else {
                 const majRoot = toNotesPitch(item.maj);
                 rootSelect.value = majRoot;
@@ -2117,7 +2116,6 @@
                     scaleSelect.value = 'pentatonic_major';
                 }
                 playNotes(item.chords, "4n");
-                showNotification(`Tom ${item.maj} Maior ativado!`);
             }
 
             updateScaleExplorer();
@@ -2129,7 +2127,6 @@
             if (!item) return;
             const isMinor = (appState.scales.scaleKey === 'minor' || appState.scales.scaleKey === 'pentatonic_minor');
             playNotes(isMinor ? item.minChords : item.chords, "2n");
-            showNotification(`Ouvindo tríade de ${isMinor ? item.min : item.maj}`);
         }
 
         function initScalesModule() {
@@ -2220,7 +2217,6 @@
                     const n3 = NOTES[(rIdx + scaleObj.intervals[(idx + 2) % 7]) % 12];
                     const n5 = NOTES[(rIdx + scaleObj.intervals[(idx + 4) % 7]) % 12];
                     playNotes([note + '3', n3 + '3', n5 + '3']);
-                    showNotification(`Acorde ${cName}`);
                 };
 
                 list.appendChild(btn);
