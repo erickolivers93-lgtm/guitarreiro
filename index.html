@@ -297,38 +297,26 @@
         }
         .key-black:active { background: #0284c7 !important; }
 
-        /* Roda de Quintas */
-        .cof-node {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: 800;
+        /* Bússola e Círculo de Quintas SVG */
+        .cof-node-hover {
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.15s ease;
         }
-        .cof-maj { width: 50px; height: 50px; background: #111520; color: #64748b; font-size: 1.05rem; }
-        .cof-min { width: 38px; height: 38px; background: #090d14; color: #475569; z-index: 10; font-size: 0.85rem; }
-        .cof-node.in-scale { background: #1e2638; color: #f8fafc; border-color: rgba(56, 189, 248, 0.35); }
-        .cof-active-maj {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
-            border-color: #38bdf8 !important;
-            color: #ffffff !important;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
-            transform: translate(-50%, -50%) scale(1.15);
-            z-index: 20;
+        .cof-node-hover:hover circle {
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
         }
-        .cof-active-min {
-            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
-            border-color: #f87171 !important;
-            color: #ffffff !important;
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
-            transform: translate(-50%, -50%) scale(1.15);
-            z-index: 20;
+        .cof-node-hover:active circle {
+            transform: scale(0.96);
+            transform-origin: center;
+        }
+        .cof-center-hover {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cof-center-hover:hover circle:first-child {
+            stroke: #38bdf8;
+            stroke-width: 2.5px;
+            filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.4));
         }
 
         /* PDF Print Override */
@@ -715,6 +703,65 @@
         <!-- ========================================================================= -->
         <section id="tab-scales" class="hidden flex-col gap-4">
             
+            <!-- 1. BÚSSOLA DE TONALIDADES & CÍRCULO DE QUINTAS PRO -->
+            <div id="cof-card" class="moises-card p-4 sm:p-5 flex flex-col gap-3.5">
+                <div class="flex items-center justify-between border-b border-white/[0.06] pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400">
+                            <i data-lucide="compass" class="w-4 h-4 text-cyan-400"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-sm sm:text-base font-display font-black text-white">Bússola de Quintas & Tons</h2>
+                                <span id="cof-header-summary" class="hidden text-[10px] font-bold text-cyan-400 bg-obsidian-950 px-2 py-0.5 rounded-lg border border-white/10">Dó Maior (0)</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400">Toque em qualquer tom para carregar na hora e ver os acidentes</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleCofCollapse()" id="cof-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-obsidian-950 border border-white/10 text-xs font-bold text-gray-300 hover:text-white transition cursor-pointer">
+                        <span id="cof-toggle-label">Recolher</span>
+                        <i data-lucide="chevron-up" id="cof-toggle-icon" class="w-3.5 h-3.5 text-gray-400"></i>
+                    </button>
+                </div>
+
+                <!-- Conteúdo do Círculo de Quintas -->
+                <div id="cof-content-wrap" class="flex flex-col gap-3.5 transition-all">
+                    
+                    <!-- SVG Espaçoso e Responsivo -->
+                    <div class="w-full max-w-[340px] sm:max-w-[400px] mx-auto aspect-square relative select-none">
+                        <svg id="cof-svg" viewBox="0 0 460 460" class="w-full h-full overflow-visible"></svg>
+                    </div>
+
+                    <!-- HUD com Armadura, Relativo Menor e Vizinhos -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-obsidian-950 p-3 sm:p-4 rounded-2xl border border-white/[0.08]">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-gray-400 tracking-wider">Armadura / Acidentes</span>
+                            <span id="cof-hud-acc" class="text-sm sm:text-base font-black text-cyan-400 mt-0.5">Escala Natural (0 # / b)</span>
+                            <span id="cof-hud-acc-notes" class="text-[10px] text-gray-400 font-mono">Sem sustenidos ou bemóis</span>
+                        </div>
+                        <div class="flex flex-col border-t sm:border-t-0 sm:border-l border-white/[0.06] pt-2 sm:pt-0 sm:pl-3">
+                            <span class="text-[9px] uppercase font-bold text-gray-400 tracking-wider">Relativo Menor</span>
+                            <span id="cof-hud-rel" class="text-sm sm:text-base font-black text-amber-glow mt-0.5">Lá Menor (Am)</span>
+                            <span class="text-[10px] text-gray-400">Mesmas notas da escala</span>
+                        </div>
+                        <div class="flex flex-col border-t sm:border-t-0 sm:border-l border-white/[0.06] pt-2 sm:pt-0 sm:pl-3">
+                            <span class="text-[9px] uppercase font-bold text-gray-400 tracking-wider">Vizinhos Harmônicos (4ª e 5ª)</span>
+                            <span id="cof-hud-neighbors" class="text-sm sm:text-base font-black text-emerald-400 mt-0.5">IV: Fá (F) • V: Sol (G)</span>
+                            <span class="text-[10px] text-gray-400">Acordes vizinhos diretos</span>
+                        </div>
+                    </div>
+
+                    <!-- Botão de Atalho para Rolar até o Braço -->
+                    <div class="flex justify-center">
+                        <button onclick="scrollToFretboard()" class="px-3.5 py-2 rounded-xl bg-obsidian-900 border border-cyan-500/30 text-cyan-300 hover:text-white hover:border-cyan-400 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer shadow-sm">
+                            <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+                            Ver Escala no Braço da Guitarra (22 Trastes)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. SELEÇÃO DE ESCALA & INSTRUMENTO -->
             <div class="moises-card p-4 sm:p-5 flex flex-col gap-3.5">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
@@ -1647,8 +1694,444 @@
         }
 
         // =========================================================================
-        // 5. MÓDULO BRAÇO UNIVERSAL & ESCALAS
+        // 5. MÓDULO BRAÇO UNIVERSAL & ESCALAS (COM CÍRCULO DE QUINTAS PRO)
         // =========================================================================
+        const COF_KEYS_DATA = [
+            { 
+                maj: 'C', min: 'Am', root: 'C', 
+                accCount: 'Natural (0)', accType: 'none', 
+                accNotes: 'Sem sustenidos ou bemóis', 
+                desc: 'Escala Natural', 
+                iv: 'F', v: 'G',
+                chords: ['C3', 'E3', 'G3'],
+                minChords: ['A2', 'C3', 'E3']
+            },
+            { 
+                maj: 'G', min: 'Em', root: 'G', 
+                accCount: '1 Sustenido (#)', accType: 'sharp', 
+                accNotes: 'F#', 
+                desc: '1 Sustenido (F#)', 
+                iv: 'C', v: 'D',
+                chords: ['G3', 'B3', 'D4'],
+                minChords: ['E3', 'G3', 'B3']
+            },
+            { 
+                maj: 'D', min: 'Bm', root: 'D', 
+                accCount: '2 Sustenidos (2#)', accType: 'sharp', 
+                accNotes: 'F#, C#', 
+                desc: '2 Sustenidos (F#, C#)', 
+                iv: 'G', v: 'A',
+                chords: ['D3', 'F#3', 'A3'],
+                minChords: ['B2', 'D3', 'F#3']
+            },
+            { 
+                maj: 'A', min: 'F#m', root: 'A', 
+                accCount: '3 Sustenidos (3#)', accType: 'sharp', 
+                accNotes: 'F#, C#, G#', 
+                desc: '3 Sustenidos (F#, C#, G#)', 
+                iv: 'D', v: 'E',
+                chords: ['A2', 'C#3', 'E3'],
+                minChords: ['F#2', 'A2', 'C#3']
+            },
+            { 
+                maj: 'E', min: 'C#m', root: 'E', 
+                accCount: '4 Sustenidos (4#)', accType: 'sharp', 
+                accNotes: 'F#, C#, G#, D#', 
+                desc: '4 Sustenidos (F#, C#, G#, D#)', 
+                iv: 'A', v: 'B',
+                chords: ['E3', 'G#3', 'B3'],
+                minChords: ['C#3', 'E3', 'G#3']
+            },
+            { 
+                maj: 'B', min: 'G#m', root: 'B', 
+                accCount: '5 Sustenidos (5#)', accType: 'sharp', 
+                accNotes: 'F#, C#, G#, D#, A#', 
+                desc: '5 Sustenidos (5#)', 
+                iv: 'E', v: 'F#',
+                chords: ['B2', 'D#3', 'F#3'],
+                minChords: ['G#2', 'B2', 'D#3']
+            },
+            { 
+                maj: 'F#', min: 'D#m', altMaj: 'Gb', altMin: 'Ebm', root: 'F#', 
+                accCount: '6# / 6b', accType: 'both', 
+                accNotes: 'F#, C#, G#, D#, A#, E#', 
+                desc: '6 Sustenidos / 6 Bemóis', 
+                iv: 'B', v: 'C#',
+                chords: ['F#2', 'A#2', 'C#3'],
+                minChords: ['D#3', 'F#3', 'A#3']
+            },
+            { 
+                maj: 'Db', min: 'Bbm', root: 'C#', 
+                accCount: '5 Bemóis (5b)', accType: 'flat', 
+                accNotes: 'Bb, Eb, Ab, Db, Gb', 
+                desc: '5 Bemóis (5b)', 
+                iv: 'Gb', v: 'Ab',
+                chords: ['C#3', 'F3', 'G#3'],
+                minChords: ['Bb2', 'C#3', 'F3']
+            },
+            { 
+                maj: 'Ab', min: 'Fm', root: 'Ab', 
+                accCount: '4 Bemóis (4b)', accType: 'flat', 
+                accNotes: 'Bb, Eb, Ab, Db', 
+                desc: '4 Bemóis (4b)', 
+                iv: 'Db', v: 'Eb',
+                chords: ['Ab2', 'C3', 'Eb3'],
+                minChords: ['F2', 'Ab2', 'C3']
+            },
+            { 
+                maj: 'Eb', min: 'Cm', root: 'Eb', 
+                accCount: '3 Bemóis (3b)', accType: 'flat', 
+                accNotes: 'Bb, Eb, Ab', 
+                desc: '3 Bemóis (3b)', 
+                iv: 'Ab', v: 'Bb',
+                chords: ['Eb3', 'G3', 'Bb3'],
+                minChords: ['C3', 'Eb3', 'G3']
+            },
+            { 
+                maj: 'Bb', min: 'Gm', root: 'Bb', 
+                accCount: '2 Bemóis (2b)', accType: 'flat', 
+                accNotes: 'Bb, Eb', 
+                desc: '2 Bemóis (2b)', 
+                iv: 'Eb', v: 'F',
+                chords: ['Bb2', 'D3', 'F3'],
+                minChords: ['G2', 'Bb2', 'D3']
+            },
+            { 
+                maj: 'F', min: 'Dm', root: 'F', 
+                accCount: '1 Bemol (1b)', accType: 'flat', 
+                accNotes: 'Bb', 
+                desc: '1 Bemol (Bb)', 
+                iv: 'Bb', v: 'C',
+                chords: ['F2', 'A2', 'C3'],
+                minChords: ['D3', 'F3', 'A3']
+            }
+        ];
+
+        let isCofCollapsed = false;
+
+        function toggleCofCollapse() {
+            isCofCollapsed = !isCofCollapsed;
+            const wrap = document.getElementById('cof-content-wrap');
+            const label = document.getElementById('cof-toggle-label');
+            const icon = document.getElementById('cof-toggle-icon');
+            const summary = document.getElementById('cof-header-summary');
+
+            if (isCofCollapsed) {
+                wrap.classList.add('hidden');
+                label.textContent = 'Ver Bússola';
+                icon.setAttribute('data-lucide', 'chevron-down');
+                if (summary) summary.classList.remove('hidden');
+            } else {
+                wrap.classList.remove('hidden');
+                label.textContent = 'Recolher';
+                icon.setAttribute('data-lucide', 'chevron-up');
+                if (summary) summary.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        function scrollToFretboard() {
+            const el = document.getElementById('view-string-board');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function toNotesPitch(name) {
+            const clean = name.replace('m', '');
+            if (clean === 'Db') return 'C#';
+            if (clean === 'D#') return 'Eb';
+            if (clean === 'Gb') return 'F#';
+            if (clean === 'G#') return 'Ab';
+            if (clean === 'A#') return 'Bb';
+            return clean;
+        }
+
+        function getCofIndexFromState() {
+            const root = appState.scales.root;
+            const isMinor = (appState.scales.scaleKey === 'minor' || appState.scales.scaleKey === 'pentatonic_minor');
+
+            if (isMinor) {
+                const idx = COF_KEYS_DATA.findIndex(k => {
+                    return toNotesPitch(k.min) === root || (k.altMin && toNotesPitch(k.altMin) === root);
+                });
+                if (idx !== -1) return idx;
+            }
+
+            const idx = COF_KEYS_DATA.findIndex(k => {
+                return toNotesPitch(k.maj) === root || (k.altMaj && toNotesPitch(k.altMaj) === root);
+            });
+            if (idx !== -1) return idx;
+
+            return 0;
+        }
+
+        function updateCofHud(activeIdx) {
+            const item = COF_KEYS_DATA[activeIdx];
+            if (!item) return;
+
+            const accEl = document.getElementById('cof-hud-acc');
+            const accNotesEl = document.getElementById('cof-hud-acc-notes');
+            const relEl = document.getElementById('cof-hud-rel');
+            const neighEl = document.getElementById('cof-hud-neighbors');
+
+            if (accEl) accEl.textContent = item.accCount === 'Natural (0)' ? 'Escala Natural (0 # / b)' : `${item.desc}`;
+            if (accNotesEl) accNotesEl.textContent = item.accNotes;
+            if (relEl) relEl.textContent = `${item.min} (Relativo de ${item.maj})`;
+            if (neighEl) neighEl.textContent = `IV: ${item.iv}  •  V: ${item.v}`;
+        }
+
+        function renderCircleOfFifths() {
+            const svg = document.getElementById('cof-svg');
+            if (!svg) return;
+
+            const activeIdx = getCofIndexFromState();
+            const activeItem = COF_KEYS_DATA[activeIdx];
+            const isMinor = (appState.scales.scaleKey === 'minor' || appState.scales.scaleKey === 'pentatonic_minor');
+            
+            const ivIdx = (activeIdx - 1 + 12) % 12;
+            const vIdx = (activeIdx + 1) % 12;
+
+            // Header summary quando recolhido
+            const headerSummary = document.getElementById('cof-header-summary');
+            if (headerSummary) {
+                headerSummary.textContent = `${isMinor ? activeItem.min : activeItem.maj} • ${activeItem.accCount}`;
+            }
+
+            updateCofHud(activeIdx);
+
+            let svgHtml = `
+                <defs>
+                    <radialGradient id="cof-bg-grad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#0b101c" />
+                        <stop offset="85%" stop-color="#04060b" />
+                    </radialGradient>
+                    <linearGradient id="cof-grad-maj-active" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#0284c7" />
+                        <stop offset="100%" stop-color="#0369a1" />
+                    </linearGradient>
+                    <linearGradient id="cof-grad-min-active" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f59e0b" />
+                        <stop offset="100%" stop-color="#b45309" />
+                    </linearGradient>
+                    <linearGradient id="cof-grad-neighbor" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#0e2433" />
+                        <stop offset="100%" stop-color="#08141d" />
+                    </linearGradient>
+                    <filter id="cof-glow" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="3.5" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Fundo do Disco e Pistas -->
+                <circle cx="230" cy="230" r="224" fill="url(#cof-bg-grad)" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+                <circle cx="230" cy="230" r="168" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="48" />
+                <circle cx="230" cy="230" r="140" fill="none" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4,4" />
+                <circle cx="230" cy="230" r="112" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="36" />
+                <circle cx="230" cy="230" r="88" fill="none" stroke="rgba(255,255,255,0.05)" />
+            `;
+
+            // Renderizar 12 posições
+            COF_KEYS_DATA.forEach((item, i) => {
+                const angle = (i * 30 - 90) * (Math.PI / 180);
+                const cosA = Math.cos(angle);
+                const sinA = Math.sin(angle);
+
+                const xM = 230 + 168 * cosA;
+                const yM = 230 + 168 * sinA;
+                const xm = 230 + 112 * cosA;
+                const ym = 230 + 112 * sinA;
+                const xA = 230 + 208 * cosA;
+                const yA = 230 + 208 * sinA + 3;
+
+                const isCenterKey = (i === activeIdx);
+                const isNeighbor = (i === ivIdx || i === vIdx);
+
+                // Configurações do Nó Maior
+                let majFill = '#0d131f';
+                let majStroke = 'rgba(255,255,255,0.08)';
+                let majStrokeWidth = '1.5';
+                let majTextColor = '#94a3b8';
+                let majFontWeight = '700';
+                let majRadius = 21;
+                let majFilter = '';
+
+                if (isCenterKey) {
+                    if (!isMinor) {
+                        majFill = 'url(#cof-grad-maj-active)';
+                        majStroke = '#38bdf8';
+                        majStrokeWidth = '3';
+                        majTextColor = '#ffffff';
+                        majFontWeight = '900';
+                        majRadius = 24;
+                        majFilter = 'filter="url(#cof-glow)"';
+                    } else {
+                        majFill = '#0e1c2e';
+                        majStroke = '#38bdf8';
+                        majStrokeWidth = '2';
+                        majTextColor = '#7dd3fc';
+                        majFontWeight = '800';
+                        majRadius = 22;
+                    }
+                } else if (isNeighbor) {
+                    majFill = 'url(#cof-grad-neighbor)';
+                    majStroke = 'rgba(56,189,248,0.45)';
+                    majStrokeWidth = '2';
+                    majTextColor = '#e2e8f0';
+                    majFontWeight = '800';
+                    majRadius = 21;
+                }
+
+                // Configurações do Nó Menor
+                let minFill = '#080c14';
+                let minStroke = 'rgba(255,255,255,0.06)';
+                let minStrokeWidth = '1';
+                let minTextColor = '#64748b';
+                let minFontWeight = '600';
+                let minRadius = 16;
+                let minFilter = '';
+
+                if (isCenterKey) {
+                    if (isMinor) {
+                        minFill = 'url(#cof-grad-min-active)';
+                        minStroke = '#fbbf24';
+                        minStrokeWidth = '3';
+                        minTextColor = '#ffffff';
+                        minFontWeight = '900';
+                        minRadius = 19;
+                        minFilter = 'filter="url(#cof-glow)"';
+                    } else {
+                        minFill = '#1c1917';
+                        minStroke = '#f59e0b';
+                        minStrokeWidth = '2';
+                        minTextColor = '#fde047';
+                        minFontWeight = '800';
+                        minRadius = 17;
+                    }
+                } else if (isNeighbor) {
+                    minFill = '#0a101b';
+                    minStroke = 'rgba(255,255,255,0.08)';
+                    minTextColor = '#78889b';
+                    minFontWeight = '600';
+                    minRadius = 16;
+                }
+
+                // Texto de Acidentes
+                let accTextColor = isCenterKey ? '#38bdf8' : (isNeighbor ? '#64748b' : '#475569');
+                let accFontWeight = isCenterKey ? '900' : '600';
+                let accFontSize = isCenterKey ? '11' : '9.5';
+
+                svgHtml += `
+                    <!-- Accidental Label -->
+                    <text x="${xA.toFixed(1)}" y="${yA.toFixed(1)}" 
+                          text-anchor="middle" dominant-baseline="central" 
+                          fill="${accTextColor}" font-size="${accFontSize}" font-weight="${accFontWeight}" 
+                          font-family="monospace">
+                        ${item.accCount.replace(' Sustenidos', '#').replace(' Sustenido', '#').replace(' Bemóis', 'b').replace(' Bemol', 'b').replace('Natural (0)', '0')}
+                    </text>
+
+                    <!-- Major Node -->
+                    <g class="cof-node-hover" onclick="selectCofKey(${i}, 'major')">
+                        <circle cx="${xM.toFixed(1)}" cy="${yM.toFixed(1)}" r="${majRadius}" 
+                                fill="${majFill}" stroke="${majStroke}" stroke-width="${majStrokeWidth}" ${majFilter} />
+                        <text x="${xM.toFixed(1)}" y="${yM.toFixed(1)}" 
+                              text-anchor="middle" dominant-baseline="central" 
+                              fill="${majTextColor}" font-size="${majRadius > 22 ? 15 : 13.5}" font-weight="${majFontWeight}" 
+                              font-family="Cabinet Grotesk, sans-serif">
+                            ${item.maj}
+                        </text>
+                    </g>
+
+                    <!-- Minor Node -->
+                    <g class="cof-node-hover" onclick="selectCofKey(${i}, 'minor')">
+                        <circle cx="${xm.toFixed(1)}" cy="${ym.toFixed(1)}" r="${minRadius}" 
+                                fill="${minFill}" stroke="${minStroke}" stroke-width="${minStrokeWidth}" ${minFilter} />
+                        <text x="${xm.toFixed(1)}" y="${ym.toFixed(1)}" 
+                              text-anchor="middle" dominant-baseline="central" 
+                              fill="${minTextColor}" font-size="${minRadius > 17 ? 11 : 9.5}" font-weight="${minFontWeight}" 
+                              font-family="Cabinet Grotesk, sans-serif">
+                            ${item.min}
+                        </text>
+                    </g>
+                `;
+            });
+
+            // Centro HUD
+            svgHtml += `
+                <g class="cof-center-hover" onclick="onCofCenterClick()">
+                    <circle cx="230" cy="230" r="76" fill="#090d16" stroke="rgba(56,189,248,0.3)" stroke-width="2" />
+                    <circle cx="230" cy="230" r="71" fill="#0d1424" />
+                    
+                    <text x="230" y="196" text-anchor="middle" dominant-baseline="central" 
+                          fill="#ffffff" font-size="20" font-weight="900" font-family="Cabinet Grotesk, sans-serif">
+                        ${isMinor ? activeItem.min : activeItem.maj}
+                    </text>
+
+                    <text x="230" y="217" text-anchor="middle" dominant-baseline="central" 
+                          fill="#f59e0b" font-size="11" font-weight="800">
+                        ${isMinor ? 'Rel: ' + activeItem.maj : 'Rel: ' + activeItem.min}
+                    </text>
+
+                    <text x="230" y="238" text-anchor="middle" dominant-baseline="central" 
+                          fill="#38bdf8" font-size="11" font-weight="800">
+                        ${activeItem.accCount}
+                    </text>
+
+                    <text x="230" y="256" text-anchor="middle" dominant-baseline="central" 
+                          fill="#94a3b8" font-size="9" font-weight="700">
+                        IV: ${activeItem.iv}  •  V: ${activeItem.v}
+                    </text>
+                </g>
+            `;
+
+            svg.innerHTML = svgHtml;
+        }
+
+        function selectCofKey(index, mode) {
+            const item = COF_KEYS_DATA[index];
+            if (!item) return;
+
+            const rootSelect = document.getElementById('scale-root-select');
+            const scaleSelect = document.getElementById('scale-type-select');
+
+            if (mode === 'minor') {
+                const mRoot = toNotesPitch(item.min);
+                rootSelect.value = mRoot;
+                if (appState.scales.scaleKey === 'major') {
+                    scaleSelect.value = 'minor';
+                } else if (appState.scales.scaleKey === 'pentatonic_major') {
+                    scaleSelect.value = 'pentatonic_minor';
+                }
+                playNotes(item.minChords, "4n");
+                showNotification(`Tom ${item.min} (Relativo de ${item.maj}) ativado!`);
+            } else {
+                const majRoot = toNotesPitch(item.maj);
+                rootSelect.value = majRoot;
+                if (appState.scales.scaleKey === 'minor') {
+                    scaleSelect.value = 'major';
+                } else if (appState.scales.scaleKey === 'pentatonic_minor') {
+                    scaleSelect.value = 'pentatonic_major';
+                }
+                playNotes(item.chords, "4n");
+                showNotification(`Tom ${item.maj} Maior ativado!`);
+            }
+
+            updateScaleExplorer();
+        }
+
+        function onCofCenterClick() {
+            const activeIdx = getCofIndexFromState();
+            const item = COF_KEYS_DATA[activeIdx];
+            if (!item) return;
+            const isMinor = (appState.scales.scaleKey === 'minor' || appState.scales.scaleKey === 'pentatonic_minor');
+            playNotes(isMinor ? item.minChords : item.chords, "2n");
+            showNotification(`Ouvindo tríade de ${isMinor ? item.min : item.maj}`);
+        }
+
         function initScalesModule() {
             const rootSel = document.getElementById('scale-root-select');
             const compRootSel = document.getElementById('composer-root-select');
@@ -1661,6 +2144,8 @@
             Object.entries(SCALES).forEach(([k, v]) => {
                 typeSel.appendChild(new Option(v.name, k));
             });
+
+            renderCircleOfFifths();
         }
 
         function setScaleInstrument(inst) {
@@ -1698,6 +2183,8 @@
             } else {
                 renderScaleFretboard();
             }
+
+            renderCircleOfFifths();
         }
 
         function renderHarmonicField() {
