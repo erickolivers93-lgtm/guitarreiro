@@ -2,8 +2,8 @@
 <html lang="pt-PT" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Guitarreiro Pro • Hub Musical & Aprendizado de Guitarra</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Guitarreiro Pro • Hub Musical & Fretboard Master</title>
     
     <!-- Tailwind CSS & Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,7 +12,7 @@
     <!-- Tipografia Profissional Moises Style -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
     
     <!-- Áudio & PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
@@ -24,18 +24,18 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
                         display: ['Outfit', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace']
                     },
                     colors: {
                         obsidian: {
                             950: '#060709',
-                            900: '#0a0c10',
-                            850: '#0f131a',
-                            800: '#151923',
-                            700: '#1e2433',
-                            600: '#2a3245'
+                            900: '#0a0d14',
+                            850: '#0f1420',
+                            800: '#151b2a',
+                            700: '#1f273c',
+                            600: '#2b3652'
                         },
                         brand: {
                             400: '#38bdf8',
@@ -43,9 +43,8 @@
                             600: '#0369a1',
                             accent: '#6366f1'
                         },
-                        amber: {
-                            glow: '#f59e0b'
-                        }
+                        gold: '#f59e0b',
+                        coral: '#f43f5e'
                     }
                 }
             }
@@ -54,129 +53,115 @@
 
     <style>
         :root {
-            --bg-base: #07090d;
-            --surface-card: #0f131b;
-            --surface-hover: #161b26;
+            --bg-base: #060709;
+            --surface: #0e121b;
+            --surface-elevated: #151b27;
             --border-glass: rgba(255, 255, 255, 0.08);
-            --border-active: rgba(56, 189, 248, 0.45);
+            --border-highlight: rgba(56, 189, 248, 0.4);
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
         body {
             background-color: var(--bg-base);
             color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            width: 100%;
         }
 
-        /* Scrollbar Compacta */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0c10; }
-        ::-webkit-scrollbar-thumb { background: #262f40; border-radius: 999px; }
+        /* Scrollbars minimalistas */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #080a0f; }
+        ::-webkit-scrollbar-thumb { background: #1e2638; border-radius: 999px; }
         ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
 
         .hide-arrows::-webkit-inner-spin-button, .hide-arrows::-webkit-outer-spin-button {
             -webkit-appearance: none; margin: 0;
         }
 
-        /* Moises Glass Surfaces */
+        /* Moises Glass Cards */
         .moises-card {
-            background: linear-gradient(160deg, #11151f 0%, #0d1017 100%);
+            background: linear-gradient(165deg, #10141e 0%, #0c0f17 100%);
             border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 1.25rem;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(255, 255, 255, 0.02) inset;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
         }
 
         .moises-card-elevated {
-            background: linear-gradient(160deg, #161c2b 0%, #0f141f 100%);
-            border: 1px solid rgba(56, 189, 248, 0.15);
+            background: linear-gradient(165deg, #161c2a 0%, #0f1420 100%);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 1.25rem;
-            box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.05);
+            box-shadow: 0 14px 35px -8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.06);
         }
 
         .moises-well {
-            background: #080a0f;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 0.875rem;
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+            background: #080a10;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
         }
 
         /* Botões com Glow Suave */
         .btn-glow {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(2, 132, 199, 0.35);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-glow:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(2, 132, 199, 0.5);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35);
+            transition: all 0.15s ease;
         }
         .btn-glow:active { transform: scale(0.97); }
 
         .btn-secondary {
-            background: #151923;
+            background: #141924;
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #e2e8f0;
             transition: all 0.15s ease;
         }
-        .btn-secondary:hover {
-            background: #1c2333;
-            border-color: rgba(255, 255, 255, 0.18);
-            color: #fff;
-        }
+        .btn-secondary:active { transform: scale(0.97); }
 
-        /* Select Customizado */
-        .moises-select {
-            appearance: none;
-            background-color: #11151f;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #f8fafc;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2338bdf8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.75rem center;
-            background-repeat: no-repeat;
-            background-size: 1.1em 1.1em;
-            padding-right: 2.25rem;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-        .moises-select:focus {
-            outline: none;
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-        }
-
-        /* Tabs de Navegação */
-        .nav-pill {
-            color: #94a3b8;
-            border-radius: 0.75rem;
-            padding: 0.65rem 1.1rem;
-            font-size: 0.875rem;
-            font-weight: 700;
+        /* Bottom Tab Navigation Bar */
+        .bottom-nav-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
+            justify-content: center;
+            padding: 6px 4px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.2s;
+            position: relative;
+            flex: 1;
         }
-        .nav-pill:hover {
-            color: #f8fafc;
-            background: rgba(255, 255, 255, 0.04);
+        .bottom-nav-item.active {
+            color: #38bdf8;
         }
-        .nav-pill.active {
-            color: #ffffff;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(99, 102, 241, 0.15) 100%);
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+        .bottom-nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 2.5px;
+            background: #38bdf8;
+            border-radius: 999px;
+            box-shadow: 0 0 10px #38bdf8;
         }
 
-        /* Braço de Guitarra Fretboard */
+        /* Fretboard Horizontal Scroll */
         .fretboard-wrap {
             display: flex;
             flex-direction: column;
             width: max-content;
-            margin: 0 auto;
             user-select: none;
+            padding-bottom: 8px;
         }
         .string-row {
             display: flex;
@@ -190,10 +175,10 @@
             right: 0;
             background: linear-gradient(180deg, #94a3b8 0%, #475569 50%, #1e293b 100%);
             z-index: 1;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         }
         .fret-cell {
-            width: 70px;
+            width: 66px;
             height: 100%;
             border-right: 2px solid #334155;
             position: relative;
@@ -201,107 +186,94 @@
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
-            background: rgba(15, 23, 42, 0.35);
+            background: rgba(14, 18, 27, 0.4);
         }
         .fret-cell.nut {
-            width: 50px;
+            width: 44px;
             border-right: 6px solid #e2e8f0;
-            background: #090d16;
+            background: #080a10;
         }
         .fret-marker-dot {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 800;
             z-index: 10;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
             cursor: pointer;
-            transition: transform 0.15s ease;
+            transition: transform 0.1s ease;
         }
-        .fret-marker-dot:hover { transform: scale(1.15); }
+        .fret-marker-dot:active { transform: scale(1.15); }
+
         .marker-root {
             background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
             color: #fff;
             border: 2px solid #fca5a5;
-            box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
         }
         .marker-chord {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: #fff;
             border: 2px solid #fde68a;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
         }
         .marker-scale {
             background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
             color: #fff;
             border: 2px solid #bae6fd;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
-        }
-        .marker-ghost {
-            background: #1e293b;
-            color: #94a3b8;
-            border: 1px solid #475569;
-            opacity: 0.75;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
         }
 
-        /* Teclado Piano Moises */
+        /* Teclado Piano */
         .piano-keys-row {
             display: flex;
             position: relative;
             width: max-content;
-            padding: 8px 12px;
-            background: #06080c;
-            border-radius: 1rem;
+            padding: 6px 10px;
+            background: #05070a;
+            border-radius: 0.875rem;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .key-white {
-            width: 48px;
-            height: 165px;
+            width: 44px;
+            height: 155px;
             background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
             border: 1px solid #cbd5e1;
-            border-radius: 0 0 6px 6px;
+            border-radius: 0 0 5px 5px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
             cursor: pointer;
             flex-shrink: 0;
             position: relative;
-            transition: all 0.1s ease;
         }
-        .key-white:active, .key-white.active {
-            background: #38bdf8 !important;
-            transform: translateY(2px);
-        }
+        .key-white:active { background: #38bdf8 !important; }
         .key-black {
             position: absolute;
-            width: 32px;
-            height: 104px;
+            width: 28px;
+            height: 98px;
             background: linear-gradient(180deg, #1e2430 0%, #090c12 100%);
-            border-radius: 0 0 5px 5px;
+            border-radius: 0 0 4px 4px;
             border: 1px solid #000;
-            top: 8px;
-            right: -16px;
+            top: 6px;
+            right: -14px;
             z-index: 10;
             cursor: pointer;
             display: flex;
             align-items: flex-end;
             justify-content: center;
             padding-bottom: 8px;
-            transition: all 0.1s ease;
-            box-shadow: 2px 4px 8px rgba(0,0,0,0.6);
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.6);
         }
-        .key-black:active, .key-black.active {
-            background: #0284c7 !important;
-            transform: translateY(2px);
-        }
+        .key-black:active { background: #0284c7 !important; }
 
-        /* Círculo de Quintas Dedicado */
+        /* Roda de Quintas */
         .cof-node {
             position: absolute;
             transform: translate(-50%, -50%);
@@ -312,137 +284,86 @@
             border-radius: 50%;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid rgba(255, 255, 255, 0.08);
         }
-        .cof-maj {
-            width: 58px;
-            height: 58px;
-            background: #111520;
-            color: #64748b;
-            font-size: 1.15rem;
-        }
-        .cof-min {
-            width: 44px;
-            height: 44px;
-            background: #0a0d14;
-            color: #475569;
-            z-index: 10;
-            font-size: 0.9rem;
-        }
-        .cof-node.in-scale {
-            background: #1e2638;
-            color: #f8fafc;
-            border-color: rgba(56, 189, 248, 0.3);
-        }
+        .cof-maj { width: 50px; height: 50px; background: #111520; color: #64748b; font-size: 1.05rem; }
+        .cof-min { width: 38px; height: 38px; background: #090d14; color: #475569; z-index: 10; font-size: 0.85rem; }
+        .cof-node.in-scale { background: #1e2638; color: #f8fafc; border-color: rgba(56, 189, 248, 0.35); }
         .cof-active-maj {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
             border-color: #38bdf8 !important;
             color: #ffffff !important;
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
-            transform: translate(-50%, -50%) scale(1.18);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+            transform: translate(-50%, -50%) scale(1.15);
             z-index: 20;
         }
         .cof-active-min {
             background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
             border-color: #f87171 !important;
             color: #ffffff !important;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
-            transform: translate(-50%, -50%) scale(1.18);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
+            transform: translate(-50%, -50%) scale(1.15);
             z-index: 20;
         }
 
-        /* Estilos de PDF */
-        .pdf-mode {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-        }
-        .pdf-mode .composer-section {
-            background-color: #f8fafc !important;
-            border: 1px solid #cbd5e1 !important;
-            border-left: 5px solid #0284c7 !important;
-        }
-        .pdf-mode .composer-chord {
-            background-color: #ffffff !important;
-            border: 1px solid #94a3b8 !important;
-            color: #0f172a !important;
-            box-shadow: none !important;
-        }
+        /* PDF Print Override */
+        .pdf-mode { background-color: #ffffff !important; color: #000000 !important; }
+        .pdf-mode .composer-section { background-color: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-left: 5px solid #0284c7 !important; }
+        .pdf-mode .composer-chord { background-color: #ffffff !important; border: 1px solid #94a3b8 !important; color: #0f172a !important; }
         .pdf-mode button { display: none !important; }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-        .pulse-subtle { animation: pulseGlow 3s infinite ease-in-out; }
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased flex flex-col justify-between selection:bg-brand-500 selection:text-white pb-12">
+<body class="min-h-screen font-sans flex flex-col justify-between selection:bg-brand-500 selection:text-white pb-28 md:pb-8">
 
-    <!-- Container Global de Toasts / Feedback -->
-    <div id="toast-container" class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-50 pointer-events-none"></div>
+    <!-- Container Global de Toasts -->
+    <div id="toast-container" class="fixed top-16 right-4 left-4 sm:left-auto sm:right-6 sm:w-96 flex flex-col gap-2 z-50 pointer-events-none"></div>
 
-    <!-- TOPO PRINCIPAL: Identidade Moises + Barra de Acesso Rápido -->
-    <header class="sticky top-0 z-40 bg-[#07090d]/90 backdrop-blur-xl border-b border-white/[0.06] px-4 lg:px-8 py-3.5 transition-all">
-        <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- TOPO MOBILE-FIRST: LOGO + DOCK TOOLS -->
+    <header class="sticky top-0 z-30 bg-[#060709]/95 backdrop-blur-xl border-b border-white/[0.06] px-3.5 sm:px-6 py-2.5 transition-all">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
             
-            <!-- Logo & Badge -->
-            <div class="flex items-center gap-3 shrink-0">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-brand-accent flex items-center justify-center shadow-lg shadow-cyan-500/25">
-                    <i data-lucide="sparkles" class="text-white w-5 h-5"></i>
+            <!-- Logo & Brand -->
+            <div class="flex items-center gap-2.5 shrink-0">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-brand-accent flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="sparkles" class="text-white w-4 h-4"></i>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-display font-black text-xl tracking-tight text-white">GUITAR<span class="text-brand-400">REIRO</span></span>
-                        <span class="bg-gradient-to-r from-brand-accent to-cyan-500 text-[10px] font-black uppercase px-2 py-0.5 rounded-full text-white shadow-sm">PRO</span>
+                    <div class="flex items-center gap-1.5 leading-none">
+                        <span class="font-display font-black text-lg tracking-tight text-white">GUITAR<span class="text-brand-400">REIRO</span></span>
+                        <span class="bg-gradient-to-r from-brand-accent to-cyan-500 text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full text-white">PRO</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 font-medium">Plataforma Definitiva de Teoria & Prática</p>
+                    <span class="text-[10px] text-gray-400 font-medium tracking-wide">Fretboard & Harmony</span>
                 </div>
             </div>
 
-            <!-- Navegação Segmentada Estilo Moises App -->
-            <nav class="flex bg-obsidian-850 p-1 rounded-xl border border-white/[0.08] w-full md:w-auto overflow-x-auto hide-scroll justify-start md:justify-center gap-1">
-                <button onclick="switchTab('tab-caged')" id="nav-caged" class="nav-pill active">
-                    <i data-lucide="layers" class="w-4 h-4 text-brand-400"></i> CAGED Master
-                </button>
-                <button onclick="switchTab('tab-doublestops')" id="nav-doublestops" class="nav-pill">
-                    <i data-lucide="zap" class="w-4 h-4 text-amber-glow"></i> Double Stops
-                </button>
-                <button onclick="switchTab('tab-scales')" id="nav-scales" class="nav-pill">
-                    <i data-lucide="compass" class="w-4 h-4 text-cyan-400"></i> Braço & Escalas
-                </button>
-                <button onclick="switchTab('tab-composer')" id="nav-composer" class="nav-pill">
-                    <i data-lucide="file-music" class="w-4 h-4 text-purple-400"></i> Compositor
-                </button>
-            </nav>
-
-            <!-- Barra Rápida de Ferramentas (Afinador & Metrônomo Floating Dock) -->
-            <div class="flex items-center gap-2.5 shrink-0">
-                <!-- Botão Compacto do Afinador -->
-                <button onclick="toggleTunerModal()" id="dock-btn-tuner" class="btn-secondary px-3.5 py-2 rounded-xl flex items-center gap-2 text-xs font-bold shadow-sm" title="Abrir Afinador de Precisão">
+            <!-- Top Dock: Afinador & Metrônomo Pills -->
+            <div class="flex items-center gap-2 shrink-0">
+                <!-- Botão Afinador -->
+                <button onclick="toggleTunerModal()" id="dock-btn-tuner" class="btn-secondary px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-xs font-bold" title="Abrir Afinador">
                     <span class="w-2 h-2 rounded-full bg-gray-500" id="dock-tuner-dot"></span>
-                    <i data-lucide="mic" class="w-4 h-4 text-brand-400"></i>
-                    <span>Afinador</span>
-                    <span id="dock-tuner-val" class="font-mono text-cyan-400 font-bold ml-1">--</span>
+                    <i data-lucide="mic" class="w-3.5 h-3.5 text-brand-400"></i>
+                    <span class="hidden sm:inline">Afinador</span>
+                    <span id="dock-tuner-val" class="font-mono text-cyan-400 font-bold">--</span>
                 </button>
 
-                <!-- Botão Compacto do Metrônomo -->
-                <button onclick="toggleMetroModal()" id="dock-btn-metro" class="btn-secondary px-3.5 py-2 rounded-xl flex items-center gap-2 text-xs font-bold shadow-sm" title="Abrir Metrônomo">
+                <!-- Botão Metrônomo -->
+                <button onclick="toggleMetroModal()" id="dock-btn-metro" class="btn-secondary px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-xs font-bold" title="Abrir Metrônomo">
                     <span class="w-2 h-2 rounded-full bg-gray-500" id="dock-metro-dot"></span>
-                    <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
-                    <span id="dock-metro-val" class="font-mono text-white font-bold">120 BPM</span>
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span id="dock-metro-val" class="font-mono text-white font-bold">120</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- PAINÉIS FLUTUANTES RETRÁTEIS: AFINADOR E METRÔNOMO -->
-    <!-- 1. Painel Flutuante do Afinador -->
-    <div id="modal-tuner" class="fixed inset-x-4 top-20 max-w-md mx-auto z-50 moises-card-elevated p-5 hidden transition-all duration-300">
-        <div class="flex justify-between items-center mb-4 border-b border-white/[0.08] pb-3">
+    <!-- PAINÉIS FLUTUANTES / BOTTOM SHEETS: AFINADOR & METRÔNOMO -->
+    <!-- 1. Modal Afinador -->
+    <div id="modal-tuner" class="fixed inset-x-3 bottom-24 sm:bottom-auto sm:top-16 sm:inset-x-auto sm:right-6 sm:w-96 z-50 moises-card-elevated p-4 sm:p-5 hidden transition-all duration-300">
+        <div class="flex justify-between items-center mb-3 border-b border-white/[0.08] pb-2.5">
             <div class="flex items-center gap-2">
-                <i data-lucide="mic" class="w-5 h-5 text-brand-400"></i>
-                <h3 class="text-sm font-extrabold uppercase tracking-wider text-white">Afinador Cromático</h3>
+                <i data-lucide="mic" class="w-4 h-4 text-brand-400"></i>
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-white">Afinador Cromático</h3>
             </div>
             <div class="flex items-center gap-3">
                 <span id="tuner-freq" class="text-xs font-mono text-gray-400">440.0 Hz</span>
@@ -452,417 +373,370 @@
             </div>
         </div>
 
-        <div class="flex flex-col items-center justify-center my-4">
-            <div class="text-7xl font-display font-black text-white leading-none tracking-tight mb-2" id="tuner-big-note">--</div>
-            <div class="text-xs font-bold uppercase tracking-widest text-gray-400" id="tuner-detail-status">Microfone desligado</div>
+        <div class="flex flex-col items-center justify-center my-3">
+            <div class="text-6xl font-display font-black text-white leading-none tracking-tight mb-1.5" id="tuner-big-note">--</div>
+            <div class="text-[11px] font-bold uppercase tracking-widest text-gray-400" id="tuner-detail-status">Microfone desligado</div>
         </div>
 
-        <!-- Barra de Centésimos com Agulha Suave -->
-        <div class="moises-well p-3 relative overflow-hidden mb-5">
-            <div class="flex justify-between text-[10px] text-gray-500 font-mono mb-1">
+        <div class="moises-well p-3 relative overflow-hidden mb-4">
+            <div class="flex justify-between text-[9px] text-gray-500 font-mono mb-1">
                 <span>-50</span><span>-25</span><span class="text-emerald-400 font-bold">0</span><span>+25</span><span>+50</span>
             </div>
-            <div class="w-full h-3 bg-obsidian-900 rounded-full relative overflow-hidden">
+            <div class="w-full h-2.5 bg-obsidian-900 rounded-full relative overflow-hidden">
                 <div class="absolute left-1/2 top-0 bottom-0 w-[2px] bg-emerald-500/80 -translate-x-1/2 z-0"></div>
-                <div id="tuner-needle" class="w-4 h-4 bg-brand-400 rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-75 shadow-lg shadow-cyan-500/50" style="left: 50%;"></div>
+                <div id="tuner-needle" class="w-3.5 h-3.5 bg-brand-400 rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-75 shadow-lg" style="left: 50%;"></div>
             </div>
         </div>
 
-        <div class="flex gap-2.5">
-            <button onclick="toggleMicTuner()" id="btn-toggle-mic" class="btn-glow flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
-                <i data-lucide="mic" class="w-4 h-4"></i> Iniciar Microfone
-            </button>
-        </div>
+        <button onclick="toggleMicTuner()" id="btn-toggle-mic" class="btn-glow w-full py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+            <i data-lucide="mic" class="w-4 h-4"></i> Iniciar Microfone
+        </button>
     </div>
 
-    <!-- 2. Painel Flutuante do Metrônomo -->
-    <div id="modal-metro" class="fixed inset-x-4 top-20 max-w-md mx-auto z-50 moises-card-elevated p-5 hidden transition-all duration-300">
-        <div class="flex justify-between items-center mb-4 border-b border-white/[0.08] pb-3">
+    <!-- 2. Modal Metrônomo -->
+    <div id="modal-metro" class="fixed inset-x-3 bottom-24 sm:bottom-auto sm:top-16 sm:inset-x-auto sm:right-6 sm:w-96 z-50 moises-card-elevated p-4 sm:p-5 hidden transition-all duration-300">
+        <div class="flex justify-between items-center mb-3 border-b border-white/[0.08] pb-2.5">
             <div class="flex items-center gap-2">
-                <i data-lucide="activity" class="w-5 h-5 text-emerald-400"></i>
-                <h3 class="text-sm font-extrabold uppercase tracking-wider text-white">Metrônomo Digital</h3>
+                <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-white">Metrônomo Digital</h3>
             </div>
             <button onclick="toggleMetroModal()" class="text-gray-400 hover:text-white p-1">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
 
-        <div class="flex items-center justify-between mb-6">
-            <button onclick="adjustBpm(-5)" class="btn-secondary w-10 h-10 rounded-xl font-bold text-lg flex items-center justify-center">-5</button>
-            <button onclick="adjustBpm(-1)" class="btn-secondary w-10 h-10 rounded-xl font-bold text-lg flex items-center justify-center">-1</button>
+        <div class="flex items-center justify-between mb-4">
+            <button onclick="adjustBpm(-5)" class="btn-secondary w-9 h-9 rounded-lg font-bold text-sm flex items-center justify-center">-5</button>
+            <button onclick="adjustBpm(-1)" class="btn-secondary w-9 h-9 rounded-lg font-bold text-sm flex items-center justify-center">-1</button>
             
-            <div class="text-center px-4">
-                <input type="number" id="metro-bpm-val" value="120" min="30" max="280" class="hide-arrows bg-transparent text-6xl font-display font-black text-white w-28 text-center outline-none p-0 leading-none">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mt-1">BATIDAS POR MINUTO</span>
+            <div class="text-center px-2">
+                <input type="number" id="metro-bpm-val" value="120" min="30" max="280" class="hide-arrows bg-transparent text-5xl font-display font-black text-white w-24 text-center outline-none p-0 leading-none">
+                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mt-1">BPM</span>
             </div>
 
-            <button onclick="adjustBpm(1)" class="btn-secondary w-10 h-10 rounded-xl font-bold text-lg flex items-center justify-center">+1</button>
-            <button onclick="adjustBpm(5)" class="btn-secondary w-10 h-10 rounded-xl font-bold text-lg flex items-center justify-center">+5</button>
+            <button onclick="adjustBpm(1)" class="btn-secondary w-9 h-9 rounded-lg font-bold text-sm flex items-center justify-center">+1</button>
+            <button onclick="adjustBpm(5)" class="btn-secondary w-9 h-9 rounded-lg font-bold text-sm flex items-center justify-center">+5</button>
         </div>
 
-        <!-- Compassos e Tap Tempo -->
-        <div class="grid grid-cols-2 gap-3 mb-5">
-            <div class="moises-well p-2.5 flex flex-col justify-center">
-                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 block">Fórmula de Compasso</label>
-                <select id="metro-time-sig" class="moises-select py-1.5 px-2.5 text-xs font-bold rounded-lg cursor-pointer">
+        <div class="grid grid-cols-2 gap-2.5 mb-4">
+            <div class="moises-well p-2 flex flex-col justify-center">
+                <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1 block">Compasso</label>
+                <select id="metro-time-sig" class="bg-transparent border border-white/10 text-white py-1 px-2 text-xs font-bold rounded-lg cursor-pointer outline-none">
                     <option value="4">4 / 4 (Padrão)</option>
-                    <option value="3">3 / 4 (Valsa/Balada)</option>
-                    <option value="2">2 / 4 (Marcha/Samba)</option>
-                    <option value="6">6 / 8 (Ternário Composto)</option>
+                    <option value="3">3 / 4 (Valsa)</option>
+                    <option value="2">2 / 4 (Marcha)</option>
+                    <option value="6">6 / 8 (Blues)</option>
                 </select>
             </div>
-            <button onclick="handleTapTempo()" class="btn-secondary rounded-xl flex flex-col items-center justify-center p-2.5 hover:border-brand-400 transition" id="btn-tap-tempo">
+            <button onclick="handleTapTempo()" class="btn-secondary rounded-xl flex flex-col items-center justify-center p-2 hover:border-brand-400 transition" id="btn-tap-tempo">
                 <span class="text-xs font-black uppercase text-brand-400 tracking-wider">TAP TEMPO</span>
-                <span class="text-[10px] text-gray-400">Toque no ritmo</span>
+                <span class="text-[9px] text-gray-400">Toque no ritmo</span>
             </button>
         </div>
 
-        <button onclick="toggleMetronomePlay()" id="btn-metro-action" class="btn-glow w-full py-3 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2">
-            <i data-lucide="play" class="w-5 h-5 fill-current"></i> Iniciar Batida
+        <button onclick="toggleMetronomePlay()" id="btn-metro-action" class="btn-glow w-full py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2">
+            <i data-lucide="play" class="w-4 h-4 fill-current"></i> Iniciar Batida
         </button>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL DAS 4 ABAS -->
-    <main class="max-w-[1440px] mx-auto px-4 lg:px-8 py-6 flex-grow w-full">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-6xl mx-auto px-3.5 sm:px-6 py-4 flex-grow w-full">
 
         <!-- ========================================================================= -->
-        <!-- ABA 1: CAGED MASTER (NOVA ÁREA DEDICADA A APRENDER O CAGED PLENO)         -->
+        <!-- ABA 1: CAGED MASTER PLENO (TOTALMENTE FUNCIONAL: TODOS OS ACORDES E ESCALAS)-->
         <!-- ========================================================================= -->
-        <section id="tab-caged" class="flex flex-col gap-6">
+        <section id="tab-caged" class="flex flex-col gap-4">
             
-            <!-- Banner Explicativo Moises Style -->
-            <div class="moises-card p-6 lg:p-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 relative overflow-hidden">
-                <div class="max-w-2xl z-10">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-brand-500/20 text-brand-400 border border-brand-500/30">Mapeamento Visual Fretboard</span>
-                        <span class="text-xs text-gray-400">• Sistema dos 5 Formatos</span>
+            <!-- Painel de Seleção Rápida de Tom & Qualidade -->
+            <div class="moises-card p-4 sm:p-5 flex flex-col gap-3.5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-display font-black text-white">CAGED Master</h2>
+                        <p class="text-xs text-gray-400">Mapeamento pleno de Acordes e Escalas em qualquer Tom</p>
                     </div>
-                    <h2 class="text-2xl lg:text-3xl font-display font-black text-white tracking-tight">O Sistema CAGED Pleno</h2>
-                    <p class="text-sm text-gray-300 mt-2 leading-relaxed">
-                        Domine o braço da guitarra através dos 5 formatos fundamentais (<strong class="text-cyan-400">C</strong>, <strong class="text-cyan-400">A</strong>, <strong class="text-cyan-400">G</strong>, <strong class="text-cyan-400">E</strong>, <strong class="text-cyan-400">D</strong>). 
-                        Veja como a forma do acorde encaixa perfeitamente dentro da escala, revelando solos e bases no mesmo lugar.
-                    </p>
+                    <!-- Seletor de Qualidade do Acorde (Maior vs Menor vs 7) -->
+                    <div class="flex bg-obsidian-950 p-1 rounded-xl border border-white/[0.08] shrink-0">
+                        <button onclick="setCagedQuality('major')" id="qual-major" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition bg-brand-500 text-white shadow">Maior</button>
+                        <button onclick="setCagedQuality('minor')" id="qual-minor" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white">Menor</button>
+                        <button onclick="setCagedQuality('dom7')" id="qual-dom7" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white">7ª Dom</button>
+                    </div>
                 </div>
 
-                <!-- Seletor Rápido de Tonalidade Raiz -->
-                <div class="moises-well p-4 rounded-xl flex items-center gap-3 shrink-0 z-10 w-full lg:w-auto">
-                    <div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Tonalidade (Tom)</span>
-                        <select id="caged-root-select" onchange="updateCagedView()" class="moises-select rounded-xl py-2 pl-3 pr-8 text-base font-black w-32 cursor-pointer">
-                            <option value="C">C (Dó)</option>
-                            <option value="D">D (Ré)</option>
-                            <option value="E">E (Mi)</option>
-                            <option value="F">F (Fá)</option>
-                            <option value="G">G (Sol)</option>
-                            <option value="A" selected>A (Lá)</option>
-                            <option value="B">B (Si)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Modo / Qualidade</span>
-                        <select id="caged-quality-select" onchange="updateCagedView()" class="moises-select rounded-xl py-2 pl-3 pr-8 text-sm font-bold cursor-pointer">
-                            <option value="major">Maior (Tríade / Pentatônica)</option>
-                            <option value="minor">Menor (Tríade / Pentatônica)</option>
-                            <option value="dom7">Dominante 7ª</option>
-                        </select>
+                <!-- Seletor de Tom (12 Notas em Rolagem Suave para Polegar) -->
+                <div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Escolha o Tom (Tônica Raiz)</span>
+                    <div class="flex gap-1.5 overflow-x-auto hide-scroll py-1" id="caged-root-pills">
+                        <!-- Gerado via JS: C, C#, D, Eb, E, F, F#, G, Ab, A, Bb, B -->
                     </div>
                 </div>
             </div>
 
-            <!-- Navegador dos 5 Shapes CAGED -->
-            <div class="grid grid-cols-5 gap-2 lg:gap-4">
-                <button onclick="selectCagedShape('C')" id="btn-shape-C" class="caged-shape-btn moises-card p-3 lg:p-4 text-center rounded-xl transition hover:border-brand-400 border border-white/[0.08] flex flex-col items-center">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Shape 1</span>
-                    <span class="text-2xl lg:text-3xl font-display font-black text-white">C</span>
-                    <span class="text-[10px] text-cyan-400 font-semibold mt-1">Forma de Dó</span>
+            <!-- Navegador dos 5 Shapes CAGED (5 Botões Grandes) -->
+            <div class="grid grid-cols-5 gap-1.5 sm:gap-3">
+                <button onclick="selectCagedShape('C')" id="btn-shape-C" class="caged-shape-btn moises-card p-2 sm:p-3 text-center rounded-xl transition border border-white/[0.08] flex flex-col items-center">
+                    <span class="text-[9px] font-bold text-gray-400 uppercase">Shape 1</span>
+                    <span class="text-2xl font-display font-black text-white">C</span>
+                    <span class="text-[10px] text-cyan-400 font-mono mt-0.5" id="fret-badge-C">--</span>
                 </button>
-                <button onclick="selectCagedShape('A')" id="btn-shape-A" class="caged-shape-btn moises-card-elevated p-3 lg:p-4 text-center rounded-xl transition border border-brand-400 flex flex-col items-center">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Shape 2</span>
-                    <span class="text-2xl lg:text-3xl font-display font-black text-white">A</span>
-                    <span class="text-[10px] text-cyan-400 font-semibold mt-1">Forma de Lá</span>
+                <button onclick="selectCagedShape('A')" id="btn-shape-A" class="caged-shape-btn moises-card-elevated p-2 sm:p-3 text-center rounded-xl transition border border-brand-400 flex flex-col items-center">
+                    <span class="text-[9px] font-bold text-gray-400 uppercase">Shape 2</span>
+                    <span class="text-2xl font-display font-black text-white">A</span>
+                    <span class="text-[10px] text-cyan-400 font-mono mt-0.5" id="fret-badge-A">--</span>
                 </button>
-                <button onclick="selectCagedShape('G')" id="btn-shape-G" class="caged-shape-btn moises-card p-3 lg:p-4 text-center rounded-xl transition hover:border-brand-400 border border-white/[0.08] flex flex-col items-center">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Shape 3</span>
-                    <span class="text-2xl lg:text-3xl font-display font-black text-white">G</span>
-                    <span class="text-[10px] text-cyan-400 font-semibold mt-1">Forma de Sol</span>
+                <button onclick="selectCagedShape('G')" id="btn-shape-G" class="caged-shape-btn moises-card p-2 sm:p-3 text-center rounded-xl transition border border-white/[0.08] flex flex-col items-center">
+                    <span class="text-[9px] font-bold text-gray-400 uppercase">Shape 3</span>
+                    <span class="text-2xl font-display font-black text-white">G</span>
+                    <span class="text-[10px] text-cyan-400 font-mono mt-0.5" id="fret-badge-G">--</span>
                 </button>
-                <button onclick="selectCagedShape('E')" id="btn-shape-E" class="caged-shape-btn moises-card p-3 lg:p-4 text-center rounded-xl transition hover:border-brand-400 border border-white/[0.08] flex flex-col items-center">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Shape 4</span>
-                    <span class="text-2xl lg:text-3xl font-display font-black text-white">E</span>
-                    <span class="text-[10px] text-cyan-400 font-semibold mt-1">Forma de Mi</span>
+                <button onclick="selectCagedShape('E')" id="btn-shape-E" class="caged-shape-btn moises-card p-2 sm:p-3 text-center rounded-xl transition border border-white/[0.08] flex flex-col items-center">
+                    <span class="text-[9px] font-bold text-gray-400 uppercase">Shape 4</span>
+                    <span class="text-2xl font-display font-black text-white">E</span>
+                    <span class="text-[10px] text-cyan-400 font-mono mt-0.5" id="fret-badge-E">--</span>
                 </button>
-                <button onclick="selectCagedShape('D')" id="btn-shape-D" class="caged-shape-btn moises-card p-3 lg:p-4 text-center rounded-xl transition hover:border-brand-400 border border-white/[0.08] flex flex-col items-center">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Shape 5</span>
-                    <span class="text-2xl lg:text-3xl font-display font-black text-white">D</span>
-                    <span class="text-[10px] text-cyan-400 font-semibold mt-1">Forma de Ré</span>
+                <button onclick="selectCagedShape('D')" id="btn-shape-D" class="caged-shape-btn moises-card p-2 sm:p-3 text-center rounded-xl transition border border-white/[0.08] flex flex-col items-center">
+                    <span class="text-[9px] font-bold text-gray-400 uppercase">Shape 5</span>
+                    <span class="text-2xl font-display font-black text-white">D</span>
+                    <span class="text-[10px] text-cyan-400 font-mono mt-0.5" id="fret-badge-D">--</span>
                 </button>
             </div>
 
-            <!-- Palco Interativo do Shape CAGED -->
-            <div class="moises-card p-6 lg:p-8 flex flex-col gap-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/[0.06] pb-4">
+            <!-- Card Principal com Visualização Dupla: Diagrama Vertical + Braço Horizontal -->
+            <div class="moises-card p-4 sm:p-6 flex flex-col gap-4">
+                
+                <!-- Cabeçalho do Shape Ativo com Filtros de Camadas -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-white/[0.06] pb-3">
                     <div>
-                        <div class="flex items-center gap-3">
-                            <h3 class="text-xl font-display font-black text-white" id="caged-title-display">Shape A no Tom de Lá (A)</h3>
-                            <span class="text-xs font-mono bg-obsidian-800 border border-white/10 px-2.5 py-1 rounded text-cyan-400" id="caged-fret-span">Trastes 0 a 3</span>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-lg font-display font-black text-white" id="caged-title-display">Shape A</h3>
+                            <span class="text-xs font-mono bg-obsidian-950 border border-white/10 px-2 py-0.5 rounded text-cyan-400 font-bold" id="caged-fret-span">Traste 0</span>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1" id="caged-desc-display">A forma clássica da 5ª corda. A tônica encontra-se na corda Lá (A) e na corda Sol (G).</p>
+                        <p class="text-xs text-gray-400 mt-0.5" id="caged-desc-display">Formato móvel com tônica na 5ª corda.</p>
                     </div>
 
-                    <!-- Filtros de Visualização: Acorde vs Escala vs Ambos -->
-                    <div class="flex bg-obsidian-850 p-1.5 rounded-xl border border-white/[0.08] self-stretch md:self-auto justify-center">
-                        <button onclick="setCagedLayer('both')" id="layer-both" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-brand-500 text-white shadow">Sobrepor Tudo</button>
-                        <button onclick="setCagedLayer('chord')" id="layer-chord" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Apenas Acorde</button>
-                        <button onclick="setCagedLayer('scale')" id="layer-scale" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Apenas Escala</button>
+                    <!-- Toggle de Exibição: Sobrepor vs Acorde vs Escala -->
+                    <div class="flex bg-obsidian-950 p-1 rounded-xl border border-white/[0.08] self-stretch sm:self-auto justify-center">
+                        <button onclick="setCagedLayer('both')" id="layer-both" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-brand-500 text-white shadow">Sobrepor Tudo</button>
+                        <button onclick="setCagedLayer('chord')" id="layer-chord" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Só Acorde</button>
+                        <button onclick="setCagedLayer('scale')" id="layer-scale" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Só Escala</button>
                     </div>
                 </div>
 
-                <!-- Braço Fretboard Dinâmico do Shape -->
-                <div class="moises-well p-4 lg:p-6 overflow-x-auto hide-scroll w-full flex justify-start">
-                    <div id="caged-fretboard" class="fretboard-wrap"></div>
+                <!-- Painel Grid: Diagrama de Acorde Vertical + Braço de Cordas -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                    
+                    <!-- 1. Diagrama de Acorde Vertical (Chord Box) -->
+                    <div class="lg:col-span-4 moises-well p-3.5 flex flex-col items-center justify-center">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Diagrama de Posição</span>
+                        <div id="caged-chord-box" class="w-full flex justify-center"></div>
+                        <span class="text-[11px] text-gray-400 font-mono mt-2" id="chord-formula-text">Notas: T • 3ª • 5ª</span>
+                    </div>
+
+                    <!-- 2. Braço Horizontal da Guitarra -->
+                    <div class="lg:col-span-8 moises-well p-3.5 overflow-x-auto hide-scroll w-full flex flex-col justify-start">
+                        <div class="flex justify-between items-center mb-2 px-1">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Encaixe no Braço (Fretboard)</span>
+                            <span class="text-[10px] text-cyan-400 font-mono">Arraste para o lado ➔</span>
+                        </div>
+                        <div id="caged-fretboard" class="fretboard-wrap"></div>
+                    </div>
                 </div>
 
-                <!-- Legenda de Cores & Botões de Áudio -->
-                <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
-                    <div class="flex flex-wrap items-center gap-4 text-xs font-bold">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3.5 h-3.5 rounded-full marker-root inline-block"></span>
-                            <span class="text-gray-300">Tônica (Root)</span>
+                <!-- Botões de Áudio e Legenda de Cores -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-white/[0.06]">
+                    <div class="flex items-center gap-3 text-xs font-bold">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full marker-root inline-block"></span>
+                            <span class="text-gray-300">Tônica</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-3.5 h-3.5 rounded-full marker-chord inline-block"></span>
-                            <span class="text-gray-300">Notas do Acorde (3ª e 5ª)</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full marker-chord inline-block"></span>
+                            <span class="text-gray-300">Acorde</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-3.5 h-3.5 rounded-full marker-scale inline-block"></span>
-                            <span class="text-gray-300">Notas da Escala / Pentatônica</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full marker-scale inline-block"></span>
+                            <span class="text-gray-300">Escala</span>
                         </div>
                     </div>
 
-                    <!-- Botões para Ouvir o Áudio do Shape -->
-                    <div class="flex items-center gap-3">
-                        <button onclick="playCagedChordAudio()" class="btn-secondary px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 hover:border-brand-400">
-                            <i data-lucide="volume-2" class="w-4 h-4 text-amber-glow"></i> Ouvir Acorde Dedilhado
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="playCagedChordAudio()" class="btn-secondary flex-1 sm:flex-none px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 hover:border-brand-400">
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-amber-glow"></i> Ouvir Acorde
                         </button>
-                        <button onclick="playCagedScaleAudio()" class="btn-glow px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2">
-                            <i data-lucide="play" class="w-4 h-4 fill-current"></i> Tocar Escala em Arpejo
+                        <button onclick="playCagedScaleAudio()" class="btn-glow flex-1 sm:flex-none px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5">
+                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Tocar Escala
                         </button>
                     </div>
                 </div>
+
             </div>
         </section>
 
         <!-- ========================================================================= -->
-        <!-- ABA 2: DOUBLE STOPS (DUPLAS DE NOTAS - SEM TEORIA, FOCO EM MEMORIZAÇÃO)   -->
+        <!-- ABA 2: DOUBLE STOPS (SEM TEORIA - MEMORIZAÇÃO & PRÁTICA IMEDIATA)         -->
         <!-- ========================================================================= -->
-        <section id="tab-doublestops" class="hidden flex-col gap-6">
+        <section id="tab-doublestops" class="hidden flex-col gap-4">
             
-            <!-- Hero Banner Double Stops -->
-            <div class="moises-card p-6 lg:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-amber-glow/20 text-amber-glow border border-amber-glow/30">Prática Rápida de Solo</span>
-                        <span class="text-xs text-gray-400">• Sem Complicação Teórica</span>
+            <!-- Header Card -->
+            <div class="moises-card p-4 sm:p-5 flex flex-col gap-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-display font-black text-white">Double Stops</h2>
+                        <p class="text-xs text-gray-400">Memorize as duplas sonoras dos grandes guitarristas</p>
                     </div>
-                    <h2 class="text-2xl lg:text-3xl font-display font-black text-white tracking-tight">Double Stops: O Segredo dos Mestres</h2>
-                    <p class="text-sm text-gray-300 mt-2 max-w-2xl leading-relaxed">
-                        Tocar duas notas ao mesmo tempo cria o som encorpado e melódico de lendas como Jimi Hendrix, Stevie Ray Vaughan, John Mayer e BB King. 
-                        Memorize as posições visuais dos dedos e toque direto na sua guitarra!
-                    </p>
+                    <span class="text-[10px] font-black uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Sem Teoria</span>
                 </div>
 
-                <!-- Seletor de Estilo / Família de Double Stops -->
-                <div class="flex bg-obsidian-850 p-1.5 rounded-xl border border-white/[0.08] shrink-0 overflow-x-auto hide-scroll w-full md:w-auto">
-                    <button onclick="filterDoubleStops('hendrix')" id="ds-filter-hendrix" class="px-4 py-2 rounded-lg text-xs font-extrabold transition bg-brand-500 text-white shadow whitespace-nowrap">
+                <!-- Filtros de Famílias (Scroll Horizontal Suave) -->
+                <div class="flex gap-1.5 overflow-x-auto hide-scroll py-1">
+                    <button onclick="filterDoubleStops('hendrix')" id="ds-filter-hendrix" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition bg-brand-500 text-white shadow whitespace-nowrap">
                         🎸 Hendrix & Blues (G/B)
                     </button>
-                    <button onclick="filterDoubleStops('thirds')" id="ds-filter-thirds" class="px-4 py-2 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white whitespace-nowrap">
+                    <button onclick="filterDoubleStops('thirds')" id="ds-filter-thirds" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap">
                         ⚡ 3ªs Deslizantes (B/E)
                     </button>
-                    <button onclick="filterDoubleStops('sixths')" id="ds-filter-sixths" class="px-4 py-2 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white whitespace-nowrap">
+                    <button onclick="filterDoubleStops('sixths')" id="ds-filter-sixths" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap">
                         ✨ 6ªs Doces (Soul & R&B)
                     </button>
-                    <button onclick="filterDoubleStops('fourths')" id="ds-filter-fourths" class="px-4 py-2 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white whitespace-nowrap">
+                    <button onclick="filterDoubleStops('fourths')" id="ds-filter-fourths" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap">
                         🥁 4ªs Groovy (D/G)
                     </button>
                 </div>
             </div>
 
-            <!-- Grade com os Cards de Double Stops Práticos -->
-            <div id="doublestops-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Injetado dinamicamente via JavaScript -->
-            </div>
+            <!-- Grade de Cards de Double Stops -->
+            <div id="doublestops-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
         </section>
 
         <!-- ========================================================================= -->
-        <!-- ABA 3: BRAÇO UNIVERSAL & ESCALAS (EXPLORADOR LIVRE GUITARRA / BAIXO / PIANO)-->
+        <!-- ABA 3: BRAÇO UNIVERSAL & ESCALAS                                          -->
         <!-- ========================================================================= -->
-        <section id="tab-scales" class="hidden flex-col gap-6">
+        <section id="tab-scales" class="hidden flex-col gap-4">
             
-            <!-- Controles de Tônica, Escala e Instrumento -->
-            <div class="moises-card p-6 flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between">
-                <div class="flex flex-col sm:flex-row gap-4 flex-grow">
-                    <div class="flex flex-col">
-                        <label class="text-[11px] text-gray-400 mb-1.5 uppercase font-bold tracking-wider">Tônica da Escala</label>
-                        <select id="scale-root-select" onchange="updateScaleExplorer()" class="moises-select rounded-xl py-3 pl-4 pr-10 text-lg font-black w-full sm:w-36 cursor-pointer"></select>
+            <!-- Seleção de Tom, Escala e Instrumento -->
+            <div class="moises-card p-4 sm:p-5 flex flex-col gap-3.5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[10px] text-gray-400 mb-1 uppercase font-bold tracking-wider block">Tônica da Escala</label>
+                        <select id="scale-root-select" onchange="updateScaleExplorer()" class="w-full bg-obsidian-950 border border-white/10 text-white py-2 px-3 rounded-xl text-sm font-bold outline-none cursor-pointer"></select>
                     </div>
-                    <div class="flex flex-col flex-grow">
-                        <label class="text-[11px] text-gray-400 mb-1.5 uppercase font-bold tracking-wider">Tipo de Escala Musical</label>
-                        <select id="scale-type-select" onchange="updateScaleExplorer()" class="moises-select rounded-xl py-3 pl-4 pr-10 font-bold w-full cursor-pointer"></select>
+                    <div>
+                        <label class="text-[10px] text-gray-400 mb-1 uppercase font-bold tracking-wider block">Tipo de Escala</label>
+                        <select id="scale-type-select" onchange="updateScaleExplorer()" class="w-full bg-obsidian-950 border border-white/10 text-white py-2 px-3 rounded-xl text-sm font-bold outline-none cursor-pointer"></select>
                     </div>
                 </div>
 
                 <!-- Seletor de Instrumento -->
-                <div class="flex flex-col shrink-0">
-                    <label class="text-[11px] text-gray-400 mb-1.5 uppercase font-bold tracking-wider">Instrumento</label>
-                    <div class="flex bg-obsidian-850 rounded-xl p-1.5 border border-white/[0.08] shadow-inner">
-                        <button onclick="setScaleInstrument('guitar')" id="inst-guitar" class="px-5 py-2.5 text-xs font-extrabold rounded-lg bg-brand-500 text-white shadow transition">Guitarra (6C)</button>
-                        <button onclick="setScaleInstrument('bass')" id="inst-bass" class="px-5 py-2.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition">Baixo (4C)</button>
-                        <button onclick="setScaleInstrument('piano')" id="inst-piano" class="px-5 py-2.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition">Piano / Teclado</button>
-                    </div>
+                <div class="flex bg-obsidian-950 p-1 rounded-xl border border-white/[0.08] w-full justify-between">
+                    <button onclick="setScaleInstrument('guitar')" id="inst-guitar" class="flex-1 py-1.5 text-xs font-extrabold rounded-lg bg-brand-500 text-white shadow transition">Guitarra</button>
+                    <button onclick="setScaleInstrument('bass')" id="inst-bass" class="flex-1 py-1.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition">Baixo</button>
+                    <button onclick="setScaleInstrument('piano')" id="inst-piano" class="flex-1 py-1.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition">Piano</button>
                 </div>
             </div>
 
-            <!-- Campo Harmônico Interativo com Áudio -->
-            <div id="harmonic-field-card" class="moises-card p-6 flex flex-col gap-4">
-                <div class="flex justify-between items-center border-b border-white/[0.06] pb-3">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i>
-                        <h3 class="text-xs font-extrabold text-white uppercase tracking-widest">Campo Harmônico da Escala</h3>
-                    </div>
-                    <span class="text-[11px] font-bold text-gray-400 bg-obsidian-850 px-2.5 py-1 rounded-md border border-white/5">Clique no acorde para ouvir as notas reais</span>
+            <!-- Campo Harmônico Interativo -->
+            <div id="harmonic-field-card" class="moises-card p-4 sm:p-5 flex flex-col gap-3">
+                <div class="flex justify-between items-center border-b border-white/[0.06] pb-2">
+                    <span class="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                        <i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i> Campo Harmônico
+                    </span>
+                    <span class="text-[10px] text-gray-400 font-bold">Toque para ouvir</span>
                 </div>
-                <div id="harmonic-chords-list" class="flex flex-wrap gap-3.5"></div>
+                <div id="harmonic-chords-list" class="flex gap-2 overflow-x-auto hide-scroll py-1"></div>
             </div>
 
-            <!-- Braço de Cordas (Guitarra / Baixo) -->
-            <div id="view-string-board" class="moises-card p-6 flex flex-col gap-4">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-sm font-extrabold text-white flex items-center gap-2 uppercase tracking-wider">
-                        <i data-lucide="git-commit-horizontal" class="w-4 h-4 text-brand-400"></i> Mapa Geral de Notas no Braço (22 Trastes)
-                    </h3>
+            <!-- Braço de Cordas -->
+            <div id="view-string-board" class="moises-card p-4 flex flex-col gap-2">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-black uppercase tracking-wider text-white">Mapa Completo (22 Trastes)</span>
+                    <span class="text-[10px] text-cyan-400 font-mono">Arraste para o lado ➔</span>
                 </div>
-                <div class="moises-well p-4 lg:p-6 overflow-x-auto hide-scroll w-full flex justify-start">
+                <div class="moises-well p-3 overflow-x-auto hide-scroll w-full">
                     <div id="scale-fretboard" class="fretboard-wrap"></div>
                 </div>
             </div>
 
-            <!-- Visão Piano / Teclado -->
-            <div id="view-piano-board" class="moises-card p-6 hidden flex-col gap-4">
-                <h3 class="text-sm font-extrabold text-white flex items-center gap-2 uppercase tracking-wider">
-                    <i data-lucide="piano" class="w-4 h-4 text-brand-400"></i> Teclado Interativo (C3 a B4)
-                </h3>
-                <div class="moises-well p-4 overflow-x-auto hide-scroll flex justify-start md:justify-center">
+            <!-- Piano Interativo -->
+            <div id="view-piano-board" class="moises-card p-4 hidden flex-col gap-2">
+                <span class="text-xs font-black uppercase tracking-wider text-white">Teclado de Piano (C3 a B4)</span>
+                <div class="moises-well p-3 overflow-x-auto hide-scroll">
                     <div id="piano-container" class="piano-keys-row"></div>
                 </div>
             </div>
         </section>
 
         <!-- ========================================================================= -->
-        <!-- ABA 4: COMPOSITOR DE ESTRUTURAS & RODA DE QUINTAS (DRAG & DROP + PDF)      -->
+        <!-- ABA 4: COMPOSITOR & RODA DE QUINTAS                                       -->
         <!-- ========================================================================= -->
-        <section id="tab-composer" class="hidden flex-col gap-6">
+        <section id="tab-composer" class="hidden flex-col gap-4">
             
-            <div class="moises-card p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="moises-card p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
-                    <h2 class="text-xl font-display font-black text-white flex items-center gap-2">
-                        <i data-lucide="music-4" class="w-5 h-5 text-brand-400"></i> Compositor de Estruturas & Riffs
+                    <h2 class="text-lg sm:text-xl font-display font-black text-white flex items-center gap-2">
+                        <i data-lucide="music-4" class="w-4 h-4 text-brand-400"></i> Compositor de Músicas
                     </h2>
-                    <p class="text-xs text-gray-400 mt-1">
-                        Selecione a tonalidade na Roda de Quintas. Adicione seções (<strong class="text-cyan-400">Intro, Verso, Refrão...</strong>) e arraste ou toque para colocar os acordes.
-                    </p>
+                    <p class="text-xs text-gray-400">Crie progressões harmônicas e exporte em PDF</p>
                 </div>
-                
-                <div class="flex items-center gap-3 moises-well p-3 rounded-xl shrink-0 w-full md:w-auto">
-                    <div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Tom Principal</span>
-                        <select id="composer-root-select" onchange="updateComposerChords()" class="moises-select rounded-lg py-2 pl-3 pr-8 text-sm font-black cursor-pointer"></select>
-                    </div>
-                    <div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Qualidade</span>
-                        <select id="composer-mode-select" onchange="updateComposerChords()" class="moises-select rounded-lg py-2 pl-3 pr-8 text-sm font-bold cursor-pointer">
-                            <option value="major">Maior</option>
-                            <option value="minor">Menor</option>
-                        </select>
-                    </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <select id="composer-root-select" onchange="updateComposerChords()" class="bg-obsidian-950 border border-white/10 text-white py-1.5 px-2.5 rounded-lg text-xs font-bold outline-none cursor-pointer"></select>
+                    <select id="composer-mode-select" onchange="updateComposerChords()" class="bg-obsidian-950 border border-white/10 text-white py-1.5 px-2.5 rounded-lg text-xs font-bold outline-none cursor-pointer">
+                        <option value="major">Maior</option>
+                        <option value="minor">Menor</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Círculo de Quintas Dedicado com Luzes Dinâmicas -->
-            <div class="moises-card p-8 flex flex-col items-center justify-center relative overflow-hidden">
-                <div class="text-center mb-8 z-10">
-                    <span class="text-xs font-black uppercase tracking-widest text-brand-400 flex items-center justify-center gap-1.5 mb-1">
-                        <i data-lucide="compass" class="w-4 h-4"></i> Roda de Quintas Interativa
-                    </span>
-                    <p class="text-xs text-gray-400">A fatia acesa mostra exatamente as notas e acordes que funcionam perfeitamente juntos.</p>
-                </div>
-                
-                <div class="relative w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] rounded-full bg-obsidian-950 border-4 border-obsidian-800 shadow-2xl z-10" id="circle-fifths-wrap"></div>
+            <!-- Roda de Quintas Dedicada -->
+            <div class="moises-card p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                <span class="text-xs font-black uppercase tracking-widest text-brand-400 mb-1">Roda de Quintas</span>
+                <p class="text-[11px] text-gray-400 mb-6 text-center">Toque nas notas para transpor o tom da música</p>
+                <div class="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] rounded-full bg-obsidian-950 border-4 border-obsidian-800 shadow-2xl" id="circle-fifths-wrap"></div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Paleta de Ferramentas (Esquerda) -->
-                <div class="lg:col-span-4 flex flex-col gap-6">
-                    <!-- 1. Paleta de Seções -->
-                    <div class="moises-well p-5">
-                        <div class="flex justify-between items-center mb-3 border-b border-white/[0.06] pb-2">
-                            <h3 class="text-xs font-black uppercase text-gray-300 tracking-wider flex items-center gap-2">
-                                <span class="bg-brand-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px]">1</span> Estruturas
-                            </h3>
-                            <span class="text-[10px] text-gray-500">Toque ou arraste</span>
-                        </div>
-                        <div class="flex flex-wrap gap-2" id="palette-sections"></div>
+            <!-- Paleta de Acordes e Timeline -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                <div class="lg:col-span-5 flex flex-col gap-3">
+                    <!-- 1. Seções -->
+                    <div class="moises-well p-3.5">
+                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">1. Estruturas (Toque para Inserir)</span>
+                        <div class="flex flex-wrap gap-1.5" id="palette-sections"></div>
                     </div>
 
-                    <!-- 2. Paleta de Acordes -->
-                    <div class="moises-well p-5 flex-grow">
-                        <div class="flex justify-between items-center mb-3 border-b border-white/[0.06] pb-2">
-                            <h3 class="text-xs font-black uppercase text-gray-300 tracking-wider flex items-center gap-2">
-                                <span class="bg-brand-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px]">2</span> Acordes Funcionais
-                            </h3>
-                            <span class="text-[10px] text-gray-500">No tom selecionado</span>
-                        </div>
-                        <div class="flex flex-col gap-2" id="palette-chords"></div>
+                    <!-- 2. Acordes -->
+                    <div class="moises-well p-3.5 flex-grow">
+                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">2. Acordes Funcionais</span>
+                        <div class="grid grid-cols-2 gap-2" id="palette-chords"></div>
                     </div>
                 </div>
 
-                <!-- Linha do Tempo e Folha de Composição (Direita) -->
-                <div class="lg:col-span-8 flex flex-col gap-6">
-                    <div class="moises-card p-6 flex flex-col min-h-[500px]">
-                        <div class="flex justify-between items-center mb-6 border-b border-white/[0.06] pb-4">
-                            <div>
-                                <h3 class="text-lg font-display font-black text-white flex items-center gap-2">
-                                    <i data-lucide="file-text" class="w-4 h-4 text-brand-400"></i> Folha de Composição
-                                </h3>
-                                <p class="text-xs text-gray-400 mt-0.5">Monte a progressão e exporte uma partitura visual em PDF.</p>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <button onclick="clearTimeline()" class="text-xs text-red-400 hover:text-red-300 px-3 py-2 rounded-lg font-bold uppercase transition">Limpar</button>
-                                <button onclick="exportToPdf()" class="btn-glow px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-lg">
-                                    <i data-lucide="download" class="w-4 h-4"></i> Exportar PDF
+                <!-- Folha de Música / Timeline -->
+                <div class="lg:col-span-7 flex flex-col gap-3">
+                    <div class="moises-card p-4 sm:p-5 flex flex-col min-h-[400px]">
+                        <div class="flex justify-between items-center mb-4 border-b border-white/[0.06] pb-3">
+                            <span class="text-sm font-black text-white flex items-center gap-1.5">
+                                <i data-lucide="file-text" class="w-4 h-4 text-brand-400"></i> Folha de Músicas
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="clearTimeline()" class="text-xs text-red-400 hover:text-red-300 px-2 py-1 font-bold">Limpar</button>
+                                <button onclick="exportToPdf()" class="btn-glow px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> PDF
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Dropzone Timeline -->
-                        <div id="composer-timeline" class="moises-well flex-grow p-4 flex flex-col gap-3 min-h-[350px] overflow-y-auto" ondragover="handleDragOver(event)" ondrop="handleDropToTimeline(event)">
-                            <div id="empty-state-composer" class="text-center text-gray-500 my-auto py-12">
-                                <i data-lucide="plus-circle" class="w-12 h-12 mx-auto mb-3 opacity-30 text-brand-400"></i>
-                                <p class="text-sm font-bold text-gray-400">Sua folha de música está vazia.</p>
-                                <p class="text-xs text-gray-600 mt-1">Toque ou arraste as <strong class="text-gray-400">Estruturas (1)</strong> acima para começar.</p>
+                        <div id="composer-timeline" class="moises-well flex-grow p-3 flex flex-col gap-2.5 min-h-[300px]">
+                            <div id="empty-state-composer" class="text-center text-gray-500 my-auto py-10">
+                                <i data-lucide="plus-circle" class="w-10 h-10 mx-auto mb-2 opacity-30 text-brand-400"></i>
+                                <p class="text-xs font-bold text-gray-400">Folha vazia</p>
+                                <p class="text-[11px] text-gray-600 mt-0.5">Adicione estruturas e acordes acima.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Bloco de Notas Integrado -->
-                    <div class="moises-well p-4 flex gap-3.5 items-start">
-                        <div class="w-9 h-9 rounded-xl bg-obsidian-800 border border-white/10 flex items-center justify-center shrink-0 text-brand-400 mt-1">
-                            <i data-lucide="edit-3" class="w-4 h-4"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">Caderno de Ideias / Anotações (Auto-save)</span>
-                            <textarea id="notepad-input" class="w-full h-20 bg-transparent text-xs text-gray-200 resize-none outline-none placeholder-gray-600 font-mono" placeholder="Anotações de afinação, letra da música, ideias de solo..."></textarea>
-                        </div>
+                    <div class="moises-well p-3 flex gap-2.5 items-start">
+                        <i data-lucide="edit-3" class="w-4 h-4 text-brand-400 shrink-0 mt-0.5"></i>
+                        <textarea id="notepad-input" class="w-full h-16 bg-transparent text-xs text-gray-200 resize-none outline-none font-mono" placeholder="Caderno de anotações (auto-save)..."></textarea>
                     </div>
                 </div>
             </div>
@@ -870,42 +744,49 @@
 
     </main>
 
-    <!-- FOOTER ELEGANTE -->
-    <footer class="border-t border-white/[0.06] py-5 px-6 text-center text-xs text-gray-500">
-        <p><strong>Guitarreiro Pro</strong> • Desenvolvido com Moises UX/UI Design • Áudio via Tone.js</p>
-    </footer>
+    <!-- NAVEGAÇÃO INFERIOR FIXA (PERSISTENT BOTTOM BAR - MOISES STYLE) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#060709]/95 backdrop-blur-xl border-t border-white/[0.08] px-2 py-1.5 flex justify-around items-center">
+        <button onclick="switchTab('tab-caged')" id="bnav-caged" class="bottom-nav-item active">
+            <i data-lucide="layers" class="w-5 h-5 mb-0.5"></i>
+            <span>CAGED</span>
+        </button>
+        <button onclick="switchTab('tab-doublestops')" id="bnav-doublestops" class="bottom-nav-item">
+            <i data-lucide="zap" class="w-5 h-5 mb-0.5"></i>
+            <span>DoubleStops</span>
+        </button>
+        <button onclick="switchTab('tab-scales')" id="bnav-scales" class="bottom-nav-item">
+            <i data-lucide="compass" class="w-5 h-5 mb-0.5"></i>
+            <span>Escalas</span>
+        </button>
+        <button onclick="switchTab('tab-composer')" id="bnav-composer" class="bottom-nav-item">
+            <i data-lucide="file-music" class="w-5 h-5 mb-0.5"></i>
+            <span>Compositor</span>
+        </button>
+    </nav>
 
     <!-- ========================================================================= -->
     <!-- MOTOR JAVASCRIPT DO GUITARREIRO PRO                                      -->
     <!-- ========================================================================= -->
     <script>
-        // Inicialização de Ícones
         lucide.createIcons();
 
         // 1. TEORIA MUSICAL & CONSTANTES
-        const NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-        const NOTES_FLAT  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const NOTES = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const OPEN_STRINGS_TUNING = [4, 9, 2, 7, 11, 4]; // Corda 6 (E) até Corda 1 (E)
         const ROMANS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
-
-        function getNoteArray(root, scaleType) {
-            const flatRoots = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'd', 'g', 'c', 'f'];
-            let r = root;
-            if (scaleType === 'minor' && root.length === 1) r = root.toLowerCase();
-            return (flatRoots.includes(r) || root.includes('b')) ? NOTES_FLAT : NOTES_SHARP;
-        }
 
         const SCALES = {
             'major': { 
-                name: 'Maior Natural (Modo Jônico)', intervals: [0, 2, 4, 5, 7, 9, 11], 
+                name: 'Maior (Jônica)', intervals: [0, 2, 4, 5, 7, 9, 11], 
                 harm: { q: ['M','m','m','M','M','m','dim'], func: ['Tônica','Subdominante','Tônica','Subdominante','Dominante','Tônica','Dominante'], c: ['text-emerald-400','text-cyan-400','text-emerald-400','text-cyan-400','text-rose-400','text-emerald-400','text-rose-400'] } 
             },
             'minor': { 
-                name: 'Menor Natural (Modo Eólico)', intervals: [0, 2, 3, 5, 7, 8, 10], 
+                name: 'Menor (Eólica)', intervals: [0, 2, 3, 5, 7, 8, 10], 
                 harm: { q: ['m','dim','M','m','m','M','M'], func: ['Tônica','Subdominante','Tônica','Subdominante','Dominante','Subdominante','Dominante'], c: ['text-emerald-400','text-cyan-400','text-emerald-400','text-cyan-400','text-rose-400','text-cyan-400','text-rose-400'] } 
             },
-            'pentatonic_minor': { name: 'Pentatônica Menor (O Som do Blues/Rock)', intervals: [0, 3, 5, 7, 10] },
-            'pentatonic_major': { name: 'Pentatônica Maior (O Som Country/Soul)', intervals: [0, 2, 4, 7, 9] },
-            'blues': { name: 'Escala Blues (Com Blue Note)', intervals: [0, 3, 5, 6, 7, 10] }
+            'pentatonic_minor': { name: 'Pentatônica Menor', intervals: [0, 3, 5, 7, 10] },
+            'pentatonic_major': { name: 'Pentatônica Maior', intervals: [0, 2, 4, 7, 9] },
+            'blues': { name: 'Escala Blues', intervals: [0, 3, 5, 6, 7, 10] }
         };
 
         const INSTRUMENTS = {
@@ -913,14 +794,14 @@
             'bass': { strings: ['G', 'D', 'A', 'E'], frets: 22 }
         };
 
-        // Estado Global da Aplicação
+        // Estado Global
         const appState = {
             currentTab: 'tab-caged',
             caged: {
-                root: 'A',
-                quality: 'major',
-                currentShape: 'A',
-                activeLayer: 'both' // 'both', 'chord', 'scale'
+                root: 'C',
+                quality: 'major', // 'major', 'minor', 'dom7'
+                shape: 'C',
+                layer: 'both' // 'both', 'chord', 'scale'
             },
             doubleStops: {
                 filter: 'hendrix'
@@ -938,74 +819,59 @@
 
         // 2. SISTEMA DE ÁUDIO TONE.JS
         let polySynth = null;
-        let acousticPluckSynth = null;
 
-        async function ensureAudioContext() {
+        async function ensureAudio() {
             if (Tone.context.state !== 'running') {
                 await Tone.start();
             }
             if (!polySynth) {
                 polySynth = new Tone.PolySynth(Tone.Synth, {
                     oscillator: { type: 'triangle' },
-                    envelope: { attack: 0.01, decay: 0.2, sustain: 0.4, release: 1.2 }
+                    envelope: { attack: 0.01, decay: 0.2, sustain: 0.35, release: 1.0 }
                 }).toDestination();
                 polySynth.volume.value = -6;
             }
-            if (!acousticPluckSynth) {
-                acousticPluckSynth = new Tone.PolySynth(Tone.Synth, {
-                    oscillator: { type: 'sine' },
-                    envelope: { attack: 0.005, decay: 0.15, sustain: 0.2, release: 0.8 }
-                }).toDestination();
-                acousticPluckSynth.volume.value = -4;
-            }
         }
 
-        async function playNotes(notesArray, duration = "8n") {
+        async function playNotes(notesArray, dur = "8n") {
             try {
-                await ensureAudioContext();
-                polySynth.triggerAttackRelease(notesArray, duration);
-            } catch (e) {
-                console.error("Audio error:", e);
-            }
+                await ensureAudio();
+                polySynth.triggerAttackRelease(notesArray, dur);
+            } catch (e) {}
         }
 
-        async function playStrummedChord(notesArray) {
+        async function playStrum(notesArray) {
             try {
-                await ensureAudioContext();
+                await ensureAudio();
                 const now = Tone.now();
                 notesArray.forEach((n, idx) => {
                     polySynth.triggerAttackRelease(n, "4n", now + idx * 0.06);
                 });
-            } catch (e) {
-                console.error("Strum error:", e);
-            }
+            } catch (e) {}
         }
 
         async function playArpeggio(notesArray) {
             try {
-                await ensureAudioContext();
+                await ensureAudio();
                 const now = Tone.now();
                 notesArray.forEach((n, idx) => {
-                    polySynth.triggerAttackRelease(n, "8n", now + idx * 0.15);
+                    polySynth.triggerAttackRelease(n, "8n", now + idx * 0.14);
                 });
-            } catch (e) {
-                console.error("Arpeggio error:", e);
-            }
+            } catch (e) {}
         }
 
-        // Feedback Toasts
         function showNotification(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `px-4 py-3 rounded-xl shadow-2xl text-xs font-bold text-white flex items-center gap-2 pointer-events-auto border transition-all duration-300 transform translate-y-8 opacity-0 ${type === 'success' ? 'bg-obsidian-850 border-brand-400 text-white' : 'bg-red-950 border-red-500 text-red-200'}`;
+            toast.className = `p-3 rounded-xl shadow-2xl text-xs font-bold text-white flex items-center gap-2 border transition-all duration-300 transform translate-y-4 opacity-0 ${type === 'success' ? 'bg-obsidian-850 border-brand-400' : 'bg-red-950 border-red-500'}`;
             toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-4 h-4 ${type === 'success' ? 'text-brand-400' : 'text-red-400'}"></i> ${msg}`;
             container.appendChild(toast);
             lucide.createIcons();
-            requestAnimationFrame(() => toast.classList.remove('translate-y-8', 'opacity-0'));
+            requestAnimationFrame(() => toast.classList.remove('translate-y-4', 'opacity-0'));
             setTimeout(() => {
-                toast.classList.add('translate-y-8', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 250);
+            }, 2500);
         }
 
         // Navegação de Abas
@@ -1014,146 +880,149 @@
                 const el = document.getElementById(t);
                 if (el) el.classList.add('hidden');
             });
-            document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
 
             const target = document.getElementById(tabId);
             if (target) target.classList.remove('hidden');
 
-            const navBtnMap = {
-                'tab-caged': 'nav-caged',
-                'tab-doublestops': 'nav-doublestops',
-                'tab-scales': 'nav-scales',
-                'tab-composer': 'nav-composer'
+            const bnavMap = {
+                'tab-caged': 'bnav-caged',
+                'tab-doublestops': 'bnav-doublestops',
+                'tab-scales': 'bnav-scales',
+                'tab-composer': 'bnav-composer'
             };
-            const activeNavBtn = document.getElementById(navBtnMap[tabId]);
-            if (activeNavBtn) activeNavBtn.classList.add('active');
+            const activeBtn = document.getElementById(bnavMap[tabId]);
+            if (activeBtn) activeBtn.classList.add('active');
 
             appState.currentTab = tabId;
 
-            if (tabId === 'tab-caged') updateCagedView();
+            if (tabId === 'tab-caged') updateCagedMaster();
             if (tabId === 'tab-doublestops') renderDoubleStops();
             if (tabId === 'tab-scales') updateScaleExplorer();
             if (tabId === 'tab-composer') updateComposerChords();
         }
 
         // =========================================================================
-        // 3. MÓDULO CAGED MASTER (DEDICADO)
+        // 3. MATRIZ DEFINITIVA DO CAGED (TODOS OS ACORDES E ESCALAS)
         // =========================================================================
-        const CAGED_DEFINITIONS = {
+        // Padrões base (shift = 0) para as 6 cordas (6 a 1):
+        // -1 indica corda abafada (X)
+        const CAGED_TEMPLATES = {
             'C': {
-                name: 'Shape de C (Dó)',
-                rootStringOffset: 1, // Raiz primária na 5ª corda (A)
-                desc: 'Tônica na 5ª corda (Lá) e na 2ª corda (Si). Shape fantástico para acordes abertos e melodias de soul.',
-                fretsOffsetFromRoot: -3,
-                fretSpan: 4,
-                chordNotes: [
-                    { string: 5, fretRel: 3, role: 'root' },
-                    { string: 4, fretRel: 2, role: '3rd' },
-                    { string: 3, fretRel: 0, role: '5th' },
-                    { string: 2, fretRel: 1, role: 'root' },
-                    { string: 1, fretRel: 0, role: '3rd' }
+                name: 'Shape C',
+                rootString: 5,
+                baseShiftCalc: (rIdx) => ((rIdx - 9 + 12) % 12 - 3 + 12) % 12,
+                major: { frets: [-1, 3, 2, 0, 1, 0], fingers: ['X', 3, 2, 0, 1, 0], roles: ['X', 'T', '3M', '5J', 'T', '3M'] },
+                minor: { frets: [-1, 3, 1, 0, 1, 3], fingers: ['X', 3, 1, 0, 1, 4], roles: ['X', 'T', '3m', '5J', 'T', '5J'] },
+                dom7:  { frets: [-1, 3, 2, 3, 1, 0], fingers: ['X', 3, 2, 4, 1, 0], roles: ['X', 'T', '3M', '7m', 'T', '3M'] },
+                scaleMajorPent: [
+                    {s:6, f:0}, {s:6, f:3}, {s:5, f:0}, {s:5, f:3}, {s:4, f:0}, {s:4, f:2},
+                    {s:3, f:0}, {s:3, f:2}, {s:2, f:1}, {s:2, f:3}, {s:1, f:0}, {s:1, f:3}
                 ],
-                scaleNotes: [
-                    { string: 6, fretRel: 0 }, { string: 6, fretRel: 3 },
-                    { string: 5, fretRel: 0 }, { string: 5, fretRel: 3 },
-                    { string: 4, fretRel: 0 }, { string: 4, fretRel: 2 },
-                    { string: 3, fretRel: 0 }, { string: 3, fretRel: 2 },
-                    { string: 2, fretRel: 1 }, { string: 2, fretRel: 3 },
-                    { string: 1, fretRel: 0 }, { string: 1, fretRel: 3 }
+                scaleMinorPent: [
+                    {s:6, f:1}, {s:6, f:3}, {s:5, f:1}, {s:5, f:3}, {s:4, f:1}, {s:4, f:3},
+                    {s:3, f:0}, {s:3, f:3}, {s:2, f:1}, {s:2, f:4}, {s:1, f:1}, {s:1, f:3}
                 ]
             },
             'A': {
-                name: 'Shape de A (Lá)',
-                rootStringOffset: 1, // Raiz na 5ª corda (A)
-                desc: 'A clássica pestana de 5ª corda. Tônica na 5ª corda e na 3ª corda (Sol). O shape mais confortável para ritmos pop/rock.',
-                fretsOffsetFromRoot: 0,
-                fretSpan: 4,
-                chordNotes: [
-                    { string: 5, fretRel: 0, role: 'root' },
-                    { string: 4, fretRel: 2, role: '5th' },
-                    { string: 3, fretRel: 2, role: 'root' },
-                    { string: 2, fretRel: 2, role: '3rd' },
-                    { string: 1, fretRel: 0, role: '5th' }
+                name: 'Shape A',
+                rootString: 5,
+                baseShiftCalc: (rIdx) => (rIdx - 9 + 12) % 12,
+                major: { frets: [-1, 0, 2, 2, 2, 0], fingers: ['X', 1, 2, 3, 4, 1], roles: ['X', 'T', '5J', 'T', '3M', '5J'] },
+                minor: { frets: [-1, 0, 2, 2, 1, 0], fingers: ['X', 1, 3, 4, 2, 1], roles: ['X', 'T', '5J', 'T', '3m', '5J'] },
+                dom7:  { frets: [-1, 0, 2, 0, 2, 0], fingers: ['X', 1, 2, 0, 3, 0], roles: ['X', 'T', '5J', '7m', '3M', '5J'] },
+                scaleMajorPent: [
+                    {s:6, f:0}, {s:6, f:2}, {s:5, f:0}, {s:5, f:2}, {s:4, f:2}, {s:4, f:4},
+                    {s:3, f:2}, {s:3, f:4}, {s:2, f:2}, {s:2, f:5}, {s:1, f:0}, {s:1, f:2}
                 ],
-                scaleNotes: [
-                    { string: 6, fretRel: 0 }, { string: 6, fretRel: 2 },
-                    { string: 5, fretRel: 0 }, { string: 5, fretRel: 2 },
-                    { string: 4, fretRel: 2 }, { string: 4, fretRel: 4 },
-                    { string: 3, fretRel: 2 }, { string: 3, fretRel: 4 },
-                    { string: 2, fretRel: 2 }, { string: 2, fretRel: 5 },
-                    { string: 1, fretRel: 0 }, { string: 1, fretRel: 2 }
+                scaleMinorPent: [
+                    {s:6, f:0}, {s:6, f:3}, {s:5, f:0}, {s:5, f:2}, {s:4, f:0}, {s:4, f:2},
+                    {s:3, f:0}, {s:3, f:2}, {s:2, f:1}, {s:2, f:3}, {s:1, f:0}, {s:1, f:3}
                 ]
             },
             'G': {
-                name: 'Shape de G (Sol)',
-                rootStringOffset: 0, // Raiz na 6ª corda (E)
-                desc: 'Tônica na 6ª corda, 3ª corda e 1ª corda. Ampla extensão pelo braço, ideal para dedilhados épicos estilo John Frusciante.',
-                fretsOffsetFromRoot: -3,
-                fretSpan: 4,
-                chordNotes: [
-                    { string: 6, fretRel: 3, role: 'root' },
-                    { string: 5, fretRel: 2, role: '3rd' },
-                    { string: 4, fretRel: 0, role: '5th' },
-                    { string: 3, fretRel: 0, role: 'root' },
-                    { string: 2, fretRel: 0, role: '3rd' },
-                    { string: 1, fretRel: 3, role: 'root' }
+                name: 'Shape G',
+                rootString: 6,
+                baseShiftCalc: (rIdx) => ((rIdx - 4 + 12) % 12 - 3 + 12) % 12,
+                major: { frets: [3, 2, 0, 0, 0, 3], fingers: [3, 2, 0, 0, 0, 4], roles: ['T', '3M', '5J', 'T', '3M', 'T'] },
+                minor: { frets: [3, 1, 0, 0, 3, 3], fingers: [3, 1, 0, 0, 4, 4], roles: ['T', '3m', '5J', 'T', '5J', 'T'] },
+                dom7:  { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], roles: ['T', '3M', '5J', 'T', '3M', '7m'] },
+                scaleMajorPent: [
+                    {s:6, f:0}, {s:6, f:3}, {s:5, f:0}, {s:5, f:2}, {s:4, f:0}, {s:4, f:2},
+                    {s:3, f:0}, {s:3, f:2}, {s:2, f:0}, {s:2, f:3}, {s:1, f:0}, {s:1, f:3}
                 ],
-                scaleNotes: [
-                    { string: 6, fretRel: 0 }, { string: 6, fretRel: 3 },
-                    { string: 5, fretRel: 0 }, { string: 5, fretRel: 2 },
-                    { string: 4, fretRel: 0 }, { string: 4, fretRel: 2 },
-                    { string: 3, fretRel: 0 }, { string: 3, fretRel: 2 },
-                    { string: 2, fretRel: 0 }, { string: 2, fretRel: 3 },
-                    { string: 1, fretRel: 0 }, { string: 1, fretRel: 3 }
+                scaleMinorPent: [
+                    {s:6, f:0}, {s:6, f:3}, {s:5, f:1}, {s:5, f:3}, {s:4, f:0}, {s:4, f:3},
+                    {s:3, f:0}, {s:3, f:3}, {s:2, f:1}, {s:2, f:3}, {s:1, f:0}, {s:1, f:3}
                 ]
             },
             'E': {
-                name: 'Shape de E (Mi)',
-                rootStringOffset: 0, // Raiz na 6ª corda (E)
-                desc: 'O shape rei do Blues, Rock e Heavy Metal. Tônica na 6ª, 4ª e 1ª corda. Base do Shape 1 da Pentatônica.',
-                fretsOffsetFromRoot: 0,
-                fretSpan: 4,
-                chordNotes: [
-                    { string: 6, fretRel: 0, role: 'root' },
-                    { string: 5, fretRel: 2, role: '5th' },
-                    { string: 4, fretRel: 2, role: 'root' },
-                    { string: 3, fretRel: 1, role: '3rd' },
-                    { string: 2, fretRel: 0, role: '5th' },
-                    { string: 1, fretRel: 0, role: 'root' }
+                name: 'Shape E',
+                rootString: 6,
+                baseShiftCalc: (rIdx) => (rIdx - 4 + 12) % 12,
+                major: { frets: [0, 2, 2, 1, 0, 0], fingers: [1, 3, 4, 2, 1, 1], roles: ['T', '5J', 'T', '3M', '5J', 'T'] },
+                minor: { frets: [0, 2, 2, 0, 0, 0], fingers: [1, 3, 4, 1, 1, 1], roles: ['T', '5J', 'T', '3m', '5J', 'T'] },
+                dom7:  { frets: [0, 2, 0, 1, 0, 0], fingers: [1, 3, 0, 2, 0, 0], roles: ['T', '5J', '7m', '3M', '5J', 'T'] },
+                scaleMajorPent: [
+                    {s:6, f:0}, {s:6, f:2}, {s:5, f:0}, {s:5, f:2}, {s:4, f:0}, {s:4, f:2},
+                    {s:3, f:1}, {s:3, f:3}, {s:2, f:0}, {s:2, f:2}, {s:1, f:0}, {s:1, f:2}
                 ],
-                scaleNotes: [
-                    { string: 6, fretRel: 0 }, { string: 6, fretRel: 3 },
-                    { string: 5, fretRel: 0 }, { string: 5, fretRel: 2 },
-                    { string: 4, fretRel: 0 }, { string: 4, fretRel: 2 },
-                    { string: 3, fretRel: 0 }, { string: 3, fretRel: 2 },
-                    { string: 2, fretRel: 0 }, { string: 2, fretRel: 3 },
-                    { string: 1, fretRel: 0 }, { string: 1, fretRel: 3 }
+                scaleMinorPent: [
+                    {s:6, f:0}, {s:6, f:3}, {s:5, f:0}, {s:5, f:2}, {s:4, f:0}, {s:4, f:2},
+                    {s:3, f:0}, {s:3, f:2}, {s:2, f:0}, {s:2, f:3}, {s:1, f:0}, {s:1, f:3}
                 ]
             },
             'D': {
-                name: 'Shape de D (Ré)',
-                rootStringOffset: 2, // Raiz na 4ª corda (D)
-                desc: 'Tônica na 4ª corda (D) e 2ª corda (B). O som brilhante dos agudos, muito utilizado em refrões e solos com double stops.',
-                fretsOffsetFromRoot: 0,
-                fretSpan: 4,
-                chordNotes: [
-                    { string: 4, fretRel: 0, role: 'root' },
-                    { string: 3, fretRel: 2, role: '5th' },
-                    { string: 2, fretRel: 3, role: 'root' },
-                    { string: 1, fretRel: 2, role: '3rd' }
+                name: 'Shape D',
+                rootString: 4,
+                baseShiftCalc: (rIdx) => (rIdx - 2 + 12) % 12,
+                major: { frets: [-1, -1, 0, 2, 3, 2], fingers: ['X', 'X', 0, 1, 3, 2], roles: ['X', 'X', 'T', '5J', 'T', '3M'] },
+                minor: { frets: [-1, -1, 0, 2, 3, 1], fingers: ['X', 'X', 0, 2, 3, 1], roles: ['X', 'X', 'T', '5J', 'T', '3m'] },
+                dom7:  { frets: [-1, -1, 0, 2, 1, 2], fingers: ['X', 'X', 0, 2, 1, 3], roles: ['X', 'X', 'T', '5J', '7m', '3M'] },
+                scaleMajorPent: [
+                    {s:5, f:0}, {s:5, f:2}, {s:4, f:0}, {s:4, f:2}, {s:3, f:0}, {s:3, f:2},
+                    {s:2, f:0}, {s:2, f:3}, {s:1, f:0}, {s:1, f:2}
                 ],
-                scaleNotes: [
-                    { string: 5, fretRel: 0 }, { string: 5, fretRel: 2 },
-                    { string: 4, fretRel: 0 }, { string: 4, fretRel: 2 },
-                    { string: 3, fretRel: 0 }, { string: 3, fretRel: 2 },
-                    { string: 2, fretRel: 0 }, { string: 2, fretRel: 3 },
-                    { string: 1, fretRel: 0 }, { string: 1, fretRel: 2 }
+                scaleMinorPent: [
+                    {s:5, f:0}, {s:5, f:3}, {s:4, f:0}, {s:4, f:3}, {s:3, f:0}, {s:3, f:2},
+                    {s:2, f:1}, {s:2, f:3}, {s:1, f:0}, {s:1, f:3}
                 ]
             }
         };
 
+        function initCagedRootPills() {
+            const container = document.getElementById('caged-root-pills');
+            container.innerHTML = '';
+            NOTES.forEach(n => {
+                const btn = document.createElement('button');
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-black shrink-0 transition ${n === appState.caged.root ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30' : 'btn-secondary text-gray-300'}`;
+                btn.textContent = n;
+                btn.onclick = () => {
+                    appState.caged.root = n;
+                    initCagedRootPills();
+                    updateCagedMaster();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function setCagedQuality(qual) {
+            appState.caged.quality = qual;
+            ['major', 'minor', 'dom7'].forEach(q => {
+                const btn = document.getElementById(`qual-${q}`);
+                if (btn) {
+                    if (q === qual) {
+                        btn.className = "px-3 py-1.5 rounded-lg text-xs font-extrabold transition bg-brand-500 text-white shadow";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white";
+                    }
+                }
+            });
+            updateCagedMaster();
+        }
+
         function selectCagedShape(shapeLetter) {
-            appState.caged.currentShape = shapeLetter;
+            appState.caged.shape = shapeLetter;
             document.querySelectorAll('.caged-shape-btn').forEach(btn => {
                 btn.classList.remove('moises-card-elevated', 'border-brand-400');
                 btn.classList.add('moises-card', 'border-white/[0.08]');
@@ -1163,130 +1032,184 @@
                 selBtn.classList.remove('moises-card', 'border-white/[0.08]');
                 selBtn.classList.add('moises-card-elevated', 'border-brand-400');
             }
-            updateCagedView();
+            updateCagedMaster();
         }
 
         function setCagedLayer(layer) {
-            appState.caged.activeLayer = layer;
+            appState.caged.layer = layer;
             ['both', 'chord', 'scale'].forEach(l => {
                 const btn = document.getElementById(`layer-${l}`);
                 if (l === layer) {
-                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-brand-500 text-white shadow";
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-brand-500 text-white shadow";
                 } else {
-                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white";
+                    btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white";
                 }
             });
-            updateCagedView();
+            updateCagedMaster();
         }
 
-        function calculateRootFretForShape(rootNote, shapeLetter) {
-            const notes = NOTES_SHARP;
-            const rIdx = notes.indexOf(rootNote);
+        function updateCagedMaster() {
+            const root = appState.caged.root;
+            const quality = appState.caged.quality;
+            const rIdx = NOTES.indexOf(root);
+
+            // Atualiza os badges dos 5 shapes com o número do traste de cada um
+            ['C', 'A', 'G', 'E', 'D'].forEach(letter => {
+                const shift = CAGED_TEMPLATES[letter].baseShiftCalc(rIdx);
+                const badge = document.getElementById(`fret-badge-${letter}`);
+                if (badge) badge.textContent = `${shift}ª casa`;
+            });
+
+            const activeShape = appState.caged.shape;
+            const tmpl = CAGED_TEMPLATES[activeShape];
+            const activeShift = tmpl.baseShiftCalc(rIdx);
+            const qualObj = tmpl[quality];
+
+            const qualName = quality === 'major' ? 'Maior' : quality === 'minor' ? 'Menor' : 'com 7ª';
+            document.getElementById('caged-title-display').textContent = `${root} ${qualName} (Shape ${activeShape})`;
+            document.getElementById('caged-fret-span').textContent = `Início: ${activeShift}ª Casa`;
+            document.getElementById('caged-desc-display').textContent = `Acorde de ${root} montado com o formato de ${activeShape}. Tônica na ${tmpl.rootString}ª corda.`;
+
+            // 1. Gera o Diagrama Vertical de Acorde (Chord Box)
+            renderChordBoxSvg(qualObj, activeShift, root);
+
+            // 2. Renderiza o Braço Horizontal
+            renderCagedHorizontalFretboard(activeShape, qualObj, activeShift, root, quality);
+        }
+
+        function renderChordBoxSvg(qualObj, shift, root) {
+            const container = document.getElementById('caged-chord-box');
             
-            // Fret da tônica de acordo com a corda guia do Shape:
-            // Shape E e G usam a 6ª corda (E = 0)
-            // Shape A e C usam a 5ª corda (A = 0)
-            // Shape D usa a 4ª corda (D = 0)
-            if (shapeLetter === 'E' || shapeLetter === 'G') {
-                const eIdx = notes.indexOf('E');
-                return (rIdx - eIdx + 12) % 12;
-            } else if (shapeLetter === 'A' || shapeLetter === 'C') {
-                const aIdx = notes.indexOf('A');
-                return (rIdx - aIdx + 12) % 12;
-            } else if (shapeLetter === 'D') {
-                const dIdx = notes.indexOf('D');
-                return (rIdx - dIdx + 12) % 12;
+            // Determina trastes válidos
+            const validFrets = qualObj.frets.map(f => f >= 0 ? f + shift : -1);
+            const pressedFrets = validFrets.filter(f => f > 0);
+            const minFret = pressedFrets.length ? Math.min(...pressedFrets) : 1;
+            const baseFret = minFret > 1 ? minFret : 1;
+
+            const isBarre = (shift > 0);
+            
+            let svg = `<svg viewBox="0 0 170 195" width="160" height="185" class="drop-shadow-md">`;
+            
+            // Fret label
+            if (baseFret > 1) {
+                svg += `<text x="8" y="46" fill="#38bdf8" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace">${baseFret}ª</text>`;
+            } else {
+                // Pestana aberta (nut em branco grosso)
+                svg += `<line x1="28" y1="28" x2="148" y2="28" stroke="#ffffff" stroke-width="4"/>`;
             }
-            return 0;
+
+            // 6 Strings verticais
+            const xCoords = [28, 52, 76, 100, 124, 148]; // Corda 6 a Corda 1
+            xCoords.forEach(x => {
+                svg += `<line x1="${x}" y1="28" x2="${x}" y2="168" stroke="#334155" stroke-width="1.8"/>`;
+            });
+
+            // 5 Fret lines horizontais
+            const yCoords = [28, 63, 98, 133, 168];
+            yCoords.forEach(y => {
+                svg += `<line x1="28" y1="${y}" x2="148" y2="${y}" stroke="#1e293b" stroke-width="1.5"/>`;
+            });
+
+            // Indicadores de topo: X ou O
+            validFrets.forEach((f, idx) => {
+                const x = xCoords[idx];
+                if (f === -1) {
+                    svg += `<text x="${x}" y="18" fill="#f43f5e" font-size="12" font-weight="900" text-anchor="middle">✕</text>`;
+                } else if (f === 0) {
+                    svg += `<circle cx="${x}" cy="15" r="4.5" fill="none" stroke="#38bdf8" stroke-width="2"/>`;
+                }
+            });
+
+            // Pontos pressionados nos trastes
+            validFrets.forEach((f, idx) => {
+                if (f > 0) {
+                    const x = xCoords[idx];
+                    const relFret = f - baseFret + 1;
+                    if (relFret >= 1 && relFret <= 4) {
+                        const y = 28 + (relFret - 0.5) * 35;
+                        const role = qualObj.roles[idx];
+                        const isRoot = (role === 'T');
+                        const fill = isRoot ? '#ef4444' : '#f59e0b';
+                        const finger = qualObj.fingers[idx];
+
+                        svg += `<circle cx="${x}" cy="${y}" r="11" fill="${fill}" stroke="#ffffff" stroke-width="1.5"/>`;
+                        svg += `<text x="${x}" y="${y + 3.5}" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle">${finger}</text>`;
+                    }
+                }
+            });
+
+            svg += `</svg>`;
+            container.innerHTML = svg;
         }
 
-        function updateCagedView() {
-            const root = document.getElementById('caged-root-select').value;
-            const quality = document.getElementById('caged-quality-select').value;
-            const shapeKey = appState.caged.currentShape;
-            const shapeDef = CAGED_DEFINITIONS[shapeKey];
-
-            appState.caged.root = root;
-            appState.caged.quality = quality;
-
-            const baseFret = calculateRootFretForShape(root, shapeKey);
-            let displayMinFret = baseFret + shapeDef.fretsOffsetFromRoot;
-            if (displayMinFret < 0) displayMinFret += 12;
-            let displayMaxFret = displayMinFret + 4;
-
-            document.getElementById('caged-title-display').textContent = `Shape ${shapeKey} no Tom de ${root} ${quality === 'major' ? 'Maior' : quality === 'minor' ? 'Menor' : 'Dominante 7'}`;
-            document.getElementById('caged-fret-span').textContent = `Trastes ${displayMinFret} a ${displayMaxFret}`;
-            document.getElementById('caged-desc-display').textContent = shapeDef.desc;
-
-            renderCagedFretboard(root, shapeDef, displayMinFret, displayMaxFret);
-        }
-
-        function renderCagedFretboard(root, shapeDef, minFret, maxFret) {
+        function renderCagedHorizontalFretboard(shapeLetter, qualObj, shift, root, quality) {
             const board = document.getElementById('caged-fretboard');
             board.innerHTML = '';
 
+            const tmpl = CAGED_TEMPLATES[shapeLetter];
             const tuning = INSTRUMENTS.guitar.strings; // ['E', 'B', 'G', 'D', 'A', 'E']
-            const tuningIndex = [1, 2, 3, 4, 5, 6];
+            const tuningIdx = [5, 4, 3, 2, 1, 0]; // Índices no template (corda 1 a 6)
 
-            tuning.forEach((openNote, stringIdx) => {
-                const stringNum = tuningIndex[stringIdx];
+            const scaleList = quality === 'minor' ? tmpl.scaleMinorPent : tmpl.scaleMajorPent;
+
+            const minShapeFret = Math.max(0, shift);
+            const maxShapeFret = minShapeFret + 4;
+
+            tuning.forEach((openNote, stringDisplayIdx) => {
+                const stringNum = 6 - stringDisplayIdx; // 6, 5, 4, 3, 2, 1
+                const tmplStringIdx = 6 - stringNum;   // 0 a 5 no template
+
                 const row = document.createElement('div');
                 row.className = 'string-row';
 
                 const wire = document.createElement('div');
                 wire.className = 'string-wire';
-                const thick = (6 - stringIdx) * 0.6 + 0.6;
+                const thick = stringNum * 0.5 + 0.6;
                 wire.style.height = `${thick}px`;
                 wire.style.top = `calc(50% - ${thick/2}px)`;
                 row.appendChild(wire);
 
-                const openIdx = NOTES_SHARP.indexOf(openNote);
+                const openIdx = OPEN_STRINGS_TUNING[tmplStringIdx];
 
-                // Renderiza trastes de 0 a 16
                 for (let f = 0; f <= 16; f++) {
                     const cell = document.createElement('div');
                     cell.className = `fret-cell ${f === 0 ? 'nut' : ''}`;
-                    
-                    const noteAtFret = NOTES_SHARP[(openIdx + f) % 12];
-                    const isRoot = (noteAtFret === root);
 
-                    // Verifica se está no intervalo do shape
-                    if (f >= minFret && f <= maxFret) {
-                        const relFret = f - minFret;
-                        
-                        // Checa se é nota do acorde
-                        const chordMatch = shapeDef.chordNotes.find(n => n.string === stringNum && n.fretRel === relFret);
-                        // Checa se é nota da escala
-                        const scaleMatch = shapeDef.scaleNotes.find(n => n.string === stringNum && n.fretRel === relFret);
+                    const noteStr = NOTES[(openIdx + f) % 12];
+                    const isRoot = (noteStr === root);
 
-                        let shouldRender = false;
-                        let markerClass = '';
-                        let labelText = noteAtFret;
+                    // Verifica se é nota do acorde
+                    const chordFret = qualObj.frets[tmplStringIdx] >= 0 ? qualObj.frets[tmplStringIdx] + shift : -1;
+                    const isChordNote = (chordFret === f);
 
-                        if (appState.caged.activeLayer === 'both') {
-                            if (chordMatch) {
-                                shouldRender = true;
-                                markerClass = isRoot ? 'marker-root' : 'marker-chord';
-                            } else if (scaleMatch) {
-                                shouldRender = true;
-                                markerClass = 'marker-scale';
-                            }
-                        } else if (appState.caged.activeLayer === 'chord' && chordMatch) {
-                            shouldRender = true;
+                    // Verifica se é nota da escala no shape
+                    const isScaleNote = scaleList.some(item => item.s === stringNum && (item.f + shift) === f);
+
+                    let shouldShow = false;
+                    let markerClass = '';
+
+                    if (appState.caged.layer === 'both') {
+                        if (isChordNote) {
+                            shouldShow = true;
                             markerClass = isRoot ? 'marker-root' : 'marker-chord';
-                        } else if (appState.caged.activeLayer === 'scale' && scaleMatch) {
-                            shouldRender = true;
-                            markerClass = isRoot ? 'marker-root' : 'marker-scale';
+                        } else if (isScaleNote) {
+                            shouldShow = true;
+                            markerClass = 'marker-scale';
                         }
+                    } else if (appState.caged.layer === 'chord' && isChordNote) {
+                        shouldShow = true;
+                        markerClass = isRoot ? 'marker-root' : 'marker-chord';
+                    } else if (appState.caged.layer === 'scale' && isScaleNote) {
+                        shouldShow = true;
+                        markerClass = isRoot ? 'marker-root' : 'marker-scale';
+                    }
 
-                        if (shouldRender) {
-                            cell.innerHTML = `
-                                <div class="fret-marker-dot ${markerClass}" onclick="playNotes(['${noteAtFret}3'])">
-                                    <span class="leading-none">${labelText}</span>
-                                    <span class="text-[7px] opacity-75 font-mono">${isRoot ? 'T' : chordMatch ? 'C' : 'E'}</span>
-                                </div>
-                            `;
-                        }
+                    if (shouldShow) {
+                        cell.innerHTML = `
+                            <div class="fret-marker-dot ${markerClass}" onclick="playNotes(['${noteStr}3'])">
+                                <span>${noteStr}</span>
+                            </div>
+                        `;
                     }
 
                     row.appendChild(cell);
@@ -1294,17 +1217,17 @@
                 board.appendChild(row);
             });
 
-            // Linha com números dos trastes
+            // Linha com numeração dos trastes
             const markersRow = document.createElement('div');
-            markersRow.className = 'flex mt-2 ml-[50px]';
+            markersRow.className = 'flex mt-1.5 ml-[44px]';
             for (let f = 1; f <= 16; f++) {
                 const cell = document.createElement('div');
                 cell.className = 'flex flex-col items-center flex-shrink-0';
-                cell.style.width = '70px';
+                cell.style.width = '66px';
                 if ([3, 5, 7, 9, 12, 15].includes(f)) {
                     cell.innerHTML = `
-                        <div class="w-2 h-2 rounded-full bg-cyan-400/40 mb-1 ${f === 12 ? 'w-5 bg-amber-glow' : ''}"></div>
-                        <span class="text-[10px] text-gray-400 font-mono font-bold">${f}</span>
+                        <div class="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mb-1 ${f === 12 ? 'w-4 bg-amber-glow' : ''}"></div>
+                        <span class="text-[9px] text-gray-400 font-mono font-bold">${f}</span>
                     `;
                 }
                 markersRow.appendChild(cell);
@@ -1314,25 +1237,39 @@
 
         async function playCagedChordAudio() {
             const root = appState.caged.root;
-            const shapeKey = appState.caged.currentShape;
-            const isMinor = appState.caged.quality === 'minor';
-            
-            // Simula dedilhado do acorde
-            const chordTones = isMinor ? [root + '3', 'Eb3', 'G3', root + '4'] : [root + '3', 'E3', 'G3', root + '4'];
-            showNotification(`Tocando Acorde CAGED (Shape ${shapeKey})...`);
-            await playStrummedChord(chordTones);
+            const quality = appState.caged.quality;
+            const shapeKey = appState.caged.shape;
+            const rIdx = NOTES.indexOf(root);
+            const tmpl = CAGED_TEMPLATES[shapeKey];
+            const shift = tmpl.baseShiftCalc(rIdx);
+            const qualObj = tmpl[quality];
+
+            const notesToPlay = [];
+            qualObj.frets.forEach((f, idx) => {
+                if (f >= 0) {
+                    const actualFret = f + shift;
+                    const openNoteIdx = OPEN_STRINGS_TUNING[idx];
+                    const n = NOTES[(openNoteIdx + actualFret) % 12];
+                    const oct = (idx >= 3) ? 4 : 3;
+                    notesToPlay.push(`${n}${oct}`);
+                }
+            });
+
+            showNotification(`Tocando ${root} ${quality} (Shape ${shapeKey})...`);
+            await playStrum(notesToPlay);
         }
 
         async function playCagedScaleAudio() {
             const root = appState.caged.root;
-            const shapeKey = appState.caged.currentShape;
+            const quality = appState.caged.quality;
+            const shapeKey = appState.caged.shape;
             showNotification(`Tocando Escala do Shape ${shapeKey}...`);
-            const notes = [root + '3', 'D3', 'E3', 'G3', 'A3', root + '4'];
-            await playArpeggio(notes);
+            const baseNotes = quality === 'minor' ? [root+'3', 'Eb3', 'F3', 'G3', 'Bb3', root+'4'] : [root+'3', 'D3', 'E3', 'G3', 'A3', root+'4'];
+            await playArpeggio(baseNotes);
         }
 
         // =========================================================================
-        // 4. MÓDULO DOUBLE STOPS (SEM TEORIA - MEMORIZAÇÃO E PRÁTICA IMEDIATA)
+        // 4. MÓDULO DOUBLE STOPS (SEM TEORIA - MEMORIZAÇÃO & PRÁTICA IMEDIATA)
         // =========================================================================
         const DOUBLE_STOPS_DATABASE = [
             {
@@ -1340,36 +1277,33 @@
                 category: 'hendrix',
                 title: 'O Martelo de Little Wing',
                 stringsText: 'Cordas 3 e 2 (G e B)',
-                fretText: 'Traste 5 (Martela no 7)',
+                fretText: 'Traste 5 (Martela 7)',
                 heroImageDesc: 'Dedo 1 prende as cordas 2 e 3 no traste 5. O Dedo 3 (Anelar) martela a corda 3 no traste 7.',
                 artist: 'Jimi Hendrix / SRV',
                 notes: ['C4', 'E4'],
-                lickNotes: ['C4', 'E4', 'D4', 'E4'],
-                tip: 'O clássico absoluto de R&B e Blues. Deixe a corda 2 soando enquanto martela a corda 3!'
+                lickNotes: ['C4', 'E4', 'D4', 'E4']
             },
             {
                 id: 'hendrix_2',
                 category: 'hendrix',
                 title: 'A Flexão Blue Note',
                 stringsText: 'Cordas 3 e 2 (G e B)',
-                fretText: 'Traste 7 (Martela no 8)',
+                fretText: 'Traste 7 (Martela 8)',
                 heroImageDesc: 'Dedo 1 no traste 7 das cordas 2 e 3. Dedo 2 (Médio) entra no traste 8 da corda 2.',
                 artist: 'Stevie Ray Vaughan',
                 notes: ['D4', 'F#4'],
-                lickNotes: ['D4', 'F#4', 'G4', 'D4'],
-                tip: 'Dá aquela sensação de resolução blues imediata. Use no início ou fim de compasso.'
+                lickNotes: ['D4', 'F#4', 'G4', 'D4']
             },
             {
                 id: 'hendrix_3',
                 category: 'hendrix',
                 title: 'O Slide do Sol Maior',
                 stringsText: 'Cordas 3 e 2 (G e B)',
-                fretText: 'Deslize do traste 7 para o 9',
+                fretText: 'Slide Traste 7 ➔ 9',
                 heroImageDesc: 'Segure as cordas 2 e 3 juntas no traste 7 e deslize de uma vez até o traste 9.',
                 artist: 'John Mayer / Hendrix',
                 notes: ['E4', 'G4'],
-                lickNotes: ['D4', 'F#4', 'E4', 'G4'],
-                tip: 'Mantenha a palhetada firme e o som ligado no slide. Soa extremamente melódico!'
+                lickNotes: ['D4', 'F#4', 'E4', 'G4']
             },
             {
                 id: 'thirds_1',
@@ -1378,34 +1312,31 @@
                 stringsText: 'Cordas 1 e 2 (E e B)',
                 fretText: 'Trastes Iguais (ex: 5 e 5)',
                 heroImageDesc: 'Indicador faz uma mini pestana cobrindo as cordas 1 e 2 no mesmo traste.',
-                artist: 'Chuck Berry / Country',
+                artist: 'Chuck Berry / Rock',
                 notes: ['E4', 'A4'],
-                lickNotes: ['E4', 'A4', 'E4', 'A4'],
-                tip: 'Perfeito para rock and roll clássico e introduções enérgicas.'
+                lickNotes: ['E4', 'A4', 'E4', 'A4']
             },
             {
                 id: 'thirds_2',
                 category: 'thirds',
                 title: 'Shape Diagonal de 3ªs',
                 stringsText: 'Cordas 1 e 2 (E e B)',
-                fretText: 'Traste 7 (corda 1) + Traste 8 (corda 2)',
+                fretText: 'Traste 7 (C1) + Traste 8 (C2)',
                 heroImageDesc: 'Dedo 1 no traste 7 (corda 1) e Dedo 2 no traste 8 (corda 2).',
                 artist: 'Clapton / B.B. King',
                 notes: ['B4', 'G4'],
-                lickNotes: ['B4', 'G4', 'C5', 'A4'],
-                tip: 'Alterne entre o Shape Reto e o Shape Diagonal subindo o braço para fazer solos vocais.'
+                lickNotes: ['B4', 'G4', 'C5', 'A4']
             },
             {
                 id: 'sixths_1',
                 category: 'sixths',
                 title: '6ªs Melódicas Doces',
                 stringsText: 'Cordas 3 e 1 (G e E)',
-                fretText: 'Traste 6 (corda 3) + Traste 7 (corda 1)',
+                fretText: 'Traste 6 (C3) + Traste 7 (C1)',
                 heroImageDesc: 'O Dedo 1 abafa a corda 2 no meio enquanto toca as cordas 3 e 1 juntas.',
                 artist: 'Steve Cropper / Soul',
                 notes: ['C#4', 'B4'],
-                lickNotes: ['C#4', 'B4', 'D4', 'C5'],
-                tip: 'O som da Motown e Soul! O silenciamento da corda do meio é automático encostando suavemente o dedo.'
+                lickNotes: ['C#4', 'B4', 'D4', 'C5']
             },
             {
                 id: 'fourths_1',
@@ -1414,10 +1345,9 @@
                 stringsText: 'Cordas 4 e 3 (D e G)',
                 fretText: 'Traste 5 nas duas cordas',
                 heroImageDesc: 'Um único dedo cobre as cordas D e G no traste 5.',
-                artist: 'Deep Purple / Funk Soul',
+                artist: 'Deep Purple / Funk',
                 notes: ['G3', 'C4'],
-                lickNotes: ['G3', 'C4', 'A3', 'D4'],
-                tip: 'O riff mais famoso da história (Smoke on the Water). Soa pesado e rítmico!'
+                lickNotes: ['G3', 'C4', 'A3', 'D4']
             }
         ];
 
@@ -1427,9 +1357,9 @@
                 const btn = document.getElementById(`ds-filter-${c}`);
                 if (btn) {
                     if (c === cat) {
-                        btn.className = "px-4 py-2 rounded-lg text-xs font-extrabold transition bg-brand-500 text-white shadow whitespace-nowrap";
+                        btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition bg-brand-500 text-white shadow whitespace-nowrap";
                     } else {
-                        btn.className = "px-4 py-2 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white whitespace-nowrap";
+                        btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap";
                     }
                 }
             });
@@ -1444,32 +1374,27 @@
 
             list.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'moises-card p-5 flex flex-col justify-between hover:border-brand-400/50 transition';
+                card.className = 'moises-card p-4 flex flex-col justify-between hover:border-brand-400/50 transition';
                 card.innerHTML = `
                     <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[10px] font-black uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${item.artist}</span>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="text-[9px] font-black uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${item.artist}</span>
                             <span class="text-xs font-mono font-bold text-cyan-400">${item.fretText}</span>
                         </div>
-                        <h4 class="text-lg font-display font-black text-white">${item.title}</h4>
-                        <p class="text-xs text-gray-400 font-bold mt-1">${item.stringsText}</p>
+                        <h4 class="text-base font-display font-black text-white">${item.title}</h4>
+                        <span class="text-xs text-gray-400 font-bold block mb-2">${item.stringsText}</span>
 
-                        <!-- Box de Instrução Visual Imediata -->
-                        <div class="moises-well p-3.5 my-4 rounded-xl">
+                        <div class="moises-well p-3 mb-3 rounded-xl">
                             <p class="text-xs text-gray-200 leading-relaxed">${item.heroImageDesc}</p>
-                        </div>
-
-                        <div class="text-[11px] text-gray-400 italic mb-4">
-                            💡 <strong>Dica de Prática:</strong> ${item.tip}
                         </div>
                     </div>
 
-                    <div class="flex gap-2.5 pt-3 border-t border-white/[0.06]">
-                        <button onclick="playNotes(['${item.notes[0]}', '${item.notes[1]}'])" class="btn-secondary flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:border-brand-400">
-                            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-brand-400"></i> Ouvir Dupla
+                    <div class="flex gap-2 pt-2 border-t border-white/[0.06]">
+                        <button onclick="playNotes(['${item.notes[0]}', '${item.notes[1]}'])" class="btn-secondary flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 hover:border-brand-400">
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-brand-400"></i> Dupla
                         </button>
-                        <button onclick="playArpeggio(${JSON.stringify(item.lickNotes).replace(/"/g, "'")})" class="btn-glow flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5">
-                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Frase / Lick
+                        <button onclick="playArpeggio(${JSON.stringify(item.lickNotes).replace(/"/g, "'")})" class="btn-glow flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1">
+                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Frase
                         </button>
                     </div>
                 `;
@@ -1484,7 +1409,7 @@
         function initScalesModule() {
             const rootSel = document.getElementById('scale-root-select');
             const compRootSel = document.getElementById('composer-root-select');
-            NOTES_SHARP.forEach(n => {
+            NOTES.forEach(n => {
                 rootSel.appendChild(new Option(n, n));
                 compRootSel.appendChild(new Option(n, n));
             });
@@ -1501,9 +1426,9 @@
                 const btn = document.getElementById(`inst-${i}`);
                 if (btn) {
                     if (i === inst) {
-                        btn.className = "px-5 py-2.5 text-xs font-extrabold rounded-lg bg-brand-500 text-white shadow transition";
+                        btn.className = "flex-1 py-1.5 text-xs font-extrabold rounded-lg bg-brand-500 text-white shadow transition";
                     } else {
-                        btn.className = "px-5 py-2.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition";
+                        btn.className = "flex-1 py-1.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition";
                     }
                 }
             });
@@ -1543,11 +1468,10 @@
             }
             document.getElementById('harmonic-field-card').classList.remove('hidden');
 
-            const notesArray = getNoteArray(appState.scales.root, appState.scales.scaleKey);
-            const rIdx = notesArray.indexOf(appState.scales.root);
+            const rIdx = NOTES.indexOf(appState.scales.root);
 
             scaleObj.intervals.forEach((interval, idx) => {
-                const note = notesArray[(rIdx + interval) % 12];
+                const note = NOTES[(rIdx + interval) % 12];
                 let cName = note;
                 if (scaleObj.harm.q[idx] === 'm') cName += 'm';
                 if (scaleObj.harm.q[idx] === 'dim') cName += '°';
@@ -1555,19 +1479,18 @@
                 const isRelative = (appState.scales.scaleKey === 'major' && idx === 5) || (appState.scales.scaleKey === 'minor' && idx === 2);
 
                 const btn = document.createElement('button');
-                btn.className = `moises-well p-3 min-w-[85px] rounded-xl flex flex-col items-center justify-center hover:border-brand-400 transition shadow cursor-pointer border ${isRelative ? 'border-amber-glow/60' : 'border-white/[0.06]'}`;
+                btn.className = `moises-well p-2.5 min-w-[70px] rounded-xl flex flex-col items-center justify-center hover:border-brand-400 transition cursor-pointer border ${isRelative ? 'border-amber-glow/60' : 'border-white/[0.06]'}`;
                 btn.innerHTML = `
-                    <span class="text-[9px] font-mono text-gray-400 font-bold mb-1">${ROMANS[idx]}</span>
-                    <span class="text-xl font-display font-black text-white leading-none">${cName}</span>
-                    <span class="text-[8px] uppercase font-extrabold ${scaleObj.harm.c[idx]} mt-1 tracking-wider">${scaleObj.harm.func[idx]}</span>
-                    ${isRelative ? '<span class="text-[7px] uppercase font-bold bg-amber-500/20 text-amber-glow px-1.5 py-0.5 rounded mt-1 border border-amber-500/30">Relativo</span>' : ''}
+                    <span class="text-[9px] font-mono text-gray-400 font-bold leading-none mb-1">${ROMANS[idx]}</span>
+                    <span class="text-base font-display font-black text-white leading-none">${cName}</span>
+                    <span class="text-[8px] uppercase font-bold ${scaleObj.harm.c[idx]} mt-1 leading-none">${scaleObj.harm.func[idx]}</span>
                 `;
 
                 btn.onclick = () => {
-                    const n3 = notesArray[(rIdx + scaleObj.intervals[(idx + 2) % 7]) % 12];
-                    const n5 = notesArray[(rIdx + scaleObj.intervals[(idx + 4) % 7]) % 12];
+                    const n3 = NOTES[(rIdx + scaleObj.intervals[(idx + 2) % 7]) % 12];
+                    const n5 = NOTES[(rIdx + scaleObj.intervals[(idx + 4) % 7]) % 12];
                     playNotes([note + '3', n3 + '3', n5 + '3']);
-                    showNotification(`Acorde ${cName} (${scaleObj.harm.func[idx]})`);
+                    showNotification(`Acorde ${cName}`);
                 };
 
                 list.appendChild(btn);
@@ -1583,9 +1506,8 @@
             const frets = inst.frets;
 
             const scaleObj = SCALES[appState.scales.scaleKey];
-            const notesArray = getNoteArray(appState.scales.root, appState.scales.scaleKey);
-            const rIdx = notesArray.indexOf(appState.scales.root);
-            const activeNotes = scaleObj.intervals.map(i => notesArray[(rIdx + i) % 12]);
+            const rIdx = NOTES.indexOf(appState.scales.root);
+            const activeNotes = scaleObj.intervals.map(i => NOTES[(rIdx + i) % 12]);
 
             tuning.forEach((openNote, stringIdx) => {
                 const row = document.createElement('div');
@@ -1593,18 +1515,18 @@
 
                 const wire = document.createElement('div');
                 wire.className = 'string-wire';
-                const thick = appState.scales.instrument === 'bass' ? (tuning.length - stringIdx) * 1.5 : (tuning.length - stringIdx) * 0.5 + 0.6;
+                const thick = appState.scales.instrument === 'bass' ? (tuning.length - stringIdx) * 1.4 : (tuning.length - stringIdx) * 0.5 + 0.6;
                 wire.style.height = `${thick}px`;
                 wire.style.top = `calc(50% - ${thick/2}px)`;
                 row.appendChild(wire);
 
-                const openIdx = notesArray.indexOf(openNote) > -1 ? notesArray.indexOf(openNote) : NOTES_SHARP.indexOf(openNote);
+                const openIdx = NOTES.indexOf(openNote);
 
                 for (let f = 0; f <= frets; f++) {
                     const cell = document.createElement('div');
                     cell.className = `fret-cell ${f === 0 ? 'nut' : ''}`;
                     
-                    const noteStr = notesArray[(openIdx + f) % 12];
+                    const noteStr = NOTES[(openIdx + f) % 12];
                     if (activeNotes.includes(noteStr)) {
                         const isRoot = (noteStr === appState.scales.root);
                         cell.innerHTML = `
@@ -1618,17 +1540,17 @@
                 board.appendChild(row);
             });
 
-            // Indicadores de trastes
+            // Numeração de trastes
             const markersRow = document.createElement('div');
-            markersRow.className = 'flex mt-2 ml-[50px]';
+            markersRow.className = 'flex mt-1.5 ml-[44px]';
             for (let f = 1; f <= frets; f++) {
                 const cell = document.createElement('div');
                 cell.className = 'flex flex-col items-center flex-shrink-0';
-                cell.style.width = '70px';
+                cell.style.width = '66px';
                 if ([3, 5, 7, 9, 12, 15, 17, 19, 21].includes(f)) {
                     cell.innerHTML = `
-                        <div class="w-2 h-2 rounded-full bg-cyan-400/40 mb-1 ${f === 12 ? 'w-5 bg-amber-glow' : ''}"></div>
-                        <span class="text-[10px] text-gray-400 font-mono font-bold">${f}</span>
+                        <div class="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mb-1 ${f === 12 ? 'w-4 bg-amber-glow' : ''}"></div>
+                        <span class="text-[9px] text-gray-400 font-mono font-bold">${f}</span>
                     `;
                 }
                 markersRow.appendChild(cell);
@@ -1646,9 +1568,8 @@
             ];
 
             const scaleObj = SCALES[appState.scales.scaleKey];
-            const notesArray = getNoteArray(appState.scales.root, appState.scales.scaleKey);
-            const rIdx = notesArray.indexOf(appState.scales.root);
-            const activeNotes = scaleObj.intervals.map(i => notesArray[(rIdx + i) % 12]);
+            const rIdx = NOTES.indexOf(appState.scales.root);
+            const activeNotes = scaleObj.intervals.map(i => NOTES[(rIdx + i) % 12]);
 
             [3, 4].forEach(oct => {
                 keysMap.forEach(w => {
@@ -1659,10 +1580,10 @@
                     const isRoot = (w.n === appState.scales.root);
 
                     if (isWhiteActive) {
-                        wKey.innerHTML = `<span class="w-3 h-3 rounded-full ${isRoot ? 'bg-red-500' : 'bg-brand-500'} absolute bottom-3"></span>`;
+                        wKey.innerHTML = `<span class="w-2.5 h-2.5 rounded-full ${isRoot ? 'bg-red-500' : 'bg-brand-500'} absolute bottom-2"></span>`;
                     }
                     if (w.n === 'C') {
-                        wKey.innerHTML += `<span class="absolute bottom-1 text-[9px] text-gray-400 font-bold">C${oct}</span>`;
+                        wKey.innerHTML += `<span class="absolute bottom-0.5 text-[8px] text-gray-400 font-bold">C${oct}</span>`;
                     }
 
                     wKey.onpointerdown = () => playNotes([`${w.n}${oct}`]);
@@ -1675,7 +1596,7 @@
                         const bKey = document.createElement('div');
                         bKey.className = 'key-black';
                         if (isBlackActive) {
-                            bKey.innerHTML = `<span class="w-2.5 h-2.5 rounded-full ${isBlackRoot ? 'bg-red-500' : 'bg-brand-400'} absolute bottom-2"></span>`;
+                            bKey.innerHTML = `<span class="w-2 h-2 rounded-full ${isBlackRoot ? 'bg-red-500' : 'bg-brand-400'} absolute bottom-1.5"></span>`;
                         }
                         bKey.onpointerdown = (e) => {
                             e.stopPropagation();
@@ -1697,7 +1618,6 @@
             { M: 'E', m: 'C#' }, { M: 'B', m: 'G#' }, { M: 'Gb', m: 'Eb' }, { M: 'Db', m: 'Bb' },
             { M: 'Ab', m: 'F' }, { M: 'Eb', m: 'C' }, { M: 'Bb', m: 'G' }, { M: 'F', m: 'D' }
         ];
-        const ENHARMONICS = { 'C#':'Db', 'D#':'Eb', 'F#':'Gb', 'G#':'Ab', 'A#':'Bb', 'Db':'C#', 'Eb':'D#', 'Gb':'F#', 'Ab':'G#', 'Bb':'A#' };
 
         function initCircleOfFifths() {
             const wrap = document.getElementById('circle-fifths-wrap');
@@ -1706,7 +1626,6 @@
             COF_KEYS.forEach((k, i) => {
                 const ang = (i * 30 - 90) * (Math.PI / 180);
 
-                // Anel Externo (Tons Maiores)
                 const nodeMaj = document.createElement('div');
                 nodeMaj.className = 'cof-node cof-maj';
                 nodeMaj.style.left = `${50 + 38 * Math.cos(ang)}%`;
@@ -1720,7 +1639,6 @@
                 };
                 wrap.appendChild(nodeMaj);
 
-                // Anel Interno (Tons Menores Relativos)
                 const nodeMin = document.createElement('div');
                 nodeMin.className = 'cof-node cof-min';
                 nodeMin.style.left = `${50 + 22 * Math.cos(ang)}%`;
@@ -1742,7 +1660,7 @@
 
             let centerIdx = COF_KEYS.findIndex(k => {
                 const t = mode === 'major' ? k.M : k.m;
-                return t === root || t === ENHARMONICS[root];
+                return t === root;
             });
             if (centerIdx === -1) centerIdx = 0;
 
@@ -1752,7 +1670,7 @@
 
             const defs = mode === 'major' ? 
                 [{ r: 'M', i: centerIdx, rm: 'I', c: true }, { r: 'M', i: iL, rm: 'IV' }, { r: 'M', i: iR, rm: 'V' }, { r: 'm', i: centerIdx, rm: 'vi' }, { r: 'm', i: iL, rm: 'ii' }, { r: 'm', i: iR, rm: 'iii' }, { r: 'm', i: iOp, rm: 'vii°' }] :
-                [{ r: 'm', i: centerIdx, rm: 'i', c: true }, { r: 'm', i: iL, rm: 'iv' }, { r: 'm', i: iR, rm: 'v' }, { r: 'M', i: centerIdx, rm: 'III' }, { r: 'M', i: iL, rm: 'VI' }, { r: 'M', i: iR, rm: 'VII' }, { r: 'm', i: iOp, rm: 'ii°' }];
+                [{ r: 'm', i: centerIdx, rm: 'i', c: true }, { r: 'm', i: iL, rm: 'iv' }, { r: 'm', i: iR, rm: 'v' }, { r: 'M', i: centerIdx, rm: 'III' }, { r: 'M', i: iL, rm: 'VI' }, { r: 'M', i: iR, rm: 'VII' }, { r: 'm', i: iOp, rm: 'ii°'}];
 
             document.querySelectorAll('.cof-node').forEach(el => {
                 el.classList.remove('in-scale', 'cof-active-maj', 'cof-active-min');
@@ -1774,7 +1692,7 @@
 
                     el.innerHTML = `
                         <span>${display}</span>
-                        <span class="text-[9px] font-black text-brand-400 mt-0.5 leading-none">${d.rm}</span>
+                        <span class="text-[8px] font-black text-brand-400 mt-0.5 leading-none">${d.rm}</span>
                     `;
                 }
             });
@@ -1789,10 +1707,8 @@
             pSec.innerHTML = '';
             COMPOSER_SECTIONS.forEach(sec => {
                 const btn = document.createElement('button');
-                btn.className = 'btn-secondary px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5 hover:border-brand-400';
-                btn.draggable = true;
+                btn.className = 'btn-secondary px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 hover:border-brand-400';
                 btn.innerHTML = `<i data-lucide="plus" class="w-3 h-3 text-brand-400"></i> ${sec}`;
-                btn.ondragstart = (e) => e.dataTransfer.setData('json', JSON.stringify({ type: 'section', val: sec }));
                 btn.onclick = () => addSectionToTimeline(sec);
                 pSec.appendChild(btn);
             });
@@ -1810,37 +1726,31 @@
             pChords.innerHTML = '';
 
             const scaleObj = SCALES[appState.composer.mode];
-            const notesArray = getNoteArray(appState.composer.root, appState.composer.mode);
-            const rIdx = notesArray.indexOf(appState.composer.root);
+            const rIdx = NOTES.indexOf(appState.composer.root);
 
             scaleObj.intervals.forEach((interval, idx) => {
-                const note = notesArray[(rIdx + interval) % 12];
+                const note = NOTES[(rIdx + interval) % 12];
                 let cName = note;
                 if (scaleObj.harm.q[idx] === 'm') cName += 'm';
                 if (scaleObj.harm.q[idx] === 'dim') cName += '°';
 
                 const card = document.createElement('div');
-                card.className = 'moises-well p-2.5 rounded-xl flex items-center justify-between hover:border-brand-400 cursor-pointer transition border border-white/[0.04] group';
-                card.draggable = true;
+                card.className = 'moises-well p-2 rounded-xl flex items-center justify-between hover:border-brand-400 cursor-pointer transition border border-white/[0.04] group';
                 card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <span class="text-xs font-mono font-bold text-gray-500 w-4">${ROMANS[idx]}</span>
-                        <span class="text-base font-display font-black text-white">${cName}</span>
-                    </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-[9px] uppercase font-bold tracking-wider ${scaleObj.harm.c[idx]}">${scaleObj.harm.func[idx]}</span>
-                        <span class="text-xs text-brand-400 opacity-0 group-hover:opacity-100 transition font-bold">+ Inserir</span>
+                        <span class="text-[10px] font-mono font-bold text-gray-500">${ROMANS[idx]}</span>
+                        <span class="text-sm font-display font-black text-white">${cName}</span>
                     </div>
+                    <span class="text-[9px] font-bold text-brand-400 font-mono">+ Inserir</span>
                 `;
 
-                card.ondragstart = (e) => e.dataTransfer.setData('json', JSON.stringify({ type: 'chord', val: cName }));
                 card.onclick = () => {
                     const sections = document.querySelectorAll('.composer-section');
                     if (sections.length > 0) {
                         const lastDropzone = sections[sections.length - 1].querySelector('.dropzone-sec');
                         addChordToSection(cName, lastDropzone);
                     } else {
-                        showNotification('Adicione uma Seção (Intro, Verso...) primeiro!', 'error');
+                        showNotification('Adicione uma Seção primeiro!', 'error');
                     }
                 };
 
@@ -1849,42 +1759,24 @@
             lucide.createIcons();
         }
 
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDropToTimeline(e) {
-            e.preventDefault();
-            try {
-                const data = JSON.parse(e.dataTransfer.getData('json'));
-                if (data.type === 'section') {
-                    addSectionToTimeline(data.val);
-                }
-            } catch (err) {}
-        }
-
         function addSectionToTimeline(secName) {
             const emptyState = document.getElementById('empty-state-composer');
             if (emptyState) emptyState.remove();
 
             const timeline = document.getElementById('composer-timeline');
             const row = document.createElement('div');
-            row.className = 'composer-section moises-card p-3.5 rounded-xl flex items-center gap-3 relative group border border-white/[0.06] shadow';
+            row.className = 'composer-section moises-card p-3 rounded-xl flex items-center gap-2 relative group border border-white/[0.06] shadow';
 
             row.innerHTML = `
-                <div class="w-24 shrink-0 border-r border-white/10 pr-2 flex flex-col justify-center">
-                    <span class="text-xs font-black uppercase tracking-wider text-brand-400 flex items-center gap-1">
-                        <i data-lucide="layers" class="w-3.5 h-3.5"></i> ${secName}
-                    </span>
+                <div class="w-20 shrink-0 border-r border-white/10 pr-1 flex flex-col justify-center">
+                    <span class="text-[10px] font-black uppercase tracking-wider text-brand-400">${secName}</span>
                 </div>
-                <div class="dropzone-sec flex-grow flex flex-wrap gap-2 items-center min-h-[42px] px-2" ondragover="handleDragOver(event)" ondrop="handleDropChord(event, this)">
-                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider pointer-events-none empty-hint">+ Toque num acorde na lista à esquerda</span>
+                <div class="dropzone-sec flex-grow flex flex-wrap gap-1.5 items-center min-h-[36px] px-1">
+                    <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider empty-hint">+ Toque num acorde</span>
                 </div>
-                <div class="flex items-center gap-1 no-print">
-                    <button onclick="this.closest('.composer-section').remove(); checkTimelineEmpty();" class="p-1 text-gray-500 hover:text-red-400 rounded transition" title="Remover Seção">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    </button>
-                </div>
+                <button onclick="this.closest('.composer-section').remove(); checkTimelineEmpty();" class="p-1 text-gray-500 hover:text-red-400 rounded transition">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
             `;
 
             timeline.appendChild(row);
@@ -1892,27 +1784,16 @@
             showNotification(`Seção "${secName}" adicionada!`);
         }
 
-        function handleDropChord(e, zone) {
-            e.preventDefault();
-            e.stopPropagation();
-            try {
-                const data = JSON.parse(e.dataTransfer.getData('json'));
-                if (data.type === 'chord') {
-                    addChordToSection(data.val, zone);
-                }
-            } catch (err) {}
-        }
-
         function addChordToSection(chordName, zone) {
             const hint = zone.querySelector('.empty-hint');
             if (hint) hint.remove();
 
             const chordBox = document.createElement('div');
-            chordBox.className = 'composer-chord bg-obsidian-850 border border-white/10 rounded-lg px-3 py-1.5 flex items-center gap-2 shadow group/chord relative';
+            chordBox.className = 'composer-chord bg-obsidian-850 border border-white/10 rounded-lg px-2.5 py-1 flex items-center gap-1.5 shadow group/chord relative';
             chordBox.innerHTML = `
-                <span class="font-display font-black text-sm text-white">${chordName}</span>
-                <button onclick="this.parentElement.remove();" class="opacity-0 group-hover/chord:opacity-100 text-gray-400 hover:text-red-400 no-print transition">
-                    <i data-lucide="x" class="w-3 h-3"></i>
+                <span class="font-display font-black text-xs text-white">${chordName}</span>
+                <button onclick="this.parentElement.remove();" class="text-gray-400 hover:text-red-400 no-print transition">
+                    <i data-lucide="x" class="w-2.5 h-2.5"></i>
                 </button>
             `;
             zone.appendChild(chordBox);
@@ -1924,10 +1805,10 @@
             const tl = document.getElementById('composer-timeline');
             if (tl.querySelectorAll('.composer-section').length === 0) {
                 tl.innerHTML = `
-                    <div id="empty-state-composer" class="text-center text-gray-500 my-auto py-12">
-                        <i data-lucide="plus-circle" class="w-12 h-12 mx-auto mb-3 opacity-30 text-brand-400"></i>
-                        <p class="text-sm font-bold text-gray-400">Sua folha de música está vazia.</p>
-                        <p class="text-xs text-gray-600 mt-1">Toque ou arraste as <strong class="text-gray-400">Estruturas (1)</strong> acima para começar.</p>
+                    <div id="empty-state-composer" class="text-center text-gray-500 my-auto py-10">
+                        <i data-lucide="plus-circle" class="w-10 h-10 mx-auto mb-2 opacity-30 text-brand-400"></i>
+                        <p class="text-xs font-bold text-gray-400">Folha vazia</p>
+                        <p class="text-[11px] text-gray-600 mt-0.5">Adicione estruturas e acordes acima.</p>
                     </div>
                 `;
                 lucide.createIcons();
@@ -1937,19 +1818,19 @@
         function clearTimeline() {
             document.getElementById('composer-timeline').innerHTML = '';
             checkTimelineEmpty();
-            showNotification('Folha de música limpa!');
+            showNotification('Folha limpa!');
         }
 
         function exportToPdf() {
             const timeline = document.getElementById('composer-timeline');
             if (timeline.querySelectorAll('.composer-section').length === 0) {
-                showNotification('Adicione seções e acordes antes de exportar!', 'error');
+                showNotification('Adicione seções antes de exportar!', 'error');
                 return;
             }
 
             const clone = timeline.cloneNode(true);
             clone.classList.add('pdf-mode');
-            clone.style.width = '750px';
+            clone.style.width = '700px';
 
             const container = document.createElement('div');
             container.style.position = 'absolute';
@@ -1960,17 +1841,17 @@
 
             html2pdf().set({
                 margin: 15,
-                filename: `Guitarreiro_Composicao_${appState.composer.root}.pdf`,
+                filename: `Guitarreiro_${appState.composer.root}.pdf`,
                 html2canvas: { scale: 2, backgroundColor: '#ffffff' },
                 jsPDF: { format: 'a4', orientation: 'portrait' }
             }).from(clone).save().then(() => {
                 document.body.removeChild(container);
-                showNotification('PDF gerado com sucesso!');
+                showNotification('PDF gerado!');
             });
         }
 
         // =========================================================================
-        // 7. AFINADOR & METRÔNOMO FLUTUANTES
+        // 7. AFINADOR & METRÔNOMO
         // =========================================================================
         let isTunerOpen = false;
         let isMetroOpen = false;
@@ -1997,11 +1878,7 @@
             }
         }
 
-        // Afinador com Web Audio
-        let micStream = null;
-        let micAnalyser = null;
-        let tunerActive = false;
-        let tunerAnimId = null;
+        let micStream = null, micAnalyser = null, tunerActive = false, tunerAnimId = null;
 
         async function toggleMicTuner() {
             if (tunerActive) {
@@ -2018,7 +1895,7 @@
                 document.getElementById('dock-tuner-val').textContent = '--';
                 document.getElementById('dock-tuner-dot').className = "w-2 h-2 rounded-full bg-gray-500";
             } else {
-                await ensureAudioContext();
+                await ensureAudio();
                 try {
                     micStream = new Tone.UserMedia();
                     micAnalyser = new Tone.Analyser("waveform", 1024);
@@ -2026,22 +1903,21 @@
                     micStream.connect(micAnalyser);
                     tunerActive = true;
                     document.getElementById('btn-toggle-mic').innerHTML = '<i data-lucide="square" class="w-4 h-4"></i> Parar Microfone';
-                    document.getElementById('tuner-detail-status').textContent = 'Ouvindo instrumento...';
+                    document.getElementById('tuner-detail-status').textContent = 'Afinando instrumento...';
                     document.getElementById('dock-tuner-dot').className = "w-2 h-2 rounded-full bg-cyan-400 animate-pulse";
-                    loopPitchDetection();
+                    loopPitch();
                 } catch (e) {
-                    showNotification('Por favor, autorize o microfone para afinar!', 'error');
+                    showNotification('Ative o microfone para afinar!', 'error');
                 }
             }
             lucide.createIcons();
         }
 
         function autoCorrelateTuner(buffer, sampleRate) {
-            let size = buffer.length;
-            let rms = 0;
+            let size = buffer.length, rms = 0;
             for (let i = 0; i < size; i++) rms += buffer[i] * buffer[i];
             rms = Math.sqrt(rms / size);
-            if (rms < 0.015) return -1; // Ruído de fundo ignorado
+            if (rms < 0.015) return -1;
 
             let r1 = 0, r2 = size - 1, th = 0.2;
             for (let i = 0; i < size / 2; i++) if (Math.abs(buffer[i]) < th) { r1 = i; break; }
@@ -2058,17 +1934,16 @@
             for (let i = d; i < size; i++) {
                 if (c[i] > maxVal) { maxVal = c[i]; maxPos = i; }
             }
-            let T0 = maxPos;
-            return sampleRate / T0;
+            return sampleRate / maxPos;
         }
 
-        function loopPitchDetection() {
+        function loopPitch() {
             if (!tunerActive) return;
             const freq = autoCorrelateTuner(micAnalyser.getValue(), Tone.context.sampleRate);
             if (freq !== -1 && freq > 50 && freq < 1200) {
                 const noteNumber = 12 * (Math.log(freq / 440) / Math.log(2));
                 const cents = Math.floor((noteNumber - Math.round(noteNumber)) * 100);
-                const noteName = NOTES_SHARP[(Math.round(noteNumber) + 69) % 12];
+                const noteName = NOTES[(Math.round(noteNumber) + 69) % 12];
 
                 document.getElementById('tuner-big-note').textContent = noteName;
                 document.getElementById('dock-tuner-val').textContent = noteName;
@@ -2078,29 +1953,27 @@
                 needle.style.left = `${Math.max(5, Math.min(95, 50 + cents))}%`;
 
                 if (Math.abs(cents) <= 4) {
-                    needle.className = "w-4 h-4 bg-emerald-400 rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg shadow-emerald-500/50";
+                    needle.className = "w-3.5 h-3.5 bg-emerald-400 rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg";
                     document.getElementById('tuner-detail-status').textContent = 'Perfeitamente Afinado!';
-                    document.getElementById('tuner-detail-status').className = 'text-xs font-bold uppercase tracking-widest text-emerald-400';
+                    document.getElementById('tuner-detail-status').className = 'text-[11px] font-bold uppercase tracking-widest text-emerald-400';
                 } else {
-                    needle.className = "w-4 h-4 bg-brand-400 rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg shadow-cyan-500/50";
+                    needle.className = "w-3.5 h-3.5 bg-brand-400 rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg";
                     document.getElementById('tuner-detail-status').textContent = cents > 0 ? `Mais alto (+${cents}c)` : `Mais baixo (${cents}c)`;
-                    document.getElementById('tuner-detail-status').className = 'text-xs font-bold uppercase tracking-widest text-gray-400';
+                    document.getElementById('tuner-detail-status').className = 'text-[11px] font-bold uppercase tracking-widest text-gray-400';
                 }
             }
-            tunerAnimId = requestAnimationFrame(loopPitchDetection);
+            tunerAnimId = requestAnimationFrame(loopPitch);
         }
 
-        // Metrônomo Tone.js
-        let isMetronomeRunning = false;
-        let metronomeSynth = null;
-        let tapTimes = [];
+        // Metrônomo
+        let isMetronomeRunning = false, metronomeSynth = null, tapTimes = [];
 
         function adjustBpm(delta) {
             const input = document.getElementById('metro-bpm-val');
             let val = parseInt(input.value) + delta;
             val = Math.max(30, Math.min(280, val));
             input.value = val;
-            document.getElementById('dock-metro-val').textContent = `${val} BPM`;
+            document.getElementById('dock-metro-val').textContent = `${val}`;
             if (isMetronomeRunning) Tone.Transport.bpm.value = val;
         }
 
@@ -2115,13 +1988,13 @@
                 let bpm = Math.round(60000 / avgMs);
                 bpm = Math.max(30, Math.min(280, bpm));
                 document.getElementById('metro-bpm-val').value = bpm;
-                document.getElementById('dock-metro-val').textContent = `${bpm} BPM`;
+                document.getElementById('dock-metro-val').textContent = `${bpm}`;
                 if (isMetronomeRunning) Tone.Transport.bpm.value = bpm;
             }
         }
 
         async function toggleMetronomePlay() {
-            await ensureAudioContext();
+            await ensureAudio();
             if (!metronomeSynth) {
                 metronomeSynth = new Tone.MembraneSynth().toDestination();
             }
@@ -2133,7 +2006,7 @@
                 Tone.Transport.stop();
                 Tone.Transport.cancel();
                 isMetronomeRunning = false;
-                btn.innerHTML = '<i data-lucide="play" class="w-5 h-5 fill-current"></i> Iniciar Batida';
+                btn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i> Iniciar Batida';
                 dot.className = "w-2 h-2 rounded-full bg-gray-500";
             } else {
                 const bpm = parseInt(document.getElementById('metro-bpm-val').value);
@@ -2153,21 +2026,22 @@
 
                 Tone.Transport.start();
                 isMetronomeRunning = true;
-                btn.innerHTML = '<i data-lucide="square" class="w-5 h-5 fill-current"></i> Parar Batida';
+                btn.innerHTML = '<i data-lucide="square" class="w-4 h-4 fill-current"></i> Parar Batida';
             }
             lucide.createIcons();
         }
 
-        // Notepad Auto-save
+        // Notepad
         const notepad = document.getElementById('notepad-input');
         notepad.value = localStorage.getItem('guitarreiro_notes') || '';
         notepad.addEventListener('input', (e) => localStorage.setItem('guitarreiro_notes', e.target.value));
 
-        // Inicialização Geral da Página
+        // Inicialização
         window.addEventListener('DOMContentLoaded', () => {
+            initCagedRootPills();
             initScalesModule();
             initComposerModule();
-            updateCagedView();
+            updateCagedMaster();
             renderDoubleStops();
         });
     </script>
