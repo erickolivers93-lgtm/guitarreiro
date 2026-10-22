@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Guitarreiro Pro • Hub Musical & Fretboard Master</title>
+    <title>Guitarreiro Pro • Hub Prático de Guitarra & Harmonia</title>
     
     <!-- Tailwind CSS & Lucide Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Tipografia Profissional Moises Style -->
+    <!-- Tipografia Moises Style -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
@@ -44,7 +44,8 @@
                             accent: '#6366f1'
                         },
                         gold: '#f59e0b',
-                        coral: '#f43f5e'
+                        coral: '#f43f5e',
+                        emerald: '#10b981'
                     }
                 }
             }
@@ -74,7 +75,6 @@
             width: 100%;
         }
 
-        /* Scrollbars minimalistas */
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -109,7 +109,6 @@
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
         }
 
-        /* Botões com Glow Suave */
         .btn-glow {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             color: #ffffff;
@@ -227,6 +226,31 @@
             color: #fff;
             border: 2px solid #bae6fd;
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Marcador de Double Stop com Destaque Neon */
+        .marker-ds-active {
+            background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.85);
+            animation: pulseSubtle 1.8s infinite;
+        }
+        .marker-ds-hammer {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
+            border: 2px dashed #ffffff;
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.85);
+        }
+        .marker-ds-ghost {
+            background: rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        @keyframes pulseSubtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
         /* Teclado Piano */
@@ -443,7 +467,7 @@
     <main class="max-w-6xl mx-auto px-3.5 sm:px-6 py-4 flex-grow w-full">
 
         <!-- ========================================================================= -->
-        <!-- ABA 1: CAGED MASTER PLENO (TOTALMENTE FUNCIONAL: TODOS OS ACORDES E ESCALAS)-->
+        <!-- ABA 1: CAGED MASTER PLENO (TODOS OS ACORDES MAIORES, MENORES E 7ªS)        -->
         <!-- ========================================================================= -->
         <section id="tab-caged" class="flex flex-col gap-4">
             
@@ -452,9 +476,9 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-lg sm:text-xl font-display font-black text-white">CAGED Master</h2>
-                        <p class="text-xs text-gray-400">Mapeamento pleno de Acordes e Escalas em qualquer Tom</p>
+                        <p class="text-xs text-gray-400">5 Formatos para Qualquer Acorde (Maior & Menor)</p>
                     </div>
-                    <!-- Seletor de Qualidade do Acorde (Maior vs Menor vs 7) -->
+                    <!-- Seletor de Qualidade do Acorde -->
                     <div class="flex bg-obsidian-950 p-1 rounded-xl border border-white/[0.08] shrink-0">
                         <button onclick="setCagedQuality('major')" id="qual-major" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition bg-brand-500 text-white shadow">Maior</button>
                         <button onclick="setCagedQuality('minor')" id="qual-minor" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition text-gray-400 hover:text-white">Menor</button>
@@ -462,12 +486,10 @@
                     </div>
                 </div>
 
-                <!-- Seletor de Tom (12 Notas em Rolagem Suave para Polegar) -->
+                <!-- Seletor de Tom (12 Notas em Rolagem Suave) -->
                 <div>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Escolha o Tom (Tônica Raiz)</span>
-                    <div class="flex gap-1.5 overflow-x-auto hide-scroll py-1" id="caged-root-pills">
-                        <!-- Gerado via JS: C, C#, D, Eb, E, F, F#, G, Ab, A, Bb, B -->
-                    </div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Escolha o Tom da Música</span>
+                    <div class="flex gap-1.5 overflow-x-auto hide-scroll py-1" id="caged-root-pills"></div>
                 </div>
             </div>
 
@@ -500,10 +522,10 @@
                 </button>
             </div>
 
-            <!-- Card Principal com Visualização Dupla: Diagrama Vertical + Braço Horizontal -->
+            <!-- Card Principal com Diagrama Vertical de Acorde + Braço Horizontal -->
             <div class="moises-card p-4 sm:p-6 flex flex-col gap-4">
                 
-                <!-- Cabeçalho do Shape Ativo com Filtros de Camadas -->
+                <!-- Cabeçalho com Filtros de Camadas -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-white/[0.06] pb-3">
                     <div>
                         <div class="flex items-center gap-2">
@@ -513,7 +535,6 @@
                         <p class="text-xs text-gray-400 mt-0.5" id="caged-desc-display">Formato móvel com tônica na 5ª corda.</p>
                     </div>
 
-                    <!-- Toggle de Exibição: Sobrepor vs Acorde vs Escala -->
                     <div class="flex bg-obsidian-950 p-1 rounded-xl border border-white/[0.08] self-stretch sm:self-auto justify-center">
                         <button onclick="setCagedLayer('both')" id="layer-both" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-brand-500 text-white shadow">Sobrepor Tudo</button>
                         <button onclick="setCagedLayer('chord')" id="layer-chord" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-400 hover:text-white">Só Acorde</button>
@@ -521,27 +542,27 @@
                     </div>
                 </div>
 
-                <!-- Painel Grid: Diagrama de Acorde Vertical + Braço de Cordas -->
+                <!-- Painel Grid: Diagrama Vertical + Braço Horizontal -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
                     
-                    <!-- 1. Diagrama de Acorde Vertical (Chord Box) -->
+                    <!-- Diagrama Vertical (Chord Box Chart) -->
                     <div class="lg:col-span-4 moises-well p-3.5 flex flex-col items-center justify-center">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Diagrama de Posição</span>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Desenho do Acorde (Dedos)</span>
                         <div id="caged-chord-box" class="w-full flex justify-center"></div>
-                        <span class="text-[11px] text-gray-400 font-mono mt-2" id="chord-formula-text">Notas: T • 3ª • 5ª</span>
+                        <span class="text-[11px] text-gray-400 font-mono mt-1">Dedos: 1=Indicador • 2=Médio • 3=Anelar • 4=Mínimo</span>
                     </div>
 
-                    <!-- 2. Braço Horizontal da Guitarra -->
+                    <!-- Braço Horizontal Fretboard -->
                     <div class="lg:col-span-8 moises-well p-3.5 overflow-x-auto hide-scroll w-full flex flex-col justify-start">
                         <div class="flex justify-between items-center mb-2 px-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Encaixe no Braço (Fretboard)</span>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Encaixe no Braço da Guitarra</span>
                             <span class="text-[10px] text-cyan-400 font-mono">Arraste para o lado ➔</span>
                         </div>
                         <div id="caged-fretboard" class="fretboard-wrap"></div>
                     </div>
                 </div>
 
-                <!-- Botões de Áudio e Legenda de Cores -->
+                <!-- Botões de Áudio e Legenda -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-white/[0.06]">
                     <div class="flex items-center gap-3 text-xs font-bold">
                         <div class="flex items-center gap-1.5">
@@ -572,39 +593,121 @@
         </section>
 
         <!-- ========================================================================= -->
-        <!-- ABA 2: DOUBLE STOPS (SEM TEORIA - MEMORIZAÇÃO & PRÁTICA IMEDIATA)         -->
+        <!-- ABA 2: DOUBLE STOPS DESCOMPLICADO (ONDE ENCAIXO? COMO FAÇO NA GUITARRA?)   -->
         <!-- ========================================================================= -->
         <section id="tab-doublestops" class="hidden flex-col gap-4">
             
-            <!-- Header Card -->
+            <!-- 1. O Guia do Leigo: Como Funciona na Prática -->
             <div class="moises-card p-4 sm:p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-start">
                     <div>
-                        <h2 class="text-lg sm:text-xl font-display font-black text-white">Double Stops</h2>
-                        <p class="text-xs text-gray-400">Memorize as duplas sonoras dos grandes guitarristas</p>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-black uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Aprenda na Prática</span>
+                            <span class="text-xs text-gray-400">• Sem Complicação</span>
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-display font-black text-white">Como Usar Double Stops na Guitarra?</h2>
                     </div>
-                    <span class="text-[10px] font-black uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Sem Teoria</span>
                 </div>
-
-                <!-- Filtros de Famílias (Scroll Horizontal Suave) -->
-                <div class="flex gap-1.5 overflow-x-auto hide-scroll py-1">
-                    <button onclick="filterDoubleStops('hendrix')" id="ds-filter-hendrix" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition bg-brand-500 text-white shadow whitespace-nowrap">
-                        🎸 Hendrix & Blues (G/B)
-                    </button>
-                    <button onclick="filterDoubleStops('thirds')" id="ds-filter-thirds" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap">
-                        ⚡ 3ªs Deslizantes (B/E)
-                    </button>
-                    <button onclick="filterDoubleStops('sixths')" id="ds-filter-sixths" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap">
-                        ✨ 6ªs Doces (Soul & R&B)
-                    </button>
-                    <button onclick="filterDoubleStops('fourths')" id="ds-filter-fourths" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap">
-                        🥁 4ªs Groovy (D/G)
-                    </button>
+                <div class="moises-well p-3.5 rounded-xl border border-white/[0.06]">
+                    <p class="text-xs text-gray-200 leading-relaxed">
+                        💡 <strong>O Segredo que ninguém te conta:</strong> Você <em>não precisa</em> decorar escalas inteiras! 
+                        O Double Stop nasce <strong>dentro do acorde que você já sabe fazer</strong>. Você apenas segura o formato do acorde e toca duas cordas juntas, fazendo um martelo (hammer-on) para criar aquele som épico de Jimi Hendrix, John Mayer e Stevie Ray Vaughan.
+                    </p>
                 </div>
             </div>
 
-            <!-- Grade de Cards de Double Stops -->
-            <div id="doublestops-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4"></div>
+            <!-- 2. Laboratório Interativo: "Em qual acorde você quer encaixar?" -->
+            <div class="moises-card p-4 sm:p-6 flex flex-col gap-4">
+                <div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">1. Escolha o acorde que você está tocando na base:</span>
+                    <div class="flex gap-1.5 overflow-x-auto hide-scroll py-1" id="ds-chord-selector">
+                        <!-- Gerado via JS: C, D, E, G, A, Am, Em, Dm -->
+                    </div>
+                </div>
+
+                <!-- Card de Demonstração do Acorde + Onde o Double Stop mora nele -->
+                <div class="moises-well p-4 flex flex-col gap-3 border border-brand-400/30">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/[0.06] pb-2.5">
+                        <div>
+                            <span class="text-xs font-mono font-bold text-brand-400" id="ds-hero-fret">Na 5ª Casa</span>
+                            <h3 class="text-base font-display font-black text-white" id="ds-hero-title">Enfeite Clássico no Acorde de Lá (A)</h3>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20" id="ds-hero-badge">Estilo Hendrix / Mayer</span>
+                    </div>
+
+                    <!-- Visualização no Braço: O Acorde Fantasma + As 2 Cordas do Double Stop -->
+                    <div class="overflow-x-auto hide-scroll w-full py-1">
+                        <div id="ds-interactive-fretboard" class="fretboard-wrap"></div>
+                    </div>
+
+                    <!-- Instrução Prática Passo a Passo -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs mt-1">
+                        <div class="bg-obsidian-950 p-2.5 rounded-lg border border-white/5">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">1. Posicione a Mão</span>
+                            <p class="text-gray-300" id="ds-step-1">Segure o acorde normal com pestana na casa indicada.</p>
+                        </div>
+                        <div class="bg-obsidian-950 p-2.5 rounded-lg border border-white/5">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">2. Palhete Junto</span>
+                            <p class="text-gray-300" id="ds-step-2">Bata a palheta nas duas cordas destacadas em Ciano.</p>
+                        </div>
+                        <div class="bg-obsidian-950 p-2.5 rounded-lg border border-white/5">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">3. O Movimento Mágico</span>
+                            <p class="text-gray-300" id="ds-step-3">Martela o dedo anelar na casa dourada sem soltar a outra corda!</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Áudio em Contexto Real -->
+                    <div class="flex flex-col sm:flex-row gap-2 pt-2 border-t border-white/[0.06]">
+                        <button onclick="playCurrentDsOnly()" class="btn-secondary flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 hover:border-brand-400">
+                            <i data-lucide="volume-2" class="w-4 h-4 text-brand-400"></i> Ouvir Só o Double Stop
+                        </button>
+                        <button onclick="playCurrentDsWithContext()" class="btn-glow flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5">
+                            <i data-lucide="play" class="w-4 h-4 fill-current"></i> Ouvir no Contexto (Acorde + Enfeite)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Os 3 Formatos de Mão Físicos que cobrem 90% dos Solos -->
+                <div class="mt-2">
+                    <span class="text-xs font-black uppercase tracking-wider text-white block mb-2.5 flex items-center gap-1.5">
+                        <i data-lucide="hand" class="w-4 h-4 text-amber-glow"></i> Memorize apenas estes 3 formatos físicos de dedos:
+                    </span>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="moises-well p-3.5 rounded-xl">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-black text-cyan-400">Shape A • Dedo Reto</span>
+                                <span class="text-[9px] font-bold text-gray-500 uppercase">1 Dedo só</span>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                O indicador deita reto cobrindo 2 cordas vizinhas. O anelar martela 2 casas à frente.
+                            </p>
+                            <span class="text-[10px] text-amber-glow mt-2 block font-semibold">🎸 Onde usar: Em qualquer pestana maior ou menor!</span>
+                        </div>
+
+                        <div class="moises-well p-3.5 rounded-xl">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-black text-cyan-400">Shape B • Escadinha</span>
+                                <span class="text-[9px] font-bold text-gray-500 uppercase">2 Dedos</span>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Dedo 1 na 1ª corda e Dedo 2 na 2ª corda uma casa à frente (ou na mesma casa).
+                            </p>
+                            <span class="text-[10px] text-amber-glow mt-2 block font-semibold">⚡ Onde usar: Nas cordas 1 e 2 para puxar solos cantáveis.</span>
+                        </div>
+
+                        <div class="moises-well p-3.5 rounded-xl">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-black text-cyan-400">Shape C • Pulo do Meio</span>
+                                <span class="text-[9px] font-bold text-gray-500 uppercase">6ªs Doces</span>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Toca a 3ª corda e a 1ª corda juntas. A 2ª corda fica no meio silenciada encostando o dedo levemente.
+                            </p>
+                            <span class="text-[10px] text-amber-glow mt-2 block font-semibold">✨ Onde usar: Deslize pelo braço para criar introduções doces!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- ========================================================================= -->
@@ -612,7 +715,6 @@
         <!-- ========================================================================= -->
         <section id="tab-scales" class="hidden flex-col gap-4">
             
-            <!-- Seleção de Tom, Escala e Instrumento -->
             <div class="moises-card p-4 sm:p-5 flex flex-col gap-3.5">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
@@ -625,7 +727,6 @@
                     </div>
                 </div>
 
-                <!-- Seletor de Instrumento -->
                 <div class="flex bg-obsidian-950 p-1 rounded-xl border border-white/[0.08] w-full justify-between">
                     <button onclick="setScaleInstrument('guitar')" id="inst-guitar" class="flex-1 py-1.5 text-xs font-extrabold rounded-lg bg-brand-500 text-white shadow transition">Guitarra</button>
                     <button onclick="setScaleInstrument('bass')" id="inst-bass" class="flex-1 py-1.5 text-xs font-extrabold rounded-lg text-gray-400 hover:text-white transition">Baixo</button>
@@ -633,21 +734,21 @@
                 </div>
             </div>
 
-            <!-- Campo Harmônico Interativo -->
+            <!-- Campo Harmônico com Áudio -->
             <div id="harmonic-field-card" class="moises-card p-4 sm:p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center border-b border-white/[0.06] pb-2">
                     <span class="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
-                        <i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i> Campo Harmônico
+                        <i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i> Campo Harmônico Completo
                     </span>
                     <span class="text-[10px] text-gray-400 font-bold">Toque para ouvir</span>
                 </div>
                 <div id="harmonic-chords-list" class="flex gap-2 overflow-x-auto hide-scroll py-1"></div>
             </div>
 
-            <!-- Braço de Cordas -->
+            <!-- Braço Completo -->
             <div id="view-string-board" class="moises-card p-4 flex flex-col gap-2">
                 <div class="flex justify-between items-center mb-1">
-                    <span class="text-xs font-black uppercase tracking-wider text-white">Mapa Completo (22 Trastes)</span>
+                    <span class="text-xs font-black uppercase tracking-wider text-white">Mapa Completo de Notas (22 Trastes)</span>
                     <span class="text-[10px] text-cyan-400 font-mono">Arraste para o lado ➔</span>
                 </div>
                 <div class="moises-well p-3 overflow-x-auto hide-scroll w-full">
@@ -665,78 +766,137 @@
         </section>
 
         <!-- ========================================================================= -->
-        <!-- ABA 4: COMPOSITOR & RODA DE QUINTAS                                       -->
+        <!-- ABA 4: COMPOSITOR & MAPA DE FAMÍLIA HARMÔNICA (SEM ESPREMER!)              -->
         <!-- ========================================================================= -->
         <section id="tab-composer" class="hidden flex-col gap-4">
             
-            <div class="moises-card p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <div>
-                    <h2 class="text-lg sm:text-xl font-display font-black text-white flex items-center gap-2">
-                        <i data-lucide="music-4" class="w-4 h-4 text-brand-400"></i> Compositor de Músicas
-                    </h2>
-                    <p class="text-xs text-gray-400">Crie progressões harmônicas e exporte em PDF</p>
+            <!-- 1. O Mapa de Família do Tom (Muito melhor e mais claro que o Círculo espremido!) -->
+            <div class="moises-card p-4 sm:p-6 flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-white/[0.06] pb-3">
+                    <div>
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <span class="text-[10px] font-black uppercase text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded border border-brand-500/20">Harmonia Prática</span>
+                            <h2 class="text-lg sm:text-xl font-display font-black text-white">Família Harmônica do Tom</h2>
+                        </div>
+                        <p class="text-xs text-gray-400">Todos os acordes que combinam perfeitamente entre si, divididos por função.</p>
+                    </div>
+
+                    <!-- Seletor de Tom do Compositor -->
+                    <div class="flex items-center gap-2 self-stretch sm:self-auto">
+                        <span class="text-xs font-bold text-gray-400 shrink-0">Tom:</span>
+                        <select id="composer-root-select" onchange="updateComposerFamily()" class="bg-obsidian-950 border border-white/10 text-white py-1.5 px-3 rounded-xl text-sm font-black outline-none cursor-pointer flex-grow sm:flex-grow-0"></select>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <select id="composer-root-select" onchange="updateComposerChords()" class="bg-obsidian-950 border border-white/10 text-white py-1.5 px-2.5 rounded-lg text-xs font-bold outline-none cursor-pointer"></select>
-                    <select id="composer-mode-select" onchange="updateComposerChords()" class="bg-obsidian-950 border border-white/10 text-white py-1.5 px-2.5 rounded-lg text-xs font-bold outline-none cursor-pointer">
-                        <option value="major">Maior</option>
-                        <option value="minor">Menor</option>
-                    </select>
+
+                <!-- Os 3 Blocos da Família (Casa, Viagem/Ar Livre, Tensão/Volta) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    
+                    <!-- Bloco 1: A Casa & O Repouso (Graus I e vi) -->
+                    <div class="moises-well p-3.5 rounded-xl border border-emerald-500/30 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-black text-emerald-400 flex items-center gap-1.5">
+                                    <i data-lucide="home" class="w-3.5 h-3.5"></i> A Casa (Repouso)
+                                </span>
+                                <span class="text-[9px] font-bold text-gray-500">Início e Fim</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mb-3">Onde a música descansa e traz sensação de segurança.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2" id="family-home-chords"></div>
+                    </div>
+
+                    <!-- Bloco 2: A Viagem & O Ar Livre (Graus IV e ii) -->
+                    <div class="moises-well p-3.5 rounded-xl border border-cyan-500/30 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-black text-cyan-400 flex items-center gap-1.5">
+                                    <i data-lucide="compass" class="w-3.5 h-3.5"></i> A Viagem (Abertura)
+                                </span>
+                                <span class="text-[9px] font-bold text-gray-500">Subida</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mb-3">Abre a música, traz ar livre e elevação emocional.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2" id="family-journey-chords"></div>
+                    </div>
+
+                    <!-- Bloco 3: A Tensão & A Volta (Graus V, iii e vii°) -->
+                    <div class="moises-well p-3.5 rounded-xl border border-amber-glow/30 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-black text-amber-glow flex items-center gap-1.5">
+                                    <i data-lucide="zap" class="w-3.5 h-3.5"></i> A Tensão (Pede Volta)
+                                </span>
+                                <span class="text-[9px] font-bold text-gray-500">Preparação</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mb-3">Cria expectativa máxima no ouvinte para voltar pra Casa.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2" id="family-tension-chords"></div>
+                    </div>
+                </div>
+
+                <!-- 2. "As Fórmulas dos Sucessos": Progressões Clássicas com 1 Toque -->
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">
+                        ✨ Toque para testar e carregar as progressões mais famosas da história:
+                    </span>
+                    <div class="flex gap-2 overflow-x-auto hide-scroll py-1">
+                        <button onclick="loadProgressionTemplate('pop_hits')" class="btn-secondary px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1.5 whitespace-nowrap hover:border-brand-400">
+                            🎵 A Fórmula dos Hits (I - V - vi - IV)
+                        </button>
+                        <button onclick="loadProgressionTemplate('emotional')" class="btn-secondary px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1.5 whitespace-nowrap hover:border-brand-400">
+                            🌧️ Balada Emocional (vi - IV - I - V)
+                        </button>
+                        <button onclick="loadProgressionTemplate('jazz_mpb')" class="btn-secondary px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1.5 whitespace-nowrap hover:border-brand-400">
+                            ☕ MPB & Soul (ii - V - I)
+                        </button>
+                        <button onclick="loadProgressionTemplate('rock_blues')" class="btn-secondary px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1.5 whitespace-nowrap hover:border-brand-400">
+                            🎸 Rock & Blues (I - IV - V)
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Roda de Quintas Dedicada -->
-            <div class="moises-card p-6 flex flex-col items-center justify-center relative overflow-hidden">
-                <span class="text-xs font-black uppercase tracking-widest text-brand-400 mb-1">Roda de Quintas</span>
-                <p class="text-[11px] text-gray-400 mb-6 text-center">Toque nas notas para transpor o tom da música</p>
-                <div class="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] rounded-full bg-obsidian-950 border-4 border-obsidian-800 shadow-2xl" id="circle-fifths-wrap"></div>
-            </div>
-
-            <!-- Paleta de Acordes e Timeline -->
+            <!-- 3. Folha de Composição e Montagem de Música -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 
                 <div class="lg:col-span-5 flex flex-col gap-3">
-                    <!-- 1. Seções -->
                     <div class="moises-well p-3.5">
-                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">1. Estruturas (Toque para Inserir)</span>
+                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">Adicionar Seção na Música:</span>
                         <div class="flex flex-wrap gap-1.5" id="palette-sections"></div>
                     </div>
 
-                    <!-- 2. Acordes -->
-                    <div class="moises-well p-3.5 flex-grow">
-                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">2. Acordes Funcionais</span>
-                        <div class="grid grid-cols-2 gap-2" id="palette-chords"></div>
+                    <!-- Bloco de Notas Integrado -->
+                    <div class="moises-well p-3.5 flex gap-2.5 items-start flex-grow">
+                        <i data-lucide="edit-3" class="w-4 h-4 text-brand-400 shrink-0 mt-0.5"></i>
+                        <textarea id="notepad-input" class="w-full h-24 bg-transparent text-xs text-gray-200 resize-none outline-none font-mono" placeholder="Caderno de anotações da música (letra, afinação, BPM)..."></textarea>
                     </div>
                 </div>
 
                 <!-- Folha de Música / Timeline -->
                 <div class="lg:col-span-7 flex flex-col gap-3">
-                    <div class="moises-card p-4 sm:p-5 flex flex-col min-h-[400px]">
+                    <div class="moises-card p-4 sm:p-5 flex flex-col min-h-[380px]">
                         <div class="flex justify-between items-center mb-4 border-b border-white/[0.06] pb-3">
                             <span class="text-sm font-black text-white flex items-center gap-1.5">
-                                <i data-lucide="file-text" class="w-4 h-4 text-brand-400"></i> Folha de Músicas
+                                <i data-lucide="file-text" class="w-4 h-4 text-brand-400"></i> Folha da Minha Música
                             </span>
                             <div class="flex items-center gap-2">
                                 <button onclick="clearTimeline()" class="text-xs text-red-400 hover:text-red-300 px-2 py-1 font-bold">Limpar</button>
-                                <button onclick="exportToPdf()" class="btn-glow px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                                <button onclick="playTimelineChords()" class="btn-secondary px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 text-cyan-400">
+                                    <i data-lucide="play" class="w-3 h-3 fill-current"></i> Ouvir Tudo
+                                </button>
+                                <button onclick="exportToPdf()" class="btn-glow px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> PDF
                                 </button>
                             </div>
                         </div>
 
-                        <div id="composer-timeline" class="moises-well flex-grow p-3 flex flex-col gap-2.5 min-h-[300px]">
+                        <div id="composer-timeline" class="moises-well flex-grow p-3 flex flex-col gap-2.5 min-h-[260px]">
                             <div id="empty-state-composer" class="text-center text-gray-500 my-auto py-10">
                                 <i data-lucide="plus-circle" class="w-10 h-10 mx-auto mb-2 opacity-30 text-brand-400"></i>
-                                <p class="text-xs font-bold text-gray-400">Folha vazia</p>
-                                <p class="text-[11px] text-gray-600 mt-0.5">Adicione estruturas e acordes acima.</p>
+                                <p class="text-xs font-bold text-gray-400">Sua música está vazia</p>
+                                <p class="text-[11px] text-gray-600 mt-0.5">Toque nas Fórmulas acima ou adicione seções para montar!</p>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Bloco de Notas Integrado -->
-                    <div class="moises-well p-3 flex gap-2.5 items-start">
-                        <i data-lucide="edit-3" class="w-4 h-4 text-brand-400 shrink-0 mt-0.5"></i>
-                        <textarea id="notepad-input" class="w-full h-16 bg-transparent text-xs text-gray-200 resize-none outline-none font-mono" placeholder="Caderno de anotações (auto-save)..."></textarea>
                     </div>
                 </div>
             </div>
@@ -744,7 +904,7 @@
 
     </main>
 
-    <!-- NAVEGAÇÃO INFERIOR FIXA (PERSISTENT BOTTOM BAR - MOISES STYLE) -->
+    <!-- NAVEGAÇÃO INFERIOR FIXA (PERSISTENT BOTTOM BAR) -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#060709]/95 backdrop-blur-xl border-t border-white/[0.08] px-2 py-1.5 flex justify-around items-center">
         <button onclick="switchTab('tab-caged')" id="bnav-caged" class="bottom-nav-item active">
             <i data-lucide="layers" class="w-5 h-5 mb-0.5"></i>
@@ -772,17 +932,17 @@
 
         // 1. TEORIA MUSICAL & CONSTANTES
         const NOTES = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
-        const OPEN_STRINGS_TUNING = [4, 9, 2, 7, 11, 4]; // Corda 6 (E) até Corda 1 (E)
+        const OPEN_STRINGS_TUNING = [4, 9, 2, 7, 11, 4]; // Corda 6 (E) a 1 (E)
         const ROMANS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
         const SCALES = {
             'major': { 
                 name: 'Maior (Jônica)', intervals: [0, 2, 4, 5, 7, 9, 11], 
-                harm: { q: ['M','m','m','M','M','m','dim'], func: ['Tônica','Subdominante','Tônica','Subdominante','Dominante','Tônica','Dominante'], c: ['text-emerald-400','text-cyan-400','text-emerald-400','text-cyan-400','text-rose-400','text-emerald-400','text-rose-400'] } 
+                harm: { q: ['M','m','m','M','M','m','dim'], func: ['A Casa','A Transição','A Reflexão','O Ar Livre','A Tensão','A Saudade','Tensão Extrema'], c: ['text-emerald-400','text-cyan-400','text-emerald-400','text-cyan-400','text-rose-400','text-emerald-400','text-rose-400'] } 
             },
             'minor': { 
                 name: 'Menor (Eólica)', intervals: [0, 2, 3, 5, 7, 8, 10], 
-                harm: { q: ['m','dim','M','m','m','M','M'], func: ['Tônica','Subdominante','Tônica','Subdominante','Dominante','Subdominante','Dominante'], c: ['text-emerald-400','text-cyan-400','text-emerald-400','text-cyan-400','text-rose-400','text-cyan-400','text-rose-400'] } 
+                harm: { q: ['m','dim','M','m','m','M','M'], func: ['A Saudade','Tensão Extrema','A Casa','A Transição','A Reflexão','O Ar Livre','A Tensão'], c: ['text-emerald-400','text-cyan-400','text-emerald-400','text-cyan-400','text-rose-400','text-cyan-400','text-rose-400'] } 
             },
             'pentatonic_minor': { name: 'Pentatônica Menor', intervals: [0, 3, 5, 7, 10] },
             'pentatonic_major': { name: 'Pentatônica Maior', intervals: [0, 2, 4, 7, 9] },
@@ -798,13 +958,13 @@
         const appState = {
             currentTab: 'tab-caged',
             caged: {
-                root: 'C',
-                quality: 'major', // 'major', 'minor', 'dom7'
-                shape: 'C',
-                layer: 'both' // 'both', 'chord', 'scale'
+                root: 'A',
+                quality: 'major',
+                shape: 'E',
+                layer: 'both'
             },
             doubleStops: {
-                filter: 'hendrix'
+                selectedChordKey: 'A'
             },
             scales: {
                 root: 'C',
@@ -812,8 +972,7 @@
                 instrument: 'guitar'
             },
             composer: {
-                root: 'C',
-                mode: 'major'
+                root: 'C'
             }
         };
 
@@ -845,7 +1004,7 @@
                 await ensureAudio();
                 const now = Tone.now();
                 notesArray.forEach((n, idx) => {
-                    polySynth.triggerAttackRelease(n, "4n", now + idx * 0.06);
+                    polySynth.triggerAttackRelease(n, "4n", now + idx * 0.05);
                 });
             } catch (e) {}
         }
@@ -874,7 +1033,6 @@
             }, 2500);
         }
 
-        // Navegação de Abas
         function switchTab(tabId) {
             ['tab-caged', 'tab-doublestops', 'tab-scales', 'tab-composer'].forEach(t => {
                 const el = document.getElementById(t);
@@ -897,16 +1055,14 @@
             appState.currentTab = tabId;
 
             if (tabId === 'tab-caged') updateCagedMaster();
-            if (tabId === 'tab-doublestops') renderDoubleStops();
+            if (tabId === 'tab-doublestops') updateDoubleStopsLab();
             if (tabId === 'tab-scales') updateScaleExplorer();
-            if (tabId === 'tab-composer') updateComposerChords();
+            if (tabId === 'tab-composer') updateComposerFamily();
         }
 
         // =========================================================================
-        // 3. MATRIZ DEFINITIVA DO CAGED (TODOS OS ACORDES E ESCALAS)
+        // 3. MATRIZ DEFINITIVA DO CAGED
         // =========================================================================
-        // Padrões base (shift = 0) para as 6 cordas (6 a 1):
-        // -1 indica corda abafada (X)
         const CAGED_TEMPLATES = {
             'C': {
                 name: 'Shape C',
@@ -1053,7 +1209,6 @@
             const quality = appState.caged.quality;
             const rIdx = NOTES.indexOf(root);
 
-            // Atualiza os badges dos 5 shapes com o número do traste de cada um
             ['C', 'A', 'G', 'E', 'D'].forEach(letter => {
                 const shift = CAGED_TEMPLATES[letter].baseShiftCalc(rIdx);
                 const badge = document.getElementById(`fret-badge-${letter}`);
@@ -1070,47 +1225,35 @@
             document.getElementById('caged-fret-span').textContent = `Início: ${activeShift}ª Casa`;
             document.getElementById('caged-desc-display').textContent = `Acorde de ${root} montado com o formato de ${activeShape}. Tônica na ${tmpl.rootString}ª corda.`;
 
-            // 1. Gera o Diagrama Vertical de Acorde (Chord Box)
             renderChordBoxSvg(qualObj, activeShift, root);
-
-            // 2. Renderiza o Braço Horizontal
             renderCagedHorizontalFretboard(activeShape, qualObj, activeShift, root, quality);
         }
 
         function renderChordBoxSvg(qualObj, shift, root) {
             const container = document.getElementById('caged-chord-box');
-            
-            // Determina trastes válidos
             const validFrets = qualObj.frets.map(f => f >= 0 ? f + shift : -1);
             const pressedFrets = validFrets.filter(f => f > 0);
             const minFret = pressedFrets.length ? Math.min(...pressedFrets) : 1;
             const baseFret = minFret > 1 ? minFret : 1;
 
-            const isBarre = (shift > 0);
-            
             let svg = `<svg viewBox="0 0 170 195" width="160" height="185" class="drop-shadow-md">`;
             
-            // Fret label
             if (baseFret > 1) {
                 svg += `<text x="8" y="46" fill="#38bdf8" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace">${baseFret}ª</text>`;
             } else {
-                // Pestana aberta (nut em branco grosso)
                 svg += `<line x1="28" y1="28" x2="148" y2="28" stroke="#ffffff" stroke-width="4"/>`;
             }
 
-            // 6 Strings verticais
-            const xCoords = [28, 52, 76, 100, 124, 148]; // Corda 6 a Corda 1
+            const xCoords = [28, 52, 76, 100, 124, 148];
             xCoords.forEach(x => {
                 svg += `<line x1="${x}" y1="28" x2="${x}" y2="168" stroke="#334155" stroke-width="1.8"/>`;
             });
 
-            // 5 Fret lines horizontais
             const yCoords = [28, 63, 98, 133, 168];
             yCoords.forEach(y => {
                 svg += `<line x1="28" y1="${y}" x2="148" y2="${y}" stroke="#1e293b" stroke-width="1.5"/>`;
             });
 
-            // Indicadores de topo: X ou O
             validFrets.forEach((f, idx) => {
                 const x = xCoords[idx];
                 if (f === -1) {
@@ -1120,7 +1263,6 @@
                 }
             });
 
-            // Pontos pressionados nos trastes
             validFrets.forEach((f, idx) => {
                 if (f > 0) {
                     const x = xCoords[idx];
@@ -1147,17 +1289,12 @@
             board.innerHTML = '';
 
             const tmpl = CAGED_TEMPLATES[shapeLetter];
-            const tuning = INSTRUMENTS.guitar.strings; // ['E', 'B', 'G', 'D', 'A', 'E']
-            const tuningIdx = [5, 4, 3, 2, 1, 0]; // Índices no template (corda 1 a 6)
-
+            const tuning = INSTRUMENTS.guitar.strings;
             const scaleList = quality === 'minor' ? tmpl.scaleMinorPent : tmpl.scaleMajorPent;
 
-            const minShapeFret = Math.max(0, shift);
-            const maxShapeFret = minShapeFret + 4;
-
             tuning.forEach((openNote, stringDisplayIdx) => {
-                const stringNum = 6 - stringDisplayIdx; // 6, 5, 4, 3, 2, 1
-                const tmplStringIdx = 6 - stringNum;   // 0 a 5 no template
+                const stringNum = 6 - stringDisplayIdx;
+                const tmplStringIdx = 6 - stringNum;
 
                 const row = document.createElement('div');
                 row.className = 'string-row';
@@ -1178,11 +1315,8 @@
                     const noteStr = NOTES[(openIdx + f) % 12];
                     const isRoot = (noteStr === root);
 
-                    // Verifica se é nota do acorde
                     const chordFret = qualObj.frets[tmplStringIdx] >= 0 ? qualObj.frets[tmplStringIdx] + shift : -1;
                     const isChordNote = (chordFret === f);
-
-                    // Verifica se é nota da escala no shape
                     const isScaleNote = scaleList.some(item => item.s === stringNum && (item.f + shift) === f);
 
                     let shouldShow = false;
@@ -1217,7 +1351,6 @@
                 board.appendChild(row);
             });
 
-            // Linha com numeração dos trastes
             const markersRow = document.createElement('div');
             markersRow.className = 'flex mt-1.5 ml-[44px]';
             for (let f = 1; f <= 16; f++) {
@@ -1269,138 +1402,248 @@
         }
 
         // =========================================================================
-        // 4. MÓDULO DOUBLE STOPS (SEM TEORIA - MEMORIZAÇÃO & PRÁTICA IMEDIATA)
+        // 4. MÓDULO DOUBLE STOPS DESCOMPLICADO: ONDE ENCAIXAR NO ACORDE
         // =========================================================================
-        const DOUBLE_STOPS_DATABASE = [
-            {
-                id: 'hendrix_1',
-                category: 'hendrix',
-                title: 'O Martelo de Little Wing',
-                stringsText: 'Cordas 3 e 2 (G e B)',
-                fretText: 'Traste 5 (Martela 7)',
-                heroImageDesc: 'Dedo 1 prende as cordas 2 e 3 no traste 5. O Dedo 3 (Anelar) martela a corda 3 no traste 7.',
-                artist: 'Jimi Hendrix / SRV',
-                notes: ['C4', 'E4'],
-                lickNotes: ['C4', 'E4', 'D4', 'E4']
+        // Mapeamento prático direto: cada acorde mostra onde seu double stop mora!
+        const DOUBLE_STOPS_PRACTICE_MAP = {
+            'A': {
+                chordName: 'Lá Maior (A)',
+                shapeRef: 'Shape E na 5ª Casa',
+                fretDisplay: '5ª Casa',
+                title: 'O Martelo Hendrix no Acorde de Lá (A)',
+                badge: 'Estilo Little Wing / Hendrix',
+                step1: 'Segure a pestana de Lá Maior na 5ª casa.',
+                step2: 'Palhete as cordas 3 (Sol) e 2 (Si) juntas na 5ª casa.',
+                step3: 'Martela o dedo anelar na 7ª casa da corda 3 sem soltar a 2ª!',
+                fretStart: 5,
+                fretHammer: 7,
+                stringsActive: [3, 2],
+                hammerString: 3,
+                notesSingle: ['C4', 'E4'],
+                notesLick: ['C4', 'E4', 'D4', 'E4'],
+                chordBaseTones: ['A2', 'E3', 'A3', 'C#4', 'E4']
             },
-            {
-                id: 'hendrix_2',
-                category: 'hendrix',
-                title: 'A Flexão Blue Note',
-                stringsText: 'Cordas 3 e 2 (G e B)',
-                fretText: 'Traste 7 (Martela 8)',
-                heroImageDesc: 'Dedo 1 no traste 7 das cordas 2 e 3. Dedo 2 (Médio) entra no traste 8 da corda 2.',
-                artist: 'Stevie Ray Vaughan',
-                notes: ['D4', 'F#4'],
-                lickNotes: ['D4', 'F#4', 'G4', 'D4']
+            'C': {
+                chordName: 'Dó Maior (C)',
+                shapeRef: 'Shape E na 8ª Casa',
+                fretDisplay: '8ª Casa',
+                title: 'O Enfeite de Balada no Acorde de Dó (C)',
+                badge: 'Estilo John Mayer / Soul',
+                step1: 'Faça a pestana de Dó Maior na 8ª casa.',
+                step2: 'Palhete as cordas 3 e 2 juntas na 8ª casa.',
+                step3: 'Martela o anelar na 10ª casa da corda 3!',
+                fretStart: 8,
+                fretHammer: 10,
+                stringsActive: [3, 2],
+                hammerString: 3,
+                notesSingle: ['Eb4', 'G4'],
+                notesLick: ['Eb4', 'G4', 'F4', 'G4'],
+                chordBaseTones: ['C3', 'G3', 'C4', 'E4', 'G4']
             },
-            {
-                id: 'hendrix_3',
-                category: 'hendrix',
-                title: 'O Slide do Sol Maior',
-                stringsText: 'Cordas 3 e 2 (G e B)',
-                fretText: 'Slide Traste 7 ➔ 9',
-                heroImageDesc: 'Segure as cordas 2 e 3 juntas no traste 7 e deslize de uma vez até o traste 9.',
-                artist: 'John Mayer / Hendrix',
-                notes: ['E4', 'G4'],
-                lickNotes: ['D4', 'F#4', 'E4', 'G4']
+            'D': {
+                chordName: 'Ré Maior (D)',
+                shapeRef: 'Shape A na 5ª Casa',
+                fretDisplay: '5ª a 7ª Casa',
+                title: 'A Escadinha Brilhante no Acorde de Ré (D)',
+                badge: 'Estilo Pop Rock / Country',
+                step1: 'Monte o Ré Maior na 5ª casa (pestana da 5ª corda).',
+                step2: 'Palhete as cordas 2 e 1 juntas na 7ª e 5ª casa.',
+                step3: 'Deslize o par 2 casas para frente (7 ➔ 9) para cantar o solo!',
+                fretStart: 5,
+                fretHammer: 7,
+                stringsActive: [2, 1],
+                hammerString: 1,
+                notesSingle: ['F#4', 'A4'],
+                notesLick: ['F#4', 'A4', 'G4', 'B4'],
+                chordBaseTones: ['D3', 'A3', 'D4', 'F#4']
             },
-            {
-                id: 'thirds_1',
-                category: 'thirds',
-                title: 'Shape Reto de 3ªs',
-                stringsText: 'Cordas 1 e 2 (E e B)',
-                fretText: 'Trastes Iguais (ex: 5 e 5)',
-                heroImageDesc: 'Indicador faz uma mini pestana cobrindo as cordas 1 e 2 no mesmo traste.',
-                artist: 'Chuck Berry / Rock',
-                notes: ['E4', 'A4'],
-                lickNotes: ['E4', 'A4', 'E4', 'A4']
+            'G': {
+                chordName: 'Sol Maior (G)',
+                shapeRef: 'Shape E na 3ª Casa',
+                fretDisplay: '3ª Casa',
+                title: 'O Groove Acústico no Acorde de Sol (G)',
+                badge: 'Estilo Folk / Southern Rock',
+                step1: 'Faça o acorde de Sol Maior (ou pestana na 3ª casa).',
+                step2: 'Bata nas cordas 4 (Ré) e 3 (Sol) na 3ª casa.',
+                step3: 'Martela o anelar na 5ª casa da corda 4.',
+                fretStart: 3,
+                fretHammer: 5,
+                stringsActive: [4, 3],
+                hammerString: 4,
+                notesSingle: ['F3', 'Bb3'],
+                notesLick: ['F3', 'Bb3', 'G3', 'Bb3'],
+                chordBaseTones: ['G2', 'D3', 'G3', 'B3', 'D4', 'G4']
             },
-            {
-                id: 'thirds_2',
-                category: 'thirds',
-                title: 'Shape Diagonal de 3ªs',
-                stringsText: 'Cordas 1 e 2 (E e B)',
-                fretText: 'Traste 7 (C1) + Traste 8 (C2)',
-                heroImageDesc: 'Dedo 1 no traste 7 (corda 1) e Dedo 2 no traste 8 (corda 2).',
-                artist: 'Clapton / B.B. King',
-                notes: ['B4', 'G4'],
-                lickNotes: ['B4', 'G4', 'C5', 'A4']
+            'E': {
+                chordName: 'Mi Maior (E)',
+                shapeRef: 'Cordas Soltas / 1ª Casa',
+                fretDisplay: '0 a 2ª Casa',
+                title: 'O Dobro do Blues no Acorde de Mi (E)',
+                badge: 'Estilo Stevie Ray Vaughan',
+                step1: 'Monte o acorde de Mi Maior aberto.',
+                step2: 'Puxe as cordas 2 e 1 soltas.',
+                step3: 'Martela o indicador na 1ª casa da corda 3 e solte!',
+                fretStart: 0,
+                fretHammer: 2,
+                stringsActive: [2, 1],
+                hammerString: 2,
+                notesSingle: ['B3', 'E4'],
+                notesLick: ['B3', 'E4', 'D4', 'E4'],
+                chordBaseTones: ['E2', 'B2', 'E3', 'G#3', 'B3', 'E4']
             },
-            {
-                id: 'sixths_1',
-                category: 'sixths',
-                title: '6ªs Melódicas Doces',
-                stringsText: 'Cordas 3 e 1 (G e E)',
-                fretText: 'Traste 6 (C3) + Traste 7 (C1)',
-                heroImageDesc: 'O Dedo 1 abafa a corda 2 no meio enquanto toca as cordas 3 e 1 juntas.',
-                artist: 'Steve Cropper / Soul',
-                notes: ['C#4', 'B4'],
-                lickNotes: ['C#4', 'B4', 'D4', 'C5']
+            'Am': {
+                chordName: 'Lá Menor (Am)',
+                shapeRef: 'Shape Em na 5ª Casa',
+                fretDisplay: '5ª Casa',
+                title: 'A Flexão Menor no Acorde de Lá Menor (Am)',
+                badge: 'Estilo Blues Melancólico',
+                step1: 'Segure a pestana de Am na 5ª casa.',
+                step2: 'Toque as cordas 3 e 2 juntas na 5ª casa.',
+                step3: 'Dê um bend suave de 1/4 de tom com o dedo anelar!',
+                fretStart: 5,
+                fretHammer: 7,
+                stringsActive: [3, 2],
+                hammerString: 3,
+                notesSingle: ['C4', 'E4'],
+                notesLick: ['C4', 'E4', 'D4', 'C4'],
+                chordBaseTones: ['A2', 'E3', 'A3', 'C4', 'E4']
             },
-            {
-                id: 'fourths_1',
-                category: 'fourths',
-                title: 'Pestana Dupla de 4ªs',
-                stringsText: 'Cordas 4 e 3 (D e G)',
-                fretText: 'Traste 5 nas duas cordas',
-                heroImageDesc: 'Um único dedo cobre as cordas D e G no traste 5.',
-                artist: 'Deep Purple / Funk',
-                notes: ['G3', 'C4'],
-                lickNotes: ['G3', 'C4', 'A3', 'D4']
+            'Em': {
+                chordName: 'Mi Menor (Em)',
+                shapeRef: 'Shape Am na 7ª Casa',
+                fretDisplay: '7ª Casa',
+                title: 'O Lick de Balada em Mi Menor (Em)',
+                badge: 'Estilo Pink Floyd / Gilmour',
+                step1: 'Posicione a pestana de Em na 7ª casa.',
+                step2: 'Toque as cordas 2 e 1 juntas na 8ª e 7ª casa.',
+                step3: 'Martela a 10ª casa na corda 2 para fazer o solo chorar!',
+                fretStart: 7,
+                fretHammer: 9,
+                stringsActive: [2, 1],
+                hammerString: 2,
+                notesSingle: ['G4', 'B4'],
+                notesLick: ['G4', 'B4', 'A4', 'B4'],
+                chordBaseTones: ['E3', 'B3', 'E4', 'G4', 'B4']
             }
-        ];
+        };
 
-        function filterDoubleStops(cat) {
-            appState.doubleStops.filter = cat;
-            ['hendrix', 'thirds', 'sixths', 'fourths'].forEach(c => {
-                const btn = document.getElementById(`ds-filter-${c}`);
-                if (btn) {
-                    if (c === cat) {
-                        btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition bg-brand-500 text-white shadow whitespace-nowrap";
-                    } else {
-                        btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition btn-secondary whitespace-nowrap";
-                    }
-                }
+        function initDoubleStopsLab() {
+            const container = document.getElementById('ds-chord-selector');
+            container.innerHTML = '';
+            Object.keys(DOUBLE_STOPS_PRACTICE_MAP).forEach(chordKey => {
+                const item = DOUBLE_STOPS_PRACTICE_MAP[chordKey];
+                const btn = document.createElement('button');
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-black shrink-0 transition ${chordKey === appState.doubleStops.selectedChordKey ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30' : 'btn-secondary text-gray-300'}`;
+                btn.textContent = item.chordName;
+                btn.onclick = () => {
+                    appState.doubleStops.selectedChordKey = chordKey;
+                    initDoubleStopsLab();
+                    updateDoubleStopsLab();
+                };
+                container.appendChild(btn);
             });
-            renderDoubleStops();
+            updateDoubleStopsLab();
         }
 
-        function renderDoubleStops() {
-            const container = document.getElementById('doublestops-container');
-            container.innerHTML = '';
+        function updateDoubleStopsLab() {
+            const data = DOUBLE_STOPS_PRACTICE_MAP[appState.doubleStops.selectedChordKey];
+            if (!data) return;
 
-            const list = DOUBLE_STOPS_DATABASE.filter(d => d.category === appState.doubleStops.filter);
+            document.getElementById('ds-hero-fret').textContent = `${data.shapeRef} • Início na ${data.fretDisplay}`;
+            document.getElementById('ds-hero-title').textContent = data.title;
+            document.getElementById('ds-hero-badge').textContent = data.badge;
 
-            list.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'moises-card p-4 flex flex-col justify-between hover:border-brand-400/50 transition';
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-center mb-1.5">
-                            <span class="text-[9px] font-black uppercase text-amber-glow bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${item.artist}</span>
-                            <span class="text-xs font-mono font-bold text-cyan-400">${item.fretText}</span>
-                        </div>
-                        <h4 class="text-base font-display font-black text-white">${item.title}</h4>
-                        <span class="text-xs text-gray-400 font-bold block mb-2">${item.stringsText}</span>
+            document.getElementById('ds-step-1').textContent = data.step1;
+            document.getElementById('ds-step-2').textContent = data.step2;
+            document.getElementById('ds-step-3').textContent = data.step3;
 
-                        <div class="moises-well p-3 mb-3 rounded-xl">
-                            <p class="text-xs text-gray-200 leading-relaxed">${item.heroImageDesc}</p>
-                        </div>
-                    </div>
+            renderDoubleStopFretboard(data);
+        }
 
-                    <div class="flex gap-2 pt-2 border-t border-white/[0.06]">
-                        <button onclick="playNotes(['${item.notes[0]}', '${item.notes[1]}'])" class="btn-secondary flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 hover:border-brand-400">
-                            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-brand-400"></i> Dupla
-                        </button>
-                        <button onclick="playArpeggio(${JSON.stringify(item.lickNotes).replace(/"/g, "'")})" class="btn-glow flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1">
-                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Frase
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
+        function renderDoubleStopFretboard(data) {
+            const board = document.getElementById('ds-interactive-fretboard');
+            board.innerHTML = '';
+
+            const tuning = INSTRUMENTS.guitar.strings; // ['E', 'B', 'G', 'D', 'A', 'E']
+            const tuningIndex = [1, 2, 3, 4, 5, 6];
+
+            const minF = Math.max(0, data.fretStart - 1);
+            const maxF = minF + 5;
+
+            tuning.forEach((openNote, stringDisplayIdx) => {
+                const stringNum = tuningIndex[stringDisplayIdx]; // 1 a 6
+                const row = document.createElement('div');
+                row.className = 'string-row';
+
+                const wire = document.createElement('div');
+                wire.className = 'string-wire';
+                const thick = (7 - stringNum) * 0.5 + 0.6;
+                wire.style.height = `${thick}px`;
+                wire.style.top = `calc(50% - ${thick/2}px)`;
+                row.appendChild(wire);
+
+                for (let f = 0; f <= 15; f++) {
+                    const cell = document.createElement('div');
+                    cell.className = `fret-cell ${f === 0 ? 'nut' : ''}`;
+
+                    const isTargetString = data.stringsActive.includes(stringNum);
+                    const isBaseFret = (f === data.fretStart && isTargetString);
+                    const isHammerFret = (f === data.fretHammer && stringNum === data.hammerString);
+
+                    if (isBaseFret) {
+                        cell.innerHTML = `
+                            <div class="fret-marker-dot marker-ds-active" title="Segure aqui e toque junto">
+                                <span class="leading-none text-[8px] font-mono">DEDO 1</span>
+                            </div>
+                        `;
+                    } else if (isHammerFret) {
+                        cell.innerHTML = `
+                            <div class="fret-marker-dot marker-ds-hammer" title="Martela aqui!">
+                                <span class="leading-none text-[8px] font-mono">MARTELA</span>
+                            </div>
+                        `;
+                    }
+
+                    row.appendChild(cell);
+                }
+                board.appendChild(row);
             });
-            lucide.createIcons();
+
+            // Numeração de trastes
+            const markersRow = document.createElement('div');
+            markersRow.className = 'flex mt-1.5 ml-[44px]';
+            for (let f = 1; f <= 15; f++) {
+                const cell = document.createElement('div');
+                cell.className = 'flex flex-col items-center flex-shrink-0';
+                cell.style.width = '66px';
+                if ([3, 5, 7, 9, 12, 15].includes(f)) {
+                    cell.innerHTML = `
+                        <div class="w-1.5 h-1.5 rounded-full bg-cyan-400/40 mb-1 ${f === 12 ? 'w-4 bg-amber-glow' : ''}"></div>
+                        <span class="text-[9px] text-gray-400 font-mono font-bold">${f}</span>
+                    `;
+                }
+                markersRow.appendChild(cell);
+            }
+            board.appendChild(markersRow);
+        }
+
+        async function playCurrentDsOnly() {
+            const data = DOUBLE_STOPS_PRACTICE_MAP[appState.doubleStops.selectedChordKey];
+            showNotification(`Tocando Dupla: ${data.notesSingle.join(' + ')}`);
+            await playNotes(data.notesSingle, "4n");
+        }
+
+        async function playCurrentDsWithContext() {
+            const data = DOUBLE_STOPS_PRACTICE_MAP[appState.doubleStops.selectedChordKey];
+            showNotification(`Ouvindo: Acorde de ${data.chordName} + Enfeite...`);
+            
+            // 1. Toca o acorde de base
+            await playStrum(data.chordBaseTones);
+            
+            // 2. Toca a frase do double stop logo em seguida
+            setTimeout(async () => {
+                await playArpeggio(data.notesLick);
+            }, 600);
         }
 
         // =========================================================================
@@ -1540,7 +1783,6 @@
                 board.appendChild(row);
             });
 
-            // Numeração de trastes
             const markersRow = document.createElement('div');
             markersRow.className = 'flex mt-1.5 ml-[44px]';
             for (let f = 1; f <= frets; f++) {
@@ -1611,98 +1853,130 @@
         }
 
         // =========================================================================
-        // 6. MÓDULO COMPOSITOR & RODA DE QUINTAS
+        // 6. MÓDULO COMPOSITOR: O NOVO MAPA DE FAMÍLIA HARMÔNICA (SEM ESPREMER!)
         // =========================================================================
-        const COF_KEYS = [
-            { M: 'C', m: 'A' }, { M: 'G', m: 'E' }, { M: 'D', m: 'B' }, { M: 'A', m: 'F#' },
-            { M: 'E', m: 'C#' }, { M: 'B', m: 'G#' }, { M: 'Gb', m: 'Eb' }, { M: 'Db', m: 'Bb' },
-            { M: 'Ab', m: 'F' }, { M: 'Eb', m: 'C' }, { M: 'Bb', m: 'G' }, { M: 'F', m: 'D' }
-        ];
+        const PROGRESSION_TEMPLATES = {
+            'pop_hits': {
+                name: 'A Fórmula dos Hits',
+                degrees: [0, 4, 5, 3] // I - V - vi - IV
+            },
+            'emotional': {
+                name: 'Balada Emocional',
+                degrees: [5, 3, 0, 4] // vi - IV - I - V
+            },
+            'jazz_mpb': {
+                name: 'MPB & Jazz',
+                degrees: [1, 4, 0]    // ii - V - I
+            },
+            'rock_blues': {
+                name: 'Rock & Blues',
+                degrees: [0, 3, 4]    // I - IV - V
+            }
+        };
 
-        function initCircleOfFifths() {
-            const wrap = document.getElementById('circle-fifths-wrap');
-            wrap.innerHTML = '';
+        function updateComposerFamily() {
+            appState.composer.root = document.getElementById('composer-root-select').value;
+            const rIdx = NOTES.indexOf(appState.composer.root);
 
-            COF_KEYS.forEach((k, i) => {
-                const ang = (i * 30 - 90) * (Math.PI / 180);
+            const majorIntervals = [0, 2, 4, 5, 7, 9, 11];
+            const qualities = ['M', 'm', 'm', 'M', 'M', 'm', 'dim'];
 
-                const nodeMaj = document.createElement('div');
-                nodeMaj.className = 'cof-node cof-maj';
-                nodeMaj.style.left = `${50 + 38 * Math.cos(ang)}%`;
-                nodeMaj.style.top = `${50 + 38 * Math.sin(ang)}%`;
-                nodeMaj.dataset.ring = 'M';
-                nodeMaj.dataset.idx = i;
-                nodeMaj.onclick = () => {
-                    document.getElementById('composer-root-select').value = k.M;
-                    document.getElementById('composer-mode-select').value = 'major';
-                    updateComposerChords();
+            // Gera os 7 acordes do campo harmônico
+            const chordObjects = majorIntervals.map((inter, idx) => {
+                const note = NOTES[(rIdx + inter) % 12];
+                let cName = note;
+                if (qualities[idx] === 'm') cName += 'm';
+                if (qualities[idx] === 'dim') cName += '°';
+                return {
+                    name: cName,
+                    roman: ROMANS[idx],
+                    degree: idx,
+                    note: note
                 };
-                wrap.appendChild(nodeMaj);
+            });
 
-                const nodeMin = document.createElement('div');
-                nodeMin.className = 'cof-node cof-min';
-                nodeMin.style.left = `${50 + 22 * Math.cos(ang)}%`;
-                nodeMin.style.top = `${50 + 22 * Math.sin(ang)}%`;
-                nodeMin.dataset.ring = 'm';
-                nodeMin.dataset.idx = i;
-                nodeMin.onclick = () => {
-                    document.getElementById('composer-root-select').value = k.m;
-                    document.getElementById('composer-mode-select').value = 'minor';
-                    updateComposerChords();
-                };
-                wrap.appendChild(nodeMin);
+            // 1. Bloco Casa (I e vi)
+            const homeContainer = document.getElementById('family-home-chords');
+            homeContainer.innerHTML = '';
+            [chordObjects[0], chordObjects[5]].forEach(c => {
+                homeContainer.appendChild(createFamilyChordCard(c, 'border-emerald-500/40 text-emerald-400'));
+            });
+
+            // 2. Bloco Viagem / Ar Livre (IV e ii)
+            const journeyContainer = document.getElementById('family-journey-chords');
+            journeyContainer.innerHTML = '';
+            [chordObjects[3], chordObjects[1]].forEach(c => {
+                journeyContainer.appendChild(createFamilyChordCard(c, 'border-cyan-500/40 text-cyan-400'));
+            });
+
+            // 3. Bloco Tensão / Pede Volta (V, iii e vii°)
+            const tensionContainer = document.getElementById('family-tension-chords');
+            tensionContainer.innerHTML = '';
+            [chordObjects[4], chordObjects[2]].forEach(c => {
+                tensionContainer.appendChild(createFamilyChordCard(c, 'border-amber-glow/40 text-amber-glow'));
             });
         }
 
-        function highlightCircleOfFifths() {
-            const root = appState.composer.root;
-            const mode = appState.composer.mode;
-
-            let centerIdx = COF_KEYS.findIndex(k => {
-                const t = mode === 'major' ? k.M : k.m;
-                return t === root;
-            });
-            if (centerIdx === -1) centerIdx = 0;
-
-            const iL = (centerIdx - 1 + 12) % 12;
-            const iR = (centerIdx + 1) % 12;
-            const iOp = (centerIdx + 2) % 12;
-
-            const defs = mode === 'major' ? 
-                [{ r: 'M', i: centerIdx, rm: 'I', c: true }, { r: 'M', i: iL, rm: 'IV' }, { r: 'M', i: iR, rm: 'V' }, { r: 'm', i: centerIdx, rm: 'vi' }, { r: 'm', i: iL, rm: 'ii' }, { r: 'm', i: iR, rm: 'iii' }, { r: 'm', i: iOp, rm: 'vii°' }] :
-                [{ r: 'm', i: centerIdx, rm: 'i', c: true }, { r: 'm', i: iL, rm: 'iv' }, { r: 'm', i: iR, rm: 'v' }, { r: 'M', i: centerIdx, rm: 'III' }, { r: 'M', i: iL, rm: 'VI' }, { r: 'M', i: iR, rm: 'VII' }, { r: 'm', i: iOp, rm: 'ii°'}];
-
-            document.querySelectorAll('.cof-node').forEach(el => {
-                el.classList.remove('in-scale', 'cof-active-maj', 'cof-active-min');
-                const kName = COF_KEYS[el.dataset.idx][el.dataset.ring];
-                el.innerHTML = `<span>${el.dataset.ring === 'm' ? kName + 'm' : kName}</span>`;
-                el.style.opacity = '0.25';
-            });
-
-            defs.forEach(d => {
-                const el = document.querySelector(`.cof-node[data-ring="${d.r}"][data-idx="${d.i}"]`);
-                if (el) {
-                    el.classList.add('in-scale');
-                    el.style.opacity = '1';
-                    if (d.c) el.classList.add(mode === 'major' ? 'cof-active-maj' : 'cof-active-min');
-
-                    const kName = COF_KEYS[d.i][d.r];
-                    let display = d.r === 'm' ? kName + 'm' : kName;
-                    if (d.rm.includes('°')) display = kName + '°';
-
-                    el.innerHTML = `
-                        <span>${display}</span>
-                        <span class="text-[8px] font-black text-brand-400 mt-0.5 leading-none">${d.rm}</span>
-                    `;
+        function createFamilyChordCard(c, borderClass) {
+            const card = document.createElement('div');
+            card.className = `moises-card p-2.5 rounded-xl flex flex-col justify-between hover:border-brand-400 cursor-pointer transition border ${borderClass} group`;
+            card.innerHTML = `
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-[9px] font-mono font-bold text-gray-400">${c.roman}</span>
+                    <span class="text-[8px] font-mono font-bold text-cyan-400 group-hover:opacity-100 opacity-0 transition">+ Usar</span>
+                </div>
+                <div class="text-base font-display font-black text-white leading-none">${c.name}</div>
+            `;
+            card.onclick = () => {
+                const sections = document.querySelectorAll('.composer-section');
+                if (sections.length > 0) {
+                    const lastZone = sections[sections.length - 1].querySelector('.dropzone-sec');
+                    addChordToSection(c.name, lastZone);
+                } else {
+                    addSectionToTimeline('Refrão');
+                    setTimeout(() => {
+                        const sectionsNew = document.querySelectorAll('.composer-section');
+                        const lastZone = sectionsNew[sectionsNew.length - 1].querySelector('.dropzone-sec');
+                        addChordToSection(c.name, lastZone);
+                    }, 50);
                 }
-            });
+            };
+            return card;
+        }
+
+        function loadProgressionTemplate(templateKey) {
+            const tmpl = PROGRESSION_TEMPLATES[templateKey];
+            if (!tmpl) return;
+
+            const rIdx = NOTES.indexOf(appState.composer.root);
+            const majorIntervals = [0, 2, 4, 5, 7, 9, 11];
+            const qualities = ['M', 'm', 'm', 'M', 'M', 'm', 'dim'];
+
+            clearTimeline();
+            addSectionToTimeline(tmpl.name);
+
+            setTimeout(async () => {
+                const sections = document.querySelectorAll('.composer-section');
+                const zone = sections[sections.length - 1].querySelector('.dropzone-sec');
+
+                const chordsSequence = [];
+                tmpl.degrees.forEach(deg => {
+                    const note = NOTES[(rIdx + majorIntervals[deg]) % 12];
+                    let cName = note;
+                    if (qualities[deg] === 'm') cName += 'm';
+                    if (qualities[deg] === 'dim') cName += '°';
+                    addChordToSection(cName, zone);
+                    chordsSequence.push(cName.replace('m', '').replace('°', '') + '3');
+                });
+
+                showNotification(`Carregada a progressão: ${tmpl.name}!`);
+                await playArpeggio(chordsSequence);
+            }, 60);
         }
 
         const COMPOSER_SECTIONS = ['Intro', 'Verso', 'Pré-Refrão', 'Refrão', 'Ponte', 'Solo', 'Final'];
 
         function initComposerModule() {
-            initCircleOfFifths();
-
             const pSec = document.getElementById('palette-sections');
             pSec.innerHTML = '';
             COMPOSER_SECTIONS.forEach(sec => {
@@ -1713,50 +1987,7 @@
                 pSec.appendChild(btn);
             });
 
-            updateComposerChords();
-        }
-
-        function updateComposerChords() {
-            appState.composer.root = document.getElementById('composer-root-select').value;
-            appState.composer.mode = document.getElementById('composer-mode-select').value;
-
-            highlightCircleOfFifths();
-
-            const pChords = document.getElementById('palette-chords');
-            pChords.innerHTML = '';
-
-            const scaleObj = SCALES[appState.composer.mode];
-            const rIdx = NOTES.indexOf(appState.composer.root);
-
-            scaleObj.intervals.forEach((interval, idx) => {
-                const note = NOTES[(rIdx + interval) % 12];
-                let cName = note;
-                if (scaleObj.harm.q[idx] === 'm') cName += 'm';
-                if (scaleObj.harm.q[idx] === 'dim') cName += '°';
-
-                const card = document.createElement('div');
-                card.className = 'moises-well p-2 rounded-xl flex items-center justify-between hover:border-brand-400 cursor-pointer transition border border-white/[0.04] group';
-                card.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] font-mono font-bold text-gray-500">${ROMANS[idx]}</span>
-                        <span class="text-sm font-display font-black text-white">${cName}</span>
-                    </div>
-                    <span class="text-[9px] font-bold text-brand-400 font-mono">+ Inserir</span>
-                `;
-
-                card.onclick = () => {
-                    const sections = document.querySelectorAll('.composer-section');
-                    if (sections.length > 0) {
-                        const lastDropzone = sections[sections.length - 1].querySelector('.dropzone-sec');
-                        addChordToSection(cName, lastDropzone);
-                    } else {
-                        showNotification('Adicione uma Seção primeiro!', 'error');
-                    }
-                };
-
-                pChords.appendChild(card);
-            });
-            lucide.createIcons();
+            updateComposerFamily();
         }
 
         function addSectionToTimeline(secName) {
@@ -1807,8 +2038,8 @@
                 tl.innerHTML = `
                     <div id="empty-state-composer" class="text-center text-gray-500 my-auto py-10">
                         <i data-lucide="plus-circle" class="w-10 h-10 mx-auto mb-2 opacity-30 text-brand-400"></i>
-                        <p class="text-xs font-bold text-gray-400">Folha vazia</p>
-                        <p class="text-[11px] text-gray-600 mt-0.5">Adicione estruturas e acordes acima.</p>
+                        <p class="text-xs font-bold text-gray-400">Sua música está vazia</p>
+                        <p class="text-[11px] text-gray-600 mt-0.5">Toque nas Fórmulas acima ou adicione seções para montar!</p>
                     </div>
                 `;
                 lucide.createIcons();
@@ -1819,6 +2050,17 @@
             document.getElementById('composer-timeline').innerHTML = '';
             checkTimelineEmpty();
             showNotification('Folha limpa!');
+        }
+
+        async function playTimelineChords() {
+            const chordBoxes = document.querySelectorAll('.composer-chord span');
+            if (!chordBoxes.length) {
+                showNotification('Adicione acordes antes de tocar!', 'error');
+                return;
+            }
+            const chordsToPlay = Array.from(chordBoxes).map(el => el.textContent.replace('m', '').replace('°', '') + '3');
+            showNotification('Tocando progressão da folha...');
+            await playArpeggio(chordsToPlay);
         }
 
         function exportToPdf() {
@@ -2031,18 +2273,16 @@
             lucide.createIcons();
         }
 
-        // Notepad
         const notepad = document.getElementById('notepad-input');
         notepad.value = localStorage.getItem('guitarreiro_notes') || '';
         notepad.addEventListener('input', (e) => localStorage.setItem('guitarreiro_notes', e.target.value));
 
-        // Inicialização
         window.addEventListener('DOMContentLoaded', () => {
             initCagedRootPills();
             initScalesModule();
             initComposerModule();
+            initDoubleStopsLab();
             updateCagedMaster();
-            renderDoubleStops();
         });
     </script>
 </body>
